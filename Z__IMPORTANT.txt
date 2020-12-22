@@ -1,0 +1,17 @@
+
+Author: MOUAD NASSRI
+Created at: 22 / 12/ 2020
+
+ --------------  IMPORTANT NOTES TO READ  --------------
+
+ I used composer autoload script along with classmap standard, so that every php web page will be created need to require
+ the autoload in composer vendor directory.
+ init.php file include configurations and it's also needed along with autoload in every page deals with configurations
+
+ Hint:
+ functions/sanitize.php file could not be included by adding the following statement inside init.php: 
+    require_once functions/sanitize.php
+because this will be available only in root directory and because index.php is in the root directory, it will work fine, but if we include our
+init.php file in a different position in directory system it will generate a Fatal error because functions/sanitize.php is 
+relative to root directory. SO we need to include it also with autoload and init file if the calling script needs it.
+

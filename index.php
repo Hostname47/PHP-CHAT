@@ -1,3 +1,16 @@
+
+<?php
+
+    require_once "core/init.php";
+    require_once "vendor/autoload.php";
+
+    use classes\Config;
+
+    echo Config::get('hello/username');
+    
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

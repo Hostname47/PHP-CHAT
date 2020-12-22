@@ -28,6 +28,7 @@ body {
 
 .medium-text-input {
     width: 180px;
+    margin: 3px 0;
 }
 
 .link {
@@ -46,9 +47,9 @@ body {
     text-decoration: none;
 
     color: white;
-    border: 3px solid white;
+    border: 2px solid white;
     background: none;
-    font-weight: 600;
+    font-weight: 500;
 
     padding: 4px 8px;
     transition: all 0.4s ease;
