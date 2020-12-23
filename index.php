@@ -1,14 +1,24 @@
 
 <?php
 
+    error_reporting();
+
     require_once "core/init.php";
     require_once "vendor/autoload.php";
 
     use classes\Config;
-
-    echo Config::get('hello/username');
+    use classes\DB;
     
+    $db = DB::getInstance();
+    $db->query("SELECT * FROM user_info");
 
+    print_r($db->get());
+
+    if($db->error()) {
+        echo "has error";
+    } else {
+        echo "There's no error !";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +35,7 @@
     <!-- Here before including the header, we need to make sure if user is already connected. If so
          we need to add connected header, otherwise disconnected header wil be shown
     -->
-    <?php include "components/basic/disconnected-header.php" ?>
+    <?php //include "components/basic/disconnected-header.php" ?>
 
 
 </body>

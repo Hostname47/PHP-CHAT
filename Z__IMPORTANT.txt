@@ -15,3 +15,8 @@ because this will be available only in root directory and because index.php is i
 init.php file in a different position in directory system it will generate a Fatal error because functions/sanitize.php is 
 relative to root directory. SO we need to include it also with autoload and init file if the calling script needs it.
 
+[IMPORTANT]: When you add a class and attach it to a namespace, don't forgtet to update composer so it could used
+it in classmap array
+
+[IMPORTANT]: When you get an error don't be hurry to look at the solution, most of the times the solution is there, you
+ONLY NEED TO READ THE ERROR CLOSELY AND CAREFULLY
