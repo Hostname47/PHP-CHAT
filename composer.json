@@ -3,7 +3,8 @@
     "require": {},
     "autoload": {
         "classmap": [
-            "classes"
+            "classes",
+            "models"
         ]
     }
 }

@@ -8,11 +8,22 @@
 
     use classes\Config;
     use classes\DB;
-    
+    use models\User;
+
     $db = DB::getInstance();
+    
+    $u = new User($db);
+    $u->setData("davincii", "password", "salt", "leonardo", "davincii", date("Y/m/d h:i:s"), "garbage");
+
+    echo $u->add();
+
     $db->query("SELECT * FROM user_info");
 
-    print_r($db->get());
+    $users = $db->results();
+
+    foreach($users as $user) {
+        echo $user->username . "<br>";
+    }
 
     if($db->error()) {
         echo "has error";

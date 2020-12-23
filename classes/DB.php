@@ -90,7 +90,7 @@ class DB {
         return $this->_error;
     }
 
-    public function get() {
+    public function results() {
         return $this->_results;
     }
 
