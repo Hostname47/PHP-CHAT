@@ -17,7 +17,8 @@ class User {
         $this->conn = $db;
     }
 
-    public function setData($username, $password, $salt="", $firstname="", $lastname="", $joined, $user_type=1) {
+    public function setData($id=null, $username, $password, $salt="", $firstname="", $lastname="", $joined, $user_type=1) {
+        $this->id = $id;
         $this->username = $username;
         $this->password = $password;
         $this->salt = $salt;
@@ -28,7 +29,6 @@ class User {
     }
 
     public function add() {
-        echo "insert user_type: " . $this->user_type;
         $this->conn->query("INSERT INTO user_info 
         (username, password, salt, firstname, lastname, joined, user_type) 
         VALUES (?, ?, ?, ?, ?, ?, ?)", array(
@@ -44,5 +44,19 @@ class User {
         // This will return true if the query error function in DB generate an error
         // Hint: note that we need to retrun true if there's no errors, returning true in add function means everything goes well
         return $this->conn->error() == false ? true : false;
+    }
+
+    public function update() {
+        $this->conn->query("UPDATE user_info SET username=?, password=?, salt=?, firstname=?, lastname=?, joined=?, user_type=? WHERE id=?",
+        array(
+            $this->username,
+            $this->password,
+            $this->salt,
+            $this->firstname,
+            $this->lastname,
+            $this->joined,
+            $this->user_type,
+            $this->id
+        ));
     }
 }

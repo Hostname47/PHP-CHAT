@@ -13,9 +13,9 @@
     $db = DB::getInstance();
     
     $u = new User($db);
-    $u->setData("davincii", "password", "salt", "leonardo", "davincii", date("Y/m/d h:i:s"), "garbage");
+    $u->setData(10, "DAVINCII", "password", "salt", "leonardo", "davincii", date("Y/m/d h:i:s"), 2);
 
-    echo $u->add();
+    echo $u->update();
 
     $db->query("SELECT * FROM user_info");
 
