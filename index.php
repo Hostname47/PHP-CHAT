@@ -1,19 +1,7 @@
 
 <?php
     
-    require_once "core/init.php";
-    require_once "vendor/autoload.php";
-
-    use classes\DB;
-    use classes\Config;
-    use models\User;
-
-    $db = DB::getInstance();
-
-    $user = new User($db);
-    $user->setPropertyValue("id", 10);
-
-    $user->delete();
+    
 
 ?>
 
