@@ -1,35 +1,20 @@
 
 <?php
-
-    error_reporting();
-
+    
     require_once "core/init.php";
     require_once "vendor/autoload.php";
 
-    use classes\Config;
     use classes\DB;
+    use classes\Config;
     use models\User;
 
     $db = DB::getInstance();
-    
-    $u = new User($db);
-    $u->setData(10, "DAVINCII", "password", "salt", "leonardo", "davincii", date("Y/m/d h:i:s"), 2);
 
-    echo $u->update();
+    $user = new User($db);
+    $user->setPropertyValue("id", 10);
 
-    $db->query("SELECT * FROM user_info");
+    $user->delete();
 
-    $users = $db->results();
-
-    foreach($users as $user) {
-        echo $user->username . "<br>";
-    }
-
-    if($db->error()) {
-        echo "has error";
-    } else {
-        echo "There's no error !";
-    }
 ?>
 
 <!DOCTYPE html>
@@ -46,8 +31,7 @@
     <!-- Here before including the header, we need to make sure if user is already connected. If so
          we need to add connected header, otherwise disconnected header wil be shown
     -->
-    <?php //include "components/basic/disconnected-header.php" ?>
-
+    
 
 </body>
 </html>

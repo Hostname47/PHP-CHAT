@@ -8,7 +8,7 @@ body {
     font-family: 'IBM Plex Sans Condensed', sans-serif;
 }
 
-.col-flex {
+.flex-column {
     display: flex;
     flex-direction: column;
 }
@@ -45,9 +45,10 @@ body {
 .button-style-1 {
     display: flex;
     text-decoration: none;
-
+    cursor: pointer;
     color: white;
     border: 2px solid white;
+    border-radius: 4px;
     background: none;
     font-weight: 500;
 
@@ -65,4 +66,24 @@ body {
     align-items: center;
 }
 
+.classic-form-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
 
+.title-style1 {
+    margin: 6px 0 14px 0;
+}
+
+.classic-label {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.classic-input {
+    padding: 6px 10px;
+    width: 300px;
+
+    box-sizing: border-box;
+}

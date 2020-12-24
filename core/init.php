@@ -18,7 +18,8 @@ $GLOBALS["config"] = array(
     ),
     'session'=>array(
         'session_name'=>'user'
-    )
+    ),
+    'pathToRootProject'=>"http://127.0.0.1/CHAT/"
 );
 
 /* 

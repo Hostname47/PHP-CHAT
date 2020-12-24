@@ -17,7 +17,30 @@ class User {
         $this->conn = $db;
     }
 
-    public function setData($id=null, $username, $password, $salt="", $firstname="", $lastname="", $joined, $user_type=1) {
+    public function getPropertyValue($propertyName) {
+        return $this->$propertyName;
+    }
+    
+    public function setPropertyValue($propertyName, $propertyValue) {
+        $this->$propertyName = $propertyValue;
+    }
+    
+    public function selectById($id) {
+        $this->conn->query("SELECT * FROM user_info WHERE id = ?", array($id));
+        $fetchedUser = $this->conn->results()[0];
+
+        $this->id = $fetchedUser->id;
+        $this->username = $fetchedUser->username;
+        $this->password = $fetchedUser->password;
+        $this->salt = $fetchedUser->salt;
+        $this->firstname = $fetchedUser->firstname;
+        $this->lastname = $fetchedUser->lastname;
+        $this->joined = $fetchedUser->joined;
+        $this->user_type = $fetchedUser->user_type;
+    }
+
+    // This function will be used to set all user's data into th user object so that it makes it ready to be addedd, edit it or delete it
+    public function setData($id=null, $username="", $password="", $salt="", $firstname="", $lastname="", $joined=null, $user_type=1) {
         $this->id = $id;
         $this->username = $username;
         $this->password = $password;
@@ -28,6 +51,10 @@ class User {
         $this->user_type = $user_type;
     }
 
+    /* 
+    Note that if you want to add new user by specifying id, you can actually fetch the last user and add 1 to its id,
+    then class add function by adding id to add query
+    */
     public function add() {
         $this->conn->query("INSERT INTO user_info 
         (username, password, salt, firstname, lastname, joined, user_type) 
@@ -46,6 +73,10 @@ class User {
         return $this->conn->error() == false ? true : false;
     }
 
+    /*
+    After getting the user by id and editing its properties, all you need to do to edit it is to call this function
+    and it will do all the work for you
+    */
     public function update() {
         $this->conn->query("UPDATE user_info SET username=?, password=?, salt=?, firstname=?, lastname=?, joined=?, user_type=? WHERE id=?",
         array(
@@ -59,4 +90,12 @@ class User {
             $this->id
         ));
     }
+
+    public function delete() {
+        $this->conn->query("DELETE FROM user_info WHERE id = ?", array($this->id));
+
+        return ($this->conn->error()) ? false : true;
+    }
+
+
 }
