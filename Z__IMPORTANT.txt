@@ -20,3 +20,10 @@ it in classmap array
 
 [IMPORTANT]: When you get an error don't be hurry to look at the solution, most of the times the solution is there, you
 ONLY NEED TO READ THE ERROR CLOSELY AND CAREFULLY
+
+[#1] About tokens and sessions: The user first of all will get a generated token in token hidden input and this token is also set into $_SESSION of this user,
+what happens then is that this user submit the form, we use Token::check(Input::get("token")) function to check if first a session exists
+by the condition: if(Session::exists($token)) and then the token that the user supplied matches the SESSION token; if the two condition successful,
+we need to delete that token because we don't want this session anymore and we return true. That can be a good practice against CSRF (CROSS-SITE REQUEST FORGERY)
+Hint: Notice we add token check inside register button check because we only need to check the token if the user press register
+that way we prevent users from entering data in the URL, and only check tokens matching if register button get pressed

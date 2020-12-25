@@ -2,9 +2,9 @@
     "name": "hostname47/composer",
     "require": {},
     "autoload": {
-        "classmap": [
-            "classes",
-            "models"
-        ]
+        "psr-4": {
+            "classes\\": "classes/",
+            "models\\": "models/"
+        }
     }
 }

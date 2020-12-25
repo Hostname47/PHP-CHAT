@@ -8,45 +8,49 @@ use classes\DB;
 use classes\Config;
 use classes\Validation;
 use classes\Common;
+use classes\Session;
+use classes\Token;
 use models\User;
 
 $validate = new Validation();
 
 if(isset($_POST["register"])) {
-    $validate->check($_POST, array(
-        "firstname"=>array(
-            "min"=>2,
-            "max"=>50
-        ),
-        "lastname"=>array(
-            "min"=>2,
-            "max"=>50
-        ),
-        "username"=>array(
-            "required"=>true,
-            "min"=>2,
-            "max"=>20,
-            "unique"=>true
-        ),
-        "email"=>array(
-            "required"=>true,
-            "email"=>true
-        ),
-        "password"=>array(
-            "required"=>true,
-            "min"=>6
-        ),
-        "password_again"=>array(
-            "required"=>true,
-            "matches"=>"password"
-        ),
-    ));
+    if(Token::check(Common::getInput($_POST, "token"))) {
+        $validate->check($_POST, array(
+            "firstname"=>array(
+                "min"=>2,
+                "max"=>50
+            ),
+            "lastname"=>array(
+                "min"=>2,
+                "max"=>50
+            ),
+            "username"=>array(
+                "required"=>true,
+                "min"=>2,
+                "max"=>20,
+                "unique"=>true
+            ),
+            "email"=>array(
+                "required"=>true,
+                "email"=>true
+            ),
+            "password"=>array(
+                "required"=>true,
+                "min"=>6
+            ),
+            "password_again"=>array(
+                "required"=>true,
+                "matches"=>"password"
+            ),
+        ));
 
-    if($validate->passed()) {
-        echo "Success";
-    } else {
-        foreach($validate->errors() as $error) {
-            echo $error . "<br>";
+        if($validate->passed()) {
+            echo "Success";
+        } else {
+            foreach($validate->errors() as $error) {
+                echo $error . "<br>";
+            }
         }
     }
 }
@@ -99,8 +103,9 @@ if(isset($_POST["register"])) {
                         <label for="password_again" class="classic-label">Re-enter you password</label>
                         <input type="password" name="password_again" id="password_again" placeholder="Re-enter password" autocomplete="off" class="classic-input">
                     </div>
-
+                
                     <div class="classic-form-input-wrapper">
+                        <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
                         <input type="submit" value="register" name="register" class="button-style-1" style="width: 70px;">
                     </div>
                 </form>

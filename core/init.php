@@ -12,14 +12,15 @@ $GLOBALS["config"] = array(
         'password'=>'',
         'db'=>'chat'
     ),
-    'remember'=> array(
+    "remember"=> array(
         'cookie_name'=>'hash',
         'cookie_expiry'=>604800
     ),
-    'session'=>array(
-        'session_name'=>'user'
+    "session"=>array(
+        'session_name'=>'user',
+        "token_name" => "token"
     ),
-    'pathToRootProject'=>"http://127.0.0.1/CHAT/"
+    "pathToRootProject"=>"http://127.0.0.1/CHAT/"
 );
 
 /* 
