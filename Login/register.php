@@ -4,12 +4,7 @@ error_reporting();
 require_once "../core/init.php";
 require_once "../vendor/autoload.php";
 
-use classes\DB;
-use classes\Config;
-use classes\Validation;
-use classes\Common;
-use classes\Session;
-use classes\Token;
+use classes\{DB, Config, Validation, Common, Session, Token, Hash};
 use models\User;
 
 $validate = new Validation();
@@ -46,10 +41,28 @@ if(isset($_POST["register"])) {
         ));
 
         if($validate->passed()) {
-            echo "Success";
+            $db = DB::getInstance();
+
+            $salt = Hash::salt(16);
+
+            $user = new User($db);
+            $user->setData(array(
+                "firstname"=>Common::getInput($_POST, "firstname"),
+                "lastname"=>Common::getInput($_POST, "lastname"),
+                "username"=>Common::getInput($_POST, "username"),
+                "password"=> Hash::make(Common::getInput($_POST, "password"), $salt),
+                "salt"=>$salt,
+                "joined"=> date("Y/m/d h:i:s"),
+                "user_type"=>1
+            ));
+            $user->add();
+
+            Session::flash("register_success", "Your account has been created successfully.");
+            header("Location: ../index.php");
+            
         } else {
-            foreach($validate->errors() as $error) {
-                echo $error . "<br>";
+            foreach($validate->errors() as $key =>$error) {
+                echo "key: " . $key . ", error: " . $error . "<br>";
             }
         }
     }

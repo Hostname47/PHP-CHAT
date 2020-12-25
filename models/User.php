@@ -3,7 +3,7 @@
 namespace models;
 
 class User {
-    private $conn;
+    private $db;
     private $id;
     private $username;
     private $password;
@@ -14,7 +14,7 @@ class User {
     private $user_type;
 
     public function __construct($db) {
-        $this->conn = $db;
+        $this->db = $db;
     }
 
     public function getPropertyValue($propertyName) {
@@ -26,8 +26,8 @@ class User {
     }
     
     public function selectById($id) {
-        $this->conn->query("SELECT * FROM user_info WHERE id = ?", array($id));
-        $fetchedUser = $this->conn->results()[0];
+        $this->db->query("SELECT * FROM user_info WHERE id = ?", array($id));
+        $fetchedUser = $this->db->results()[0];
 
         $this->id = $fetchedUser->id;
         $this->username = $fetchedUser->username;
@@ -40,15 +40,16 @@ class User {
     }
 
     // This function will be used to set all user's data into th user object so that it makes it ready to be addedd, edit it or delete it
-    public function setData($id=null, $username="", $password="", $salt="", $firstname="", $lastname="", $joined=null, $user_type=1) {
-        $this->id = $id;
-        $this->username = $username;
-        $this->password = $password;
-        $this->salt = $salt;
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
-        $this->joined = isset($joined) ? $joined : date("Y/m/d h:i:s");
-        $this->user_type = $user_type;
+    //public function setData($id=null, $username="", $password="", $salt="", $firstname="", $lastname="", $joined=null, $user_type=1) {
+    public function setData($data = array()) {
+        $this->id = isset($data["id"]) ? $data["id"] : null;
+        $this->username = $data["username"];
+        $this->password = $data["password"];
+        $this->salt = $data["salt"];
+        $this->firstname = $data["firstname"];
+        $this->lastname = $data["lastname"];
+        $this->joined = $data["joined"];
+        $this->user_type = $data["user_type"];
     }
 
     /* 
@@ -56,7 +57,7 @@ class User {
     then class add function by adding id to add query
     */
     public function add() {
-        $this->conn->query("INSERT INTO user_info 
+        $this->db->query("INSERT INTO user_info 
         (username, password, salt, firstname, lastname, joined, user_type) 
         VALUES (?, ?, ?, ?, ?, ?, ?)", array(
             $this->username,
@@ -70,7 +71,7 @@ class User {
 
         // This will return true if the query error function in DB generate an error
         // Hint: note that we need to retrun true if there's no errors, returning true in add function means everything goes well
-        return $this->conn->error() == false ? true : false;
+        return $this->db->error() == false ? true : false;
     }
 
     /*
@@ -78,7 +79,7 @@ class User {
     and it will do all the work for you
     */
     public function update() {
-        $this->conn->query("UPDATE user_info SET username=?, password=?, salt=?, firstname=?, lastname=?, joined=?, user_type=? WHERE id=?",
+        $this->db->query("UPDATE user_info SET username=?, password=?, salt=?, firstname=?, lastname=?, joined=?, user_type=? WHERE id=?",
         array(
             $this->username,
             $this->password,
@@ -92,9 +93,9 @@ class User {
     }
 
     public function delete() {
-        $this->conn->query("DELETE FROM user_info WHERE id = ?", array($this->id));
+        $this->db->query("DELETE FROM user_info WHERE id = ?", array($this->id));
 
-        return ($this->conn->error()) ? false : true;
+        return ($this->db->error()) ? false : true;
     }
 
 

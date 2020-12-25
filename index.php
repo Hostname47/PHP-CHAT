@@ -1,7 +1,15 @@
 
 <?php
     
-    
+    require_once "core/init.php";
+    require_once "vendor/autoload.php";
+
+    use classes\{DB, Config, Validation, Common, Session, Token, Hash};
+    use models\User;
+
+    if(Session::exists('register_success')) {
+        echo Session::flash('register_success');
+    }
 
 ?>
 
