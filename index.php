@@ -4,11 +4,15 @@
     require_once "core/init.php";
     require_once "vendor/autoload.php";
 
-    use classes\{DB, Config, Validation, Common, Session, Token, Hash};
+    use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect};
     use models\User;
 
     if(Session::exists('register_success')) {
         echo Session::flash('register_success');
+    }
+
+    if(isset($_POST["test"])) {
+        Redirect::to(404);
     }
 
 ?>
@@ -27,7 +31,9 @@
     <!-- Here before including the header, we need to make sure if user is already connected. If so
          we need to add connected header, otherwise disconnected header wil be shown
     -->
-    
-
+    <?php include_once "components/basic/disconnected-header.php" ?>
+    <form action="index.php" method="post">
+        <input type="submit" name="test" value="test">
+    </form>
 </body>
 </html>

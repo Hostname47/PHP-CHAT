@@ -20,7 +20,9 @@ $GLOBALS["config"] = array(
         'session_name'=>'user',
         "token_name" => "token"
     ),
-    "pathToRootProject"=>"http://127.0.0.1/CHAT/"
+    "root"=> array(
+        'path'=>'http://127.0.0.1/CHAT/'
+    )
 );
 
 /* 

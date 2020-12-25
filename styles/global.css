@@ -5,7 +5,8 @@ body {
     margin: 0;
     background-color: rgb(34, 34, 34);
     color: white;
-    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    font-size: 15px;
 }
 
 .flex-column {
@@ -86,4 +87,14 @@ body {
     width: 300px;
 
     box-sizing: border-box;
+}
+
+.classic-link-style1 {
+    color: rgb(36, 238, 96);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.classic-link-style1:hover {
+    text-decoration: underline;
 }
