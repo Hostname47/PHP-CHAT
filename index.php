@@ -1,18 +1,19 @@
 
 <?php
-    
+
     require_once "core/init.php";
     require_once "vendor/autoload.php";
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect};
     use models\User;
 
-    if(Session::exists('register_success')) {
-        echo Session::flash('register_success');
-    }
+    $db = DB::getInstance();
+    $user = new User();
 
-    if(isset($_POST["test"])) {
-        Redirect::to(404);
+    if($user->isLoggedIn()) {
+        echo "<p>Hello " . $user->getPropertyValue('username') . "</p>";
+    } else {
+        echo "<p>You're not logged in. If you want to do so go to <a href='login/login.php'>login</a> or <a href='login/register.php'>sign in</a>";
     }
 
 ?>

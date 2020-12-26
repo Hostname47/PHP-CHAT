@@ -2,19 +2,40 @@
 
 namespace models;
 
-class User {
-    private $db;
-    private $id;
-    private $username;
-    private $password;
-    private $salt;
-    private $firstname;
-    private $lastname;
-    private $joined;
-    private $user_type;
+use classes\Hash;
+use classes\Config;
+use classes\Session;
+use classes\DB;
 
-    public function __construct($db) {
-        $this->db = $db;
+class User {
+    private $db,
+        $sessionName,
+
+        $id,
+        $username,
+        $password,
+        $salt,
+        $firstname,
+        $lastname,
+        $joined,
+        $user_type,
+
+        $isLoggedIn;
+
+    // Everytime we instantiate a user object we need to check if the session is already set to determine wethere we login or not
+    public function __construct() {
+        $this->db = DB::getInstance();
+        $this->sessionName = Session::get('session/session_name');
+
+        if(Session::exists($this->sessionName)) {
+            $dt = Session::get($this->sessionName);
+            
+            if($this->fetchUser("id", $dt)) {
+                $this->isLoggedIn = true;
+            } else {
+                // Process logout
+            }
+        }
     }
 
     public function getPropertyValue($propertyName) {
@@ -25,31 +46,26 @@ class User {
         $this->$propertyName = $propertyValue;
     }
     
-    public function selectById($id) {
-        $this->db->query("SELECT * FROM user_info WHERE id = ?", array($id));
-        $fetchedUser = $this->db->results()[0];
+    public function fetchUser($field_name, $field_value) {
+        $this->db->query("SELECT * FROM user_info WHERE $field_name = ?", array($field_value));
 
-        $this->id = $fetchedUser->id;
-        $this->username = $fetchedUser->username;
-        $this->password = $fetchedUser->password;
-        $this->salt = $fetchedUser->salt;
-        $this->firstname = $fetchedUser->firstname;
-        $this->lastname = $fetchedUser->lastname;
-        $this->joined = $fetchedUser->joined;
-        $this->user_type = $fetchedUser->user_type;
-    }
+        // Here we need to check first if we get a user with the given id before starting assigning values to its properties
+        if($this->db->count() > 0) {
+            $fetchedUser = $this->db->results()[0];
 
-    // This function will be used to set all user's data into th user object so that it makes it ready to be addedd, edit it or delete it
-    //public function setData($id=null, $username="", $password="", $salt="", $firstname="", $lastname="", $joined=null, $user_type=1) {
-    public function setData($data = array()) {
-        $this->id = isset($data["id"]) ? $data["id"] : null;
-        $this->username = $data["username"];
-        $this->password = $data["password"];
-        $this->salt = $data["salt"];
-        $this->firstname = $data["firstname"];
-        $this->lastname = $data["lastname"];
-        $this->joined = $data["joined"];
-        $this->user_type = $data["user_type"];
+            $this->id = $fetchedUser->id;
+            $this->username = $fetchedUser->username;
+            $this->password = $fetchedUser->password;
+            $this->salt = $fetchedUser->salt;
+            $this->firstname = $fetchedUser->firstname;
+            $this->lastname = $fetchedUser->lastname;
+            $this->joined = $fetchedUser->joined;
+            $this->user_type = $fetchedUser->user_type;
+
+            return true;
+        }
+
+        return false;
     }
 
     /* 
@@ -90,6 +106,8 @@ class User {
             $this->user_type,
             $this->id
         ));
+
+        return ($this->db->error()) ? false : true;
     }
 
     public function delete() {
@@ -98,5 +116,36 @@ class User {
         return ($this->db->error()) ? false : true;
     }
 
+    /*
+    This function basically accepts two arguments, first the username and then the password in plaintext. First we check if
+    the username exists in database, if so we need we fetch this user and compare the password of that user with the plain text passes by adding salt
+    to the password and hash it and compare it with password in database
+    */
+    public function login($username='', $password='') {
+        
+        if($this->fetchUser("username", $username)) {
+            if($this->password === Hash::make($password, $this->salt)) {
+                Session::put($this->sessionName, $this->id);
+                return true;
+            }
+        }
 
+        return false;
+    }
+
+    public function isLoggedIn() {
+        return $this->isLoggedIn;
+    }
+
+    public function toString() {
+        return "User with:
+            id: $this->id,
+            firstname: $this->firstname,
+            lastname: $this->lastname,
+            username: $this->username,
+            password: $this->password,
+            salt: $this->salt,
+            joined: $this->joined,
+            user_type: $this->user_type,";
+    }
 }
