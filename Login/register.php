@@ -1,8 +1,8 @@
 <?php
 error_reporting();
 
-require_once "../core/init.php";
 require_once "../vendor/autoload.php";
+require_once "../core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash};
 use models\User;
@@ -28,7 +28,7 @@ if(isset($_POST["register"])) {
             ),
             "email"=>array(
                 "required"=>true,
-                "email"=>true
+                "email-or-username"=>true
             ),
             "password"=>array(
                 "required"=>true,
@@ -41,15 +41,14 @@ if(isset($_POST["register"])) {
         ));
 
         if($validate->passed()) {
-            $db = DB::getInstance();
-
             $salt = Hash::salt(16);
 
-            $user = new User($db);
+            $user = new User();
             $user->setData(array(
                 "firstname"=>Common::getInput($_POST, "firstname"),
                 "lastname"=>Common::getInput($_POST, "lastname"),
                 "username"=>Common::getInput($_POST, "username"),
+                "email"=>Common::getInput($_POST, "email"),
                 "password"=> Hash::make(Common::getInput($_POST, "password"), $salt),
                 "salt"=>$salt,
                 "joined"=> date("Y/m/d h:i:s"),
@@ -58,7 +57,7 @@ if(isset($_POST["register"])) {
             $user->add();
 
             Session::flash("register_success", "Your account has been created successfully.");
-            header("Location: ../index.php");
+            header("Location: login.php");
             
         } else {
             foreach($validate->errors() as $key =>$error) {
@@ -83,7 +82,6 @@ if(isset($_POST["register"])) {
     <link rel="stylesheet" href="../styles/registration.css">
 </head>
 <body>
-    <?php include "../components/basic/disconnected-header.php" ?>
     <main>
         <div>
             <div id="picture-wrapper">

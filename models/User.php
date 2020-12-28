@@ -10,15 +10,16 @@ class User {
         $cookieName,
 
         $id,
-        $username,
-        $password,
-        $salt,
-        $firstname,
-        $lastname,
-        $joined,
-        $user_type,
+        $username='',
+        $email='',
+        $password='',
+        $salt='',
+        $firstname='',
+        $lastname='',
+        $joined='',
+        $user_type=1,
 
-        $isLoggedIn;
+        $isLoggedIn=false;
 
     // Everytime we instantiate a user object we need to check if the session is already set to determine wethere we login or not
     public function __construct() {
@@ -52,6 +53,7 @@ class User {
 
             $this->id = $fetchedUser->id;
             $this->username = $fetchedUser->username;
+            $this->email = $fetchedUser->email;
             $this->password = $fetchedUser->password;
             $this->salt = $fetchedUser->salt;
             $this->firstname = $fetchedUser->firstname;
@@ -65,7 +67,17 @@ class User {
         return false;
     }
 
-
+    public function setData($data = array()) {
+        $this->id = $data["id"];
+        $this->username = $data["username"];
+        $this->email = $data["email"];
+        $this->password = $data["password"];
+        $this->salt = $data["salt"];
+        $this->firstname = $data["firstname"];
+        $this->lastname = $data["lastname"];
+        $this->joined = isset($data["joined"]) ? $data["joined"] : date("Y/m/d h:i:s");
+        $this->user_type = $data["user_type"];
+    }
 
     /* 
     Note that if you want to add new user by specifying id, you can actually fetch the last user and add 1 to its id,
@@ -73,9 +85,10 @@ class User {
     */
     public function add() {
         $this->db->query("INSERT INTO user_info 
-        (username, password, salt, firstname, lastname, joined, user_type) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)", array(
+        (username, email, password, salt, firstname, lastname, joined, user_type) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)", array(
             $this->username,
+            $this->email,
             $this->password,
             $this->salt,
             $this->firstname,
@@ -94,9 +107,10 @@ class User {
     and it will do all the work for you
     */
     public function update() {
-        $this->db->query("UPDATE user_info SET username=?, password=?, salt=?, firstname=?, lastname=?, joined=?, user_type=? WHERE id=?",
+        $this->db->query("UPDATE user_info SET username=?, email=?, password=?, salt=?, firstname=?, lastname=?, joined=?, user_type=? WHERE id=?",
         array(
             $this->username,
+            $this->email,
             $this->password,
             $this->salt,
             $this->firstname,
@@ -123,13 +137,18 @@ class User {
     login first check if this user actually exists by verifying it's id; if id is set then this user is exists, in this case we don't have to fetch its data
     we simply make a session by this id and set isLoggedIn to true and return true;
     */
-    public function login($username='', $password='', $remember=false) {
+    public function login($email_or_username='', $password='', $remember=false) {
         if($this->id) {
             Session::put($this->sessionName, $this->id);
             $this->isLoggedIn = true;
             return true;
         } else {
-            if($this->fetchUser("username", $username)) {
+            $fetchBy = "username";
+            if(strpos($email_or_username, "@")) {
+                $fetchBy = "email";
+            }
+
+            if($this->fetchUser($fetchBy, $email_or_username)) {
                 if($this->password === Hash::make($password, $this->salt)) {
                     Session::put($this->sessionName, $this->id);
                     
@@ -178,13 +197,14 @@ class User {
 
     public function toString() {
         return "User with:
-            id: $this->id,
-            firstname: $this->firstname,
-            lastname: $this->lastname,
-            username: $this->username,
-            password: $this->password,
-            salt: $this->salt,
-            joined: $this->joined,
-            user_type: $this->user_type,";
+            id: $this->id, 
+            firstname: $this->firstname, 
+            lastname: $this->lastname, 
+            username: $this->username, 
+            email: $this->email, 
+            password: $this->password, 
+            salt: $this->salt, 
+            joined: $this->joined, 
+            user_type: $this->user_type";
     }
 }

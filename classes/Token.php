@@ -11,8 +11,8 @@ class Token {
     class
 
     */
-    public static function generate() {
-        return Session::put(Config::get("session/token_name"), md5(uniqid()));
+    public static function generate($type) {
+        return Session::put(Config::get("session/tokens/$type"), md5(uniqid()));
     }
 
     /*
@@ -22,8 +22,10 @@ class Token {
     go right, then we need to delete this session from $SESSION and return true, otherwise return false
     */
 
-    public static function check($token) {
-        $tokenName = Config::get("session/token_name");
+    public static function check($token, $type) {
+        $tokenName = Config::get("session/tokens/$type");
+
+        echo $tokenName;
 
         if(Session::exists($tokenName) && $token === Session::get($tokenName)) {
             Session::delete($tokenName);

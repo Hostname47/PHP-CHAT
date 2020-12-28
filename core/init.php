@@ -21,7 +21,11 @@ $GLOBALS["config"] = array(
     ),
     "session"=>array(
         'session_name'=>'user',
-        "token_name" => "token"
+        "token_name" => "token",
+        "tokens"=>array(
+            "register"=>"register",
+            "login"=>"login"
+        )
     ),
     "root"=> array(
         'path'=>'http://127.0.0.1/CHAT/'
@@ -35,8 +39,8 @@ if so we get the data from session which is the user id, and we fetch data from 
 exists in database, if it is, WE ASSIGN TRUE TO isLoggedIn 
 
 Then we check if there's a cookie set in user machine and there's no session (This case is like we switch user's computer and later tries to logged in)
-in this case we fetch the hash of user's machine and see if this hash exists in users_session table in database, if so we fetch result
-and see if count > 0. if so we give username, password and true($remember=true) to login function
+in this case we fetch the hash of user's machine and see if this hash exists in users_session table in database, if hash matches we fetch user_id associated with it 
+and use it to fetch user with that id. if the count of fetching is 1 then we give username, password and true($remember=true) to login function
 
 go to login function's comment
 

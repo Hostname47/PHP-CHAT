@@ -34,7 +34,7 @@
     <!-- Here before including the header, we need to make sure if user is already connected. If so
          we need to add connected header, otherwise disconnected header wil be shown
     -->
-    <?php include_once "components/basic/disconnected-header.php" ?>
+    
     <form action="index.php" method="post">
         <input type="submit" name="test" value="test">
         <input type="submit" name="logout" value="logout">

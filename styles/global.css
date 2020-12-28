@@ -84,7 +84,7 @@ body {
 
 .classic-input {
     padding: 6px 10px;
-    width: 300px;
+    width: 100%;
 
     box-sizing: border-box;
 }
