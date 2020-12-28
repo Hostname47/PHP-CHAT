@@ -1,5 +1,8 @@
 <?php
 
+use classes\{Cookie, DB, Config, Session};
+use models\User;
+
 // Check if session is not started, then start it
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -24,6 +27,31 @@ $GLOBALS["config"] = array(
         'path'=>'http://127.0.0.1/CHAT/'
     )
 );
+
+/*
+
+Here we create a user object with no data associated to it, and in the user constructor, we check if there's already a session
+if so we get the data from session which is the user id, and we fetch data from database of that id and we see if that id really
+exists in database, if it is, WE ASSIGN TRUE TO isLoggedIn 
+
+Then we check if there's a cookie set in user machine and there's no session (This case is like we switch user's computer and later tries to logged in)
+in this case we fetch the hash of user's machine and see if this hash exists in users_session table in database, if so we fetch result
+and see if count > 0. if so we give username, password and true($remember=true) to login function
+
+go to login function's comment
+
+*/
+
+$user = new User();
+if(Cookie::exists(Config::get("remember/cookie_name")) && !Session::exists(Config::get("session/session_name"))) {
+    $hash = Cookie::get(Config::get("remember/cookie_name"));
+    $res = DB::getInstance()->query("SELECT * FROM users_session WHERE hash = ?", array($hash));
+
+    if($res->count()) {
+        $user->fetchUser("id", $res->results()[0]->user_id);
+        $user->login($user->getPropertyValue("username"),$user->getPropertyValue("password"),true);
+    }
+}
 
 /* 
 IMPORTANT : 

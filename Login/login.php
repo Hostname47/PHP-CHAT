@@ -1,7 +1,7 @@
 <?php
 
-    require_once "../core/init.php";
     require_once "../vendor/autoload.php";
+    require_once "../core/init.php";
 
     use classes\{Config, Common, Token, Validation, DB, Redirect};
     use models\User;
@@ -20,10 +20,10 @@
             ));
     
             if($validate->passed()) {
-                $user = new User();
-
-                $log = $user->login(Common::getInput($_POST, "username"), Common::getInput($_POST, "password"));
-
+                // Remember $user is created in init file
+                $remember = isset($_POST["remember"]) ? true: false;
+                $log = $user->login(Common::getInput($_POST, "username"), Common::getInput($_POST, "password"), $remember);
+                
                 if($log) {
                     Redirect::to("../index.php");
                 } else {
@@ -68,7 +68,10 @@
                         <label for="password" class="classic-label">Password</label>
                         <input type="password" name="password" id="password" placeholder="Password" autocomplete="off" class="classic-input">
                     </div>
-                
+                    <div>
+                        <input type="checkbox" name="remember" id="remember">
+                        <label for="remember" class="classic-label">Remember me</label>
+                    </div>
                     <div class="classic-form-input-wrapper">
                         <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
                         <input type="submit" value="login" name="login" class="button-style-1" style="width: 70px;">

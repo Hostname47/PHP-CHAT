@@ -2,14 +2,12 @@
 
 namespace models;
 
-use classes\Hash;
-use classes\Config;
-use classes\Session;
-use classes\DB;
+use classes\{Hash, Config, Session, DB, Cookie};
 
 class User {
     private $db,
         $sessionName,
+        $cookieName,
 
         $id,
         $username,
@@ -25,15 +23,14 @@ class User {
     // Everytime we instantiate a user object we need to check if the session is already set to determine wethere we login or not
     public function __construct() {
         $this->db = DB::getInstance();
-        $this->sessionName = Session::get('session/session_name');
+        $this->sessionName = Config::get('session/session_name');
+        $this->cookieName = Config::get('remember/cookie_name');
 
         if(Session::exists($this->sessionName)) {
             $dt = Session::get($this->sessionName);
             
             if($this->fetchUser("id", $dt)) {
                 $this->isLoggedIn = true;
-            } else {
-                // Process logout
             }
         }
     }
@@ -67,6 +64,8 @@ class User {
 
         return false;
     }
+
+
 
     /* 
     Note that if you want to add new user by specifying id, you can actually fetch the last user and add 1 to its id,
@@ -120,17 +119,57 @@ class User {
     This function basically accepts two arguments, first the username and then the password in plaintext. First we check if
     the username exists in database, if so we need we fetch this user and compare the password of that user with the plain text passes by adding salt
     to the password and hash it and compare it with password in database
+
+    login first check if this user actually exists by verifying it's id; if id is set then this user is exists, in this case we don't have to fetch its data
+    we simply make a session by this id and set isLoggedIn to true and return true;
     */
-    public function login($username='', $password='') {
-        
-        if($this->fetchUser("username", $username)) {
-            if($this->password === Hash::make($password, $this->salt)) {
-                Session::put($this->sessionName, $this->id);
-                return true;
+    public function login($username='', $password='', $remember=false) {
+        if($this->id) {
+            Session::put($this->sessionName, $this->id);
+            $this->isLoggedIn = true;
+            return true;
+        } else {
+            if($this->fetchUser("username", $username)) {
+                if($this->password === Hash::make($password, $this->salt)) {
+                    Session::put($this->sessionName, $this->id);
+                    
+                    /* 
+                    This will only executed if user's credentials are good and he checks remember me: We generate a hash, 
+                    check if the hash is not  already exists in user_session table and insert that hash into the database;
+                    What happens is the user store a cookie with id and a hash and also the app store these infos in database
+                    Next time the user visit the app we need to check if he has a cookie that identifies it, if so we compare the hash of it with hash in db
+                    */
+                    if($remember) {
+                        $this->db->query("SELECT * FROM users_session WHERE user_id = ?",
+                            array($this->id));
+                        
+                        // If this user is not exists in users_sesion table
+                        if(!$this->db->count()) {
+                            $hash = Hash::unique();
+                            $this->db->query('INSERT INTO users_session (user_id, hash) VALUES (?, ?)', 
+                                array($this->id, $hash));
+                        } else {
+                            // If the user does exist we 
+                            $hash = $this->db->results()[0]->hash;
+                        }
+    
+                        Cookie::put($this->cookieName, $hash, Config::get("remember/cookie_expiry"));
+                    }
+                    return true;
+                }
             }
         }
 
         return false;
+    }
+
+    // When we logout, we actually have to delete the session and cookie hash, and also delete session from database;
+    public function logout() {
+
+        $this->db->query("DELETE FROM users_session WHERE user_id = ?", array($this->id));
+
+        Session::delete($this->sessionName);
+        Cookie::delete($this->cookieName);
     }
 
     public function isLoggedIn() {

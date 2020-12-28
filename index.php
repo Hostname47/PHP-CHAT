@@ -1,19 +1,21 @@
 
 <?php
 
-    require_once "core/init.php";
     require_once "vendor/autoload.php";
+    require_once "core/init.php";
 
-    use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect};
-    use models\User;
+    use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
 
-    $db = DB::getInstance();
-    $user = new User();
+    // Here we check if the user is not logged in and we redirect him to login page
+    if(!$user->getPropertyValue("isLoggedIn")) {
+        Redirect::to("login/login.php");
+    }
 
-    if($user->isLoggedIn()) {
-        echo "<p>Hello " . $user->getPropertyValue('username') . "</p>";
-    } else {
-        echo "<p>You're not logged in. If you want to do so go to <a href='login/login.php'>login</a> or <a href='login/register.php'>sign in</a>";
+    echo "<p>Hello " . $user->getPropertyValue('username') . "</p>";
+
+    if(isset($_POST["logout"])) {
+        $user->logout();
+        Redirect::to("login/login.php");
     }
 
 ?>
@@ -35,6 +37,7 @@
     <?php include_once "components/basic/disconnected-header.php" ?>
     <form action="index.php" method="post">
         <input type="submit" name="test" value="test">
+        <input type="submit" name="logout" value="logout">
     </form>
 </body>
 </html>
