@@ -5,13 +5,14 @@
     require_once "core/init.php";
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-
+    // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
     // Here we check if the user is not logged in and we redirect him to login page
+
     if(!$user->getPropertyValue("isLoggedIn")) {
         Redirect::to("login/login.php");
     }
 
-    echo "<p>Hello " . $user->getPropertyValue('username') . "</p>";
+    
 
     if(isset($_POST["logout"])) {
         $user->logout();
@@ -31,6 +32,7 @@
     <link rel="stylesheet" href="styles/header.css">
 </head>
 <body>
+    <p><?php echo "Hello " . $user->getPropertyValue("username"); ?></p>
     <!-- Here before including the header, we need to make sure if user is already connected. If so
          we need to add connected header, otherwise disconnected header wil be shown
     -->

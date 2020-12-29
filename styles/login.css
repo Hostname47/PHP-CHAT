@@ -1,4 +1,27 @@
 .login-img-reg-container {
     display: flex;
-    justify-content: space-between;
+}
+
+#registration-section {
+    padding: 14px;
+    margin-right: 14px;
+    width: 300px;
+    flex: 0 0 300px;
+}
+
+#left-asset-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+
+    padding: 0px 60px;
+}
+
+#login-image-preview {
+    display: flex;
+    margin: 0 auto;
+    width: 427px;
+    height: 212px;
 }

@@ -3,13 +3,17 @@
     require_once "../vendor/autoload.php";
     require_once "../core/init.php";
 
-    use classes\{DB, Config, Validation, Common, Session, Token, Hash};
+    use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect};
     use models\User;
+
+    // First we check if the user is already connected we redirect him to index page
+    if($user->getPropertyValue("isLoggedIn")) {
+        Redirect::to("../index.php");
+    }
 
     if(isset($_POST["login"])) {
         if(Token::check(Common::getInput($_POST, "token_log"), "login")) {
             $validate = new Validation();
-            echo "test";
             $validate->check($_POST, array(
                 "email-or-username"=>array(
                     "name"=>"Email or username",
@@ -120,15 +124,16 @@
     <link rel='shortcut icon' type='image/x-icon' href='../assets/images/favicons/favicon.ico' />
     <link rel="stylesheet" href="../styles/global.css">
     <link rel="stylesheet" href="../styles/login.css">
-    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/log-header.css">
     <link rel="stylesheet" href="../styles/registration.css">
 </head>
 <body>
     <?php include "../components/basic/disconnected-header.php" ?>
     <main>
         <div class="login-img-reg-container">
-            <div id="picture-wrapper">
-                <img src="../assets/images/logos/large.png"  alt="">
+            <div id="left-asset-wrapper">
+                <img src="../assets/images/preview.png" id="login-image-preview" alt="">
+                <h2 style="text-align: center">“The government doesn't want any system of transmitting information to remain unbroken, unless it's under its own control.” ― Isaac Asimov, Tales of the Black Widowers</h2>
             </div>
             <div id="registration-section">
                 <h2 class="title-style1">Create an account</h2>

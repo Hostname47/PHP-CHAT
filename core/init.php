@@ -47,6 +47,7 @@ go to login function's comment
 */
 
 $user = new User();
+
 if(Cookie::exists(Config::get("remember/cookie_name")) && !Session::exists(Config::get("session/session_name"))) {
     $hash = Cookie::get(Config::get("remember/cookie_name"));
     $res = DB::getInstance()->query("SELECT * FROM users_session WHERE hash = ?", array($hash));
@@ -64,5 +65,5 @@ so if for example include it like following: include_once "functions/sanitize.ph
 directory can use it, otherwise a fatal error will be thrown
 So you should include it along with autoload and init file in every page needs it
 
-2 - Composer autoload file also follow the same rule you can't immport it here
+2 - Composer autoload file also follow the same rule you can't import it here
 */
