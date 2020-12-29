@@ -128,12 +128,12 @@
     <link rel="stylesheet" href="../styles/registration.css">
 </head>
 <body>
-    <?php include "../components/basic/disconnected-header.php" ?>
+    <?php include "../components/basic/log-header.php" ?>
     <main>
         <div class="login-img-reg-container">
             <div id="left-asset-wrapper">
+                <h2 style="text-align: center; margin: 0 0 6px 0">“The government doesn't want any system of transmitting information to remain unbroken, unless it's under its own control.” ― Isaac Asimov, Tales of the Black Widowers</h2>
                 <img src="../assets/images/preview.png" id="login-image-preview" alt="">
-                <h2 style="text-align: center">“The government doesn't want any system of transmitting information to remain unbroken, unless it's under its own control.” ― Isaac Asimov, Tales of the Black Widowers</h2>
             </div>
             <div id="registration-section">
                 <h2 class="title-style1">Create an account</h2>

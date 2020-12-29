@@ -31,7 +31,7 @@
             <!----------------------  PASSWORD  ---------------------->
             <label for="email-or-phone" class="small-label">Password</label>
             <input type="password" name="password" tabindex="2" autocomplete="off" class="text-input medium-text-input" form="login-form" placeholder="Password">
-            <a href="" tabindex="5" class="link">Forgotten your passowrd?</a>
+            <a href="<?php echo Config::get("root/path");?>login/passwordRecover.php" target="_blank" tabindex="5" class="link">Forgotten your passowrd?</a>
 
         </div>
         <div style="margin: 0 4px"></div>

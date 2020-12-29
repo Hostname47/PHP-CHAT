@@ -12,11 +12,6 @@ header {
     height: 35px;
 }
 
-.inline-logo-separator {
-    margin: 0 8px;
-    font-weight: 800;
-}
-
 #menu-login-credentials-container {
     display: flex;
     margin-left: auto;

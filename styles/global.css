@@ -77,6 +77,18 @@ body {
     margin: 6px 0 14px 0;
 }
 
+.inline-logo-separator {
+    margin: 0 12px;
+    font-weight: 800;
+    align-self: center;
+}
+
+.menu-items-separator {
+    margin: 0 4px;
+    font-weight: 400;
+    align-self: center;
+}
+
 .classic-label {
     font-size: 16px;
     margin-bottom: 4px;
@@ -98,3 +110,66 @@ body {
 .classic-link-style1:hover {
     text-decoration: underline;
 }
+
+.input-text-style-1 {
+    padding: 7px 10px;
+    height: 32px;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    font-size: 12px;
+}
+
+.search-back {
+    background-image: url("../assets/images/icons/black-search.png");
+    background-size: 18px 18px;
+    background-position: 8px center;
+    background-repeat: no-repeat;
+
+    padding-left: 32px;
+}
+
+.search-button-style-1 {
+    display: flex;
+    cursor: pointer;
+    background: none;
+    width: 80px;
+    height: 32px;
+    
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+
+    transition: all 0.4s ease;
+}
+
+.search-button-style-1:hover {
+    background-color: white;
+    color: black;
+}
+
+.menu-button-style-1 {
+    padding-top: 20px;
+    background-position: center 0;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
+.menu-button-style-1:hover {
+    color: #54ff54;
+}
+
+.menu-button-style-2 {
+    margin: 0 4px;
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    background-color: rgb(37, 37, 37);
+    background-position: center center;
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+}
+
+

@@ -24,7 +24,8 @@ $GLOBALS["config"] = array(
         "token_name" => "token",
         "tokens"=>array(
             "register"=>"register",
-            "login"=>"login"
+            "login"=>"login",
+            "reset-pasword"=>"reset-pasword"
         )
     ),
     "root"=> array(

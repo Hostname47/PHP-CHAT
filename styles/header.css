@@ -1,0 +1,94 @@
+#top-header {
+    height: 55px;
+    background-color: black;
+    display: flex;
+}
+
+#header-logo-container {
+    display: flex;
+    align-items: center;
+
+    margin-left: 14px;
+}
+
+#header-logo {
+    width: 180px;
+    height: 28px;
+}
+
+#header-search-form {
+    display: flex;
+    align-items: center;
+
+    width: 350px;
+}
+
+#global-header-strip-container {
+    display: flex;
+    align-items: center;
+    
+    margin-right: 16px;
+    margin-left: auto;
+}
+
+.horizontal-menu-item-wrapper {
+    display: flex;
+}
+
+.horizontal-menu-link {
+    color: white;
+    text-decoration: none;
+    margin: 0px 10px;
+}
+
+.header-menu {
+    display: flex;
+    align-items: center;
+    margin: 0 4px;
+}
+
+#home-button {
+    background-image: url("../assets/images/icons/home-w.png");
+}
+
+#home-button:hover {
+    background-image: url("../assets/images/icons/home-green.png");
+}
+
+#explore-button {
+    background-image: url("../assets/images/icons/explore-w.png");
+}
+
+#explore-button:hover {
+    background-image: url("../assets/images/icons/explore-green.png");
+}
+
+#live-button {
+    background-image: url("../assets/images/icons/live-w.png");
+}
+
+#live-button:hover {
+    background-image: url("../assets/images/icons/live-red.png");
+    color: #ff5656;
+}
+
+#notification-button {
+    background-image: url("../assets/images/icons/notification.png");
+}
+
+#messages-button {
+    background-image: url("../assets/images/icons/messages.png");
+}
+
+#user-photo-button {
+    margin: 0 4px;
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    background-position: center center;
+    background-size: 34px 34px;
+    background-repeat: no-repeat;
+    background-image: url("../assets/images/icons/user.png");
+}

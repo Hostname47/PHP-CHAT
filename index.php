@@ -12,7 +12,7 @@
         Redirect::to("login/login.php");
     }
 
-    
+
 
     if(isset($_POST["logout"])) {
         $user->logout();
@@ -32,13 +32,11 @@
     <link rel="stylesheet" href="styles/header.css">
 </head>
 <body>
-    <p><?php echo "Hello " . $user->getPropertyValue("username"); ?></p>
-    <!-- Here before including the header, we need to make sure if user is already connected. If so
-         we need to add connected header, otherwise disconnected header wil be shown
-    -->
+    <?php include_once "components/basic/header.php"; ?>
     
+    <h1>Hello <?php echo $user->getPropertyValue("username");?> !</h1>
+
     <form action="index.php" method="post">
-        <input type="submit" name="test" value="test">
         <input type="submit" name="logout" value="logout">
     </form>
 </body>
