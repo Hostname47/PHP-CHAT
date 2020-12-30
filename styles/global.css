@@ -172,4 +172,18 @@ body {
     background-repeat: no-repeat;
 }
 
+.green-message {
+    background-color: rgb(183, 223, 183);
+    width: 340px;
+    padding: 8px 14px;
+    overflow: hidden;
+}
+
+.green-message-text {
+    margin: 4px 0;
+    font-size: 13px;
+    color: rgb(17, 54, 17);
+    font-weight: 600;
+}
+
 

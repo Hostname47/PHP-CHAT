@@ -8,7 +8,7 @@
 
 <header>
     <div>
-        <a href=""><img src="<?php echo $pathToLogo ?>assets/images/logos/large.png" alt="logo" class="wide-logo"></a>
+        <a href="<?php echo Config::get("root/path") . "index.php"; ?>"><img src="<?php echo $pathToLogo ?>assets/images/logos/large.png" alt="logo" class="wide-logo"></a>
     </div>
     <div class="inline-logo-separator">〡</div>
     <div id="menu-login-credentials-container">
@@ -31,11 +31,11 @@
             <!----------------------  PASSWORD  ---------------------->
             <label for="email-or-phone" class="small-label">Password</label>
             <input type="password" name="password" tabindex="2" autocomplete="off" class="text-input medium-text-input" form="login-form" placeholder="Password">
-            <a href="<?php echo Config::get("root/path");?>login/passwordRecover.php" target="_blank" tabindex="5" class="link">Forgotten your passowrd?</a>
+            <a href="<?php echo Config::get("root/path");?>login/passwordRecover.php" tabindex="5" class="link">Forgotten your passowrd?</a>
 
         </div>
         <div style="margin: 0 4px"></div>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post" class="flex-form" id="login-form">
+        <form action="<?php echo htmlspecialchars(Config::get("root/path")) . "Login/login.php" ?>" method="post" class="flex-form" id="login-form">
             <input type="hidden" name="token_log" value="<?php echo Token::generate("login"); ?>">
 
             <!----------------------  LOGIN  ---------------------->

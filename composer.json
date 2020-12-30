@@ -1,10 +1,14 @@
 {
     "name": "hostname47/composer",
-    "require": {},
+    "require": {
+        "mailgun/mailgun-php":"~1.7.1",
+        "guzzlehttp/guzzle": "7.2.0"
+    },
     "autoload": {
         "psr-4": {
             "classes\\": "classes/",
-            "models\\": "models/"
+            "models\\": "models/",
+            "Mailgun\\": "Mailgun/"
         }
     }
 }

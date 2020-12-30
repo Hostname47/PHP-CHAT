@@ -38,3 +38,7 @@ a form with submit button we can add a token related to this button by adding th
 [IMPORTANT#4] About user login: In login page we create a user and check the credentials by login. If credentials are right we
 add a session so that next time we create a user we'll have already the session exists and we fetch data with value inside session
 which is id So we get all data of user from that id that's why you see only user instantiation but still get its data.
+
+[IMPORTANT#5] When you tend to use send messages using Mailgun don't forget to replace the 'pem' file in: 
+vendor/guzzle/guzzle/src/Guzzle/Resources/cacert.pem by the latest version of cacert.pem file in curl website in : 
+https://curl.haxx.se/docs/caextract.html

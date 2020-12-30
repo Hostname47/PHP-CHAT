@@ -79,6 +79,17 @@ class Validation {
                                 // Handle username to be alphanumeric or just keep it like so (it's fine at least for now)
                             }
                         break;
+                        case 'email':
+                            $email = trim($value);
+                            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+                            if(strpos($email, '@') == true) {
+                                if(!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) {
+                                    $this->addError("Invalid email address.");
+                                }
+                            } else {
+                                $this->addError("Invalid email address.");
+                            }
+                        break;
                     }
                 }
             }
@@ -91,7 +102,7 @@ class Validation {
         return $this;
     }
 
-    private function addError($error) {
+    public function addError($error) {
         // This will add the error at the end of array
         $this->_errors[] = $error;
     }
