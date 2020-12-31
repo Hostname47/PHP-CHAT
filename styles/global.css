@@ -9,6 +9,25 @@ body {
     font-size: 15px;
 }
 
+.title-style-1 {
+    margin: 4px 4px 6px 4px;
+    font-size: 22px;
+}
+
+.image-style-1 {
+    display: block;
+    border-radius: 50%;
+    height: 55px;
+    width: 55px;
+}
+
+.image-style-2 {
+    display: block;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
+
 .flex-column {
     display: flex;
     flex-direction: column;
@@ -170,6 +189,12 @@ body {
     background-position: center center;
     background-size: 22px 22px;
     background-repeat: no-repeat;
+
+    transition: all 0.4s ease;
+}
+
+.menu-button-style-2:hover {
+    background-color: rgb(70, 70, 70);
 }
 
 .green-message {

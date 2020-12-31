@@ -25,17 +25,23 @@
                 if($exists) {
                     $conf_code = substr(Hash::unique(), 16, 16);
                     // Code to send conf code
-                    $mg = new Mailgun("c71c752125adee35f388b2d943694171-c50a0e68-809f3122");
-                    $domain = "https://api.mailgun.net/v3/sandboxed7506ccbeb742cfa76f7b67ffa05553.mailgun.org";
+                    $mg = new Mailgun("YOUR_KEY");
+                    $domain = "YOUR_DOMAIN";
                     # Make the call to the client.
                     try {
                         $result = $mg->sendMessage($domain, array(
-                            'from'	=> '<mouadstev1@gmail.com>',
+                            'from'	=> '<SENDER_EMAIL>',
                             'to'	=> '<' . $user->getPropertyValue("email") . '>',
                             'subject' => "Confirmation code",
                             'text'	=> $conf_code
                         ));
+
+                        /* We'll use email-confirmation sesion variable in the next page to see if the user pass from this process,
+                        If the user try directly to go to the next page, he'll not be able to access it because email-confirmation
+                        session variable will not be set here and we redirect him to login page*/
                         Session::put("email-confirmation", $conf_code);
+
+                        // We'll need this variable to fetch the user data in th next pages of password recovery
                         Session::put("u_id", $user->getPropertyValue("id"));
                         $user->fetchUser("email", Common::getInput($_POST, "email"));
                         Redirect::to("confirmationcode.php");

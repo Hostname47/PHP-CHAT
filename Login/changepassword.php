@@ -11,6 +11,9 @@
         Redirect::to("login.php");
     }
 
+    // Empty the flash password change
+    Session::delete("Password_changed");
+
     $user->fetchUser("id", Session::get("u_id"));
 
     if(isset($_POST["save"])) {

@@ -2,6 +2,7 @@
     height: 55px;
     background-color: black;
     display: flex;
+    z-index: 0;
 }
 
 #header-logo-container {
@@ -20,7 +21,7 @@
     display: flex;
     align-items: center;
 
-    width: 350px;
+    width: 380px;
 }
 
 #global-header-strip-container {
@@ -33,6 +34,37 @@
 
 .horizontal-menu-item-wrapper {
     display: flex;
+    position: relative;
+}
+
+.sub-options-container {
+    display: none;
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    top: 46px;
+    width: 280px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 4px;
+    padding: 6px 6px;
+    color: black;
+}
+
+.sub-options-container::after {
+left: 25px;
+border: 5px solid transparent;
+border-bottom-color: #ffffff;
+}
+
+.sub-options-container::before, .sub-options-container::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    box-sizing: border-box;
+    left: 253px;
+    border: 4px solid transparent;
+    border-bottom-color: #ffffff;
 }
 
 .horizontal-menu-link {
@@ -86,9 +118,99 @@
     height: 36px;
 
     border-radius: 50%;
-
+    background-color: rgb(71, 71, 71);
     background-position: center center;
-    background-size: 34px 34px;
+    background-size: 30px 30px;
     background-repeat: no-repeat;
     background-image: url("../assets/images/icons/user.png");
+}
+
+.options-separator-style-1 {
+    height: 1px;
+    background-color: rgb(231, 231, 231);
+    width: 100%;
+}
+
+.sub-option {
+    display: block;
+    padding: 4px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: black;
+    margin: 3px 0;
+}
+
+.sub-option:last-child {
+    margin-bottom: 0px;
+}
+
+.sub-option:hover {
+    background-color: rgb(231, 231, 231);
+}
+
+.notif-option-item, .message-option-item {
+    display: flex;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.notification-content-container {
+    padding: 0 0 0 6px;
+}
+
+.message-content-container {
+    padding: 0 0 0 6px;
+}
+
+.notif-content {
+    margin: 0;
+    padding: 0;
+}
+
+.notif-date {
+    margin: 0;
+    font-size: 12px;
+    color: rgb(0, 107, 207);
+}
+
+.action-doer {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.account-user {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.message-sender {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.options-container {
+    max-height: 450px;
+}
+
+.message-content {
+    margin: 0;
+    padding: 0;
+}
+
+.message-state-sign {
+    margin-top: 12px;
+    display: block;
+    border-radius: 50%;
+    height: 18px;
+    width: 18px;
+    align-self: center;
+}
+
+.logout-button {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
 }

@@ -12,11 +12,13 @@
         Redirect::to("login/login.php");
     }
 
-
+    
 
     if(isset($_POST["logout"])) {
-        $user->logout();
-        Redirect::to("login/login.php");
+        if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
+            $user->logout();
+            Redirect::to("login/login.php");
+        }
     }
 
 ?>
@@ -30,6 +32,9 @@
     <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/header.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="javascript/header.js" defer></script>
 </head>
 <body>
     <?php include_once "components/basic/header.php"; ?>
