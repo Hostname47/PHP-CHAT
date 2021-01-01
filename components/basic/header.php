@@ -34,7 +34,7 @@
                     <div class="sub-label">
                         <!-- "Notifications" will appear when user hover over the abov link button -->
                     </div>
-                    <div class="sub-options-container" style="display: none">
+                    <div class="sub-options-container">
                         <h2 class="title-style-1">Notifications</h2>
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
                         <div class="options-container">

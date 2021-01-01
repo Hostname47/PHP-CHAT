@@ -1,8 +1,20 @@
+header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: black;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
 #top-header {
+    width: 100%;
     height: 55px;
     background-color: black;
     display: flex;
-    z-index: 0;
+    justify-content: center;
+    max-width: 1600px;
 }
 
 #header-logo-container {
@@ -39,7 +51,6 @@
 
 .sub-options-container {
     display: none;
-    z-index: 1;
     position: absolute;
     right: 0;
     top: 46px;
@@ -201,6 +212,7 @@ border-bottom-color: #ffffff;
 
 .message-state-sign {
     margin-top: 12px;
+    margin-left: 2px;
     display: block;
     border-radius: 50%;
     height: 18px;

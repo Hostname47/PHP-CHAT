@@ -1,0 +1,118 @@
+
+#global-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 0;
+    top: 55px;
+}
+
+#master-left {
+    max-width: 360px;
+    min-width: 280px;
+    margin-right: 4px;
+    height: 400px;
+
+    background-color: rgb(73, 73, 73);
+}
+
+#master-right {
+    position: fixed;
+    right: 0;
+    width: 280px;
+    height: 400px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 6px 4px 4px 4px;
+    background-color: rgb(56, 56, 56);
+}
+
+#master-middle {
+    margin-right: 285px;
+    width: 100%;
+    height: 900px;
+    box-sizing: border-box;
+    background-color: rgb(136, 136, 136);
+}
+
+#contact-search {
+    display: block;
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+    background-image: url(../assets/images/icons/white-search.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+
+    transition: all 0.4s ease;
+}
+
+#contact-search:hover {
+    background-color: rgb(102, 102, 102);
+}
+
+#contact-search-field-container {
+    /*this is absolute*/
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+    width: 0px;
+}
+
+.not-link {
+    text-decoration: none;
+    display: flex;
+    margin: 0;
+}
+
+#close-contact-search {
+    margin-left: -26px;
+    padding: 4px;
+}
+
+#close-contact-search:hover {
+    background-color: rgb(187, 187, 187);
+}
+
+#contact-search-field {
+    display: block;
+    width: 100%;
+    padding: 6px 30px 6px 10px;
+    margin-left: 2px;
+    box-sizing: border-box;
+    border: 1px solid rgb(39, 39, 39);
+}
+
+#contacts-container {
+    margin-top: 6px;
+}
+
+.contact-user {
+    display: flex;
+    align-items: center;
+    padding: 6px;
+}
+
+.contact-user-connection-icon {
+    margin-left: auto;
+    margin-right: 4px;
+}
+
+.contact-user-name {
+    margin: 0 0 0 6px;
+}
+
+.contact-user-button {
+    display: block;
+    text-decoration: none;
+    color: white;
+    border-radius: 4px;
+}
+
+.contact-user-button:hover {
+    background-color: rgb(107, 107, 107);
+}

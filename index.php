@@ -12,8 +12,6 @@
         Redirect::to("login/login.php");
     }
 
-    
-
     if(isset($_POST["logout"])) {
         if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
             $user->logout();
@@ -32,17 +30,65 @@
     <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/index.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
     <script src="javascript/header.js" defer></script>
+    <script src="javascript/index.js" defer></script>
 </head>
 <body>
     <?php include_once "components/basic/header.php"; ?>
-    
-    <h1>Hello <?php echo $user->getPropertyValue("username");?> !</h1>
+    <main>
+        <div id="global-container">
+            <div id="master-left">
+                
+            </div>
+            <div id="master-middle">
 
-    <form action="index.php" method="post">
-        <input type="submit" name="logout" value="logout">
-    </form>
+            </div>
+            <div id="master-right">
+                <div class="flex-space relative">
+                    <h3 class="title-style-2">Contacts</h3>
+                    <div>
+                        <a href="" id="contact-search"></a>
+                    </div>
+                    <div class="absolute" id="contact-search-field-container">
+                        <input type="text" id="contact-search-field" placeholder="Search by friend or group ..">
+                        <a class="not-link" href=""><img src="assets/images/icons/close.png" id="close-contact-search" class="image-style-4" alt=""></a>
+                    </div>
+                </div>
+                <div id="contacts-container">
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto489</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto223</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto978</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

@@ -11,12 +11,15 @@ $(".button-with-suboption").click(function() {
     return false;
 });
 
-
 /* When the user click somewhere in bofy section all absolute containers will disappear except if the section is a
 header container itself */
-$("body").click(function(evt) {
+/*$("body").click(function(evt) {
     $(".sub-options-container").css("display", "none");
-});
+});*/
+
+document.addEventListener("click", function(event) {
+    $(".sub-options-container").css("display", "none");
+}, true);
 
 // we prevent
 let subContainers = document.querySelectorAll('.sub-options-container');
