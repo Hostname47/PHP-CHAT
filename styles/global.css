@@ -9,6 +9,10 @@ body {
     font-size: 15px;
 }
 
+.flex {
+    display: flex;
+}
+
 .relative {
     position: relative;
 }
@@ -17,9 +21,19 @@ body {
     position: absolute;
 }
 
+.regular-text-style-1 {
+    margin: 0;
+    font-size: 16px;
+}
+
 .title-style-1 {
     margin: 4px 4px 6px 4px;
     font-size: 22px;
+}
+
+.title-style-3 {
+    margin: 2px 0 2px 2px;
+    font-size: 26px;
 }
 
 .title-style-2 {
@@ -113,6 +127,27 @@ body {
     background-color: white;
     color: black;
 }
+
+.button-style-2 {
+    display: flex;
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+    border: 1px solid white;
+    border-radius: 18px;
+    background: none;
+    font-weight: 600;
+
+    padding: 8px 12px;
+    transition: all 0.4s ease;
+}
+
+.button-style-2:hover {
+    background-color: white;
+    color: black;
+}
+
+
 
 .flex-form {
     display: flex;

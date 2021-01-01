@@ -1,0 +1,88 @@
+
+main {
+    margin-top: 55px;
+}
+
+#firt-section {
+    background-color: rgb(71, 71, 71);
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+#cover-photo {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    height: 260px;
+    background-color: gray;
+}
+
+#profile-picture {
+    position: absolute;
+    bottom: -76px;
+    left: 200px;
+    display: flex;
+    height: 150px;
+    width: 150px;
+    border: 5px solid;
+    border-radius: 50%;
+    background-color: rgb(200, 200, 200);
+}
+
+#name-and-username-container {
+    margin-left: 366px
+}
+
+#owner-profile-menu-and-profile-edit {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+#profile-menu {
+    display: flex;
+    align-items: center;
+}
+
+.profile-menu-item {
+    color: white;
+    text-decoration: none;
+    padding: 12px 8px;
+    margin: 2px 8px;
+    border-radius: 6px;
+}
+
+.profile-menu-item-selected {
+    font-weight: 600;
+    box-shadow: 0 5px 0px -1px rgb(0, 0, 0);
+}
+
+.profile-menu-item:hover {
+    background-color: rgb(46, 46, 46);
+}
+
+/* ---------------- SECOND SECTION ---------------- */
+
+#second-section {
+    display: flex;
+    width: 90%;
+    margin: 0 auto
+}
+
+.user-info-section {
+    background-color: rgb(100, 100, 100);
+    border-radius: 6px;
+    padding: 8px;
+    width: 400px;
+    margin-bottom: 6px;
+}
+
+#posts-container {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(139, 139, 139);
+    height: 400px;
+    margin-left: 12px;
+}

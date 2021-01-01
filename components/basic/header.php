@@ -110,7 +110,7 @@
                     <div class="sub-options-container">
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
                         <div class="options-container">
-                            <a href="" class="sub-option">
+                            <a href="profile.php" class="sub-option">
                                 <div class="message-option-item" style="align-items: center">
                                     <div>
                                         <img src="assets/images/icons/user.png" class="image-style-1" alt="user's profile picture">
