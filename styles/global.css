@@ -13,6 +13,10 @@ body {
     display: flex;
 }
 
+.black {
+    color: black;
+}
+
 .relative {
     position: relative;
 }
@@ -21,9 +25,24 @@ body {
     position: absolute;
 }
 
+.field-style-1 {
+    margin-bottom: 6px;
+}
+
 .regular-text-style-1 {
     margin: 0;
     font-size: 16px;
+}
+
+.regular-text-style-2 {
+    margin: 0;
+    font-size: 13px;
+}
+
+.regular-text {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
 }
 
 .title-style-1 {
@@ -31,14 +50,24 @@ body {
     font-size: 22px;
 }
 
+.title-style-2 {
+    margin: 4px 4px 6px 4px;
+    font-size: 18px;
+}
+
 .title-style-3 {
     margin: 2px 0 2px 2px;
     font-size: 26px;
 }
 
-.title-style-2 {
-    margin: 4px 4px 6px 4px;
-    font-size: 18px;
+.title-style-4 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.title-style-5 {
+    margin: 0;
+    font-size: 20px;
 }
 
 .image-style-1 {
@@ -69,6 +98,12 @@ body {
     width: 10px;
 }
 
+.label-style-1 {
+    font-size: 13.5px;
+    margin: 0 0 5px 5px;
+    display: block;
+}
+
 .flex-column {
     display: flex;
     flex-direction: column;
@@ -83,6 +118,11 @@ body {
 .row-v-flex {
     display: flex;
     align-items: center;
+}
+
+.flex-justify {
+    display: flex;
+    justify-content: center;
 }
 
 .small-label {
@@ -103,6 +143,13 @@ body {
     text-decoration: none;
     font-size: 13px;
     font-weight: 500;
+}
+
+.link-style-1 {
+    color: rgb(50, 255, 111);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .link:hover {
@@ -147,7 +194,27 @@ body {
     color: black;
 }
 
+.button-style-3 {
+    display: flex;
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+    background-color: black;
+    border-radius: 8px;
 
+    padding: 8px 12px;
+    transition: all 0.4s ease;
+}
+
+.button-style-3:hover {
+    background-color: rgb(56, 56, 56);
+}
+
+.image-size-1 {
+    height: 34px;
+    width: 34px;
+    display: block;
+}
 
 .flex-form {
     display: flex;
@@ -205,6 +272,28 @@ body {
     box-sizing: border-box;
     border: none;
     font-size: 12px;
+}
+
+.input-style-1 {
+    display: block;
+    border-radius: 20px;
+    padding: 8px 12px;
+    border: 1px solid rgb(141, 141, 141);
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.textarea-style-1 {
+    resize: vertical;
+    display: block;
+    border-radius: 20px 20px 5px 20px;
+    padding: 8px 12px;
+    border: 1px solid rgb(141, 141, 141);
+    width: 100%;
+    max-height: 400px;
+    box-sizing: border-box;
+    font-size: 14px;
 }
 
 .search-back {
