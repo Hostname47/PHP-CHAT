@@ -12,6 +12,12 @@
         Redirect::to("login/login.php");
     }
 
+    $welcomeMessage = '';
+    
+    if(Session::exists("register_success") && $user->getPropertyValue("username") == Session::get("new_username")) {
+        $welcomeMessage = Session::flash("register_success");
+    }
+
     if(isset($_POST["logout"])) {
         if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
             $user->logout();
@@ -32,7 +38,7 @@
     <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="styles/index.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="javascript/header.js" defer></script>
     <script src="javascript/index.js" defer></script>
 </head>
@@ -44,7 +50,14 @@
                 
             </div>
             <div id="master-middle">
-
+            <div class="green-message">
+                    <p class="green-message-text"><?php echo $welcomeMessage; ?></p>
+                    <script type="text/javascript" defer>
+                        if($(".green-message-text").text() !== "") {
+                            $(".green-message").css("display", "block");
+                        }
+                    </script>
+                </div>
             </div>
             <div id="master-right">
                 <div class="flex-space relative">

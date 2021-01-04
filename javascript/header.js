@@ -7,7 +7,6 @@ $(".button-with-suboption").click(function() {
     } else {
         container.css("display", "none");
     }
-    
     return false;
 });
 
@@ -19,7 +18,7 @@ header container itself */
 
 document.addEventListener("click", function(event) {
     $(".sub-options-container").css("display", "none");
-}, true);
+}, false);
 
 // we prevent
 let subContainers = document.querySelectorAll('.sub-options-container');

@@ -18,6 +18,10 @@ class User {
         $lastname='',
         $joined='',
         $user_type=1,
+        $bio='',
+        $cover='',
+        $picture='',
+        $private=-1,
 
         $isLoggedIn=false;
 
@@ -60,6 +64,9 @@ class User {
             $this->lastname = $fetchedUser->lastname;
             $this->joined = $fetchedUser->joined;
             $this->user_type = $fetchedUser->user_type;
+            $this->bio = $fetchedUser->bio;
+            $this->cover = $fetchedUser->cover;
+            $this->picture = $fetchedUser->picture;
 
             return true;
         }
@@ -77,6 +84,10 @@ class User {
         $this->lastname = $data["lastname"];
         $this->joined = isset($data["joined"]) ? $data["joined"] : date("Y/m/d h:i:s");
         $this->user_type = $data["user_type"];
+        $this->bio = $data["bio"];
+        $this->cover = $data["cover"];
+        $this->picture = $data["picture"];
+        $this->private = $data["private"];
     }
 
     /* 
@@ -107,7 +118,7 @@ class User {
     and it will do all the work for you
     */
     public function update() {
-        $this->db->query("UPDATE user_info SET username=?, email=?, password=?, salt=?, firstname=?, lastname=?, joined=?, user_type=? WHERE id=?",
+        $this->db->query("UPDATE user_info SET username=?, email=?, password=?, salt=?, firstname=?, lastname=?, joined=?, user_type=?, bio=?, cover=?, picture=?, private=? WHERE id=?",
         array(
             $this->username,
             $this->email,
@@ -117,6 +128,10 @@ class User {
             $this->lastname,
             $this->joined,
             $this->user_type,
+            $this->bio,
+            $this->cover,
+            $this->picture,
+            $this->private,
             $this->id
         ));
 
@@ -201,6 +216,7 @@ class User {
             firstname: $this->firstname, 
             lastname: $this->lastname, 
             username: $this->username, 
+            bio: $this->bio, 
             email: $this->email, 
             password: $this->password, 
             salt: $this->salt, 

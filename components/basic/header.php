@@ -6,7 +6,7 @@
     <div id="top-header">
         <div id="header-logo-container">
             <!-- height of <a> should be like img height -->
-            <a href="" style="height: 28px"><img src="<?php echo Config::get("root/path");?>assets/images/logos/large.png" alt="Logo" id="header-logo"></a>
+            <a href="<?php echo Config::get("root/path");?>index.php" style="height: 28px"><img src="<?php echo Config::get("root/path");?>assets/images/logos/large.png" alt="Logo" id="header-logo"></a>
         </div>
         <div class="inline-logo-separator">〡</div>
         <div class="row-v-flex">

@@ -94,6 +94,7 @@ main {
     position: absolute;
     bottom: -76px;
     left: 200px;
+    border: none;
     border-radius: 50%;
 }
 
@@ -149,11 +150,16 @@ main {
     margin: 0 auto;
     margin-top: 40px;
     border-radius: 8px;
-    height: 100%;
-    max-height: 80%;
+    height: 80%;
+    max-height: 74%;
     width: 32%;
     background-color: white;
-    overflow: hidden;
+}
+
+#edit-sub-container {
+    overflow-y: scroll;
+    max-height: 90%;
+    box-sizing: border-box;
 }
 
 #edit-profile-header {
@@ -185,8 +191,17 @@ main {
 }
 
 .change-image-icon {
-    z-index: 1;
     display: none;
+    z-index: 1;
+    width: 34px;
+    height: 34px;
+    background-image: url(../assets/images/icons/change-image.png);
+    background-size: 34px;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    cursor: pointer;
+    border: none;
 }
 
 #change-cover-button {

@@ -26,7 +26,8 @@ $GLOBALS["config"] = array(
             "register"=>"register",
             "login"=>"login",
             "reset-pasword"=>"reset-pasword",
-            "logout"=>"logout",
+            "saveEdits"=>"saveEdits",
+            "logout"=>"logout"
         )
     ),
     "root"=> array(

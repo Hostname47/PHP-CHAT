@@ -29,6 +29,13 @@ body {
     margin-bottom: 6px;
 }
 
+.field-style-2 {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .regular-text-style-1 {
     margin: 0;
     font-size: 16px;
@@ -195,6 +202,7 @@ body {
 }
 
 .button-style-3 {
+    border: none;
     display: flex;
     text-decoration: none;
     cursor: pointer;
@@ -208,6 +216,18 @@ body {
 
 .button-style-3:hover {
     background-color: rgb(56, 56, 56);
+}
+
+.toggle-button-style-1 {
+    height: 26px;
+    width: 40px;
+
+    background-size: 40px 34px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(../assets/images/icons/off.png);
+
+    cursor: pointer;
 }
 
 .image-size-1 {
@@ -291,7 +311,7 @@ body {
     padding: 8px 12px;
     border: 1px solid rgb(141, 141, 141);
     width: 100%;
-    max-height: 400px;
+    max-height: 250px;
     box-sizing: border-box;
     font-size: 14px;
 }
@@ -354,18 +374,24 @@ body {
     background-color: rgb(70, 70, 70);
 }
 
-.green-message {
+.green-message
+{
+    display: none;
     background-color: rgb(183, 223, 183);
-    width: 340px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 8px 14px;
+    margin: 4px 0;
     overflow: hidden;
 }
 
 .green-message-text {
-    margin: 4px 0;
+    margin: 0;
+    padding: 0;
     font-size: 13px;
     color: rgb(17, 54, 17);
     font-weight: 600;
 }
+
 
 

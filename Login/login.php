@@ -11,6 +11,8 @@
         Redirect::to("../index.php");
     }
 
+    $reg_success_message = '';
+
     if(isset($_POST["login"])) {
         if(Token::check(Common::getInput($_POST, "token_log"), "login")) {
             $validate = new Validation();
@@ -99,13 +101,20 @@
                     "password"=> Hash::make(Common::getInput($_POST, "password"), $salt),
                     "salt"=>$salt,
                     "joined"=> date("Y/m/d h:i:s"),
-                    "user_type"=>1
+                    "user_type"=>1,
+                    "cover"=>'',
+                    "picture"=>'',
+                    "private"=>-1
                 ));
                 $user->add();
     
-                Session::flash("register_success", "Your account has been created successfully.");
-                header("Location: login.php");
+                $reg_success_message = "Your account has been created successfully.";
+                /* The following flash will be shown in the index page if the user is new, and we'll also check if the user registered 
+                is the same person log in because the user could create a new account but login with other account, in that case we won't
+                show any welcome message*/
                 
+                Session::flash("register_success", "Welcome to VOID47 chat application.");
+                Session::flash("new_username", Common::getInput($_POST, "username"));
             } else {
                 foreach($validate->errors() as $key =>$error) {
                     echo "error: " . $error . "<br>";
@@ -125,7 +134,7 @@
     <link rel="stylesheet" href="../styles/global.css">
     <link rel="stylesheet" href="../styles/login.css">
     <link rel="stylesheet" href="../styles/log-header.css">
-    <link rel="stylesheet" href="../styles/registration.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <?php include "../components/basic/log-header.php" ?>
@@ -136,6 +145,14 @@
                 <img src="../assets/images/preview.png" id="login-image-preview" alt="">
             </div>
             <div id="registration-section">
+                <div class="green-message">
+                    <p class="green-message-text"><?php echo $reg_success_message; ?></p>
+                    <script>
+                        if($(".green-message-text").text() !== "") {
+                            $(".green-message").css("display", "block");
+                        }
+                    </script>
+                </div>
                 <h2 class="title-style1">Create an account</h2>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post" class="flex-column">
                     <div class="classic-form-input-wrapper">

@@ -9,7 +9,7 @@ $(".viewer").css({
 
 $(".close-viewer").click(function() {
     $(".viewer").css("display", "none");
-
+    $("body").css("overflow-y", "scroll");
     return false;
 })
 
@@ -17,6 +17,7 @@ $("#edit-profile-button").on({
     click: function() {
         let viewer = $(this).parent().find(".viewer");
         viewer.css("display", "block");
+        $("body").css("overflow-y", "hidden");
         return false;
     }
 });
@@ -63,12 +64,17 @@ $("#picture-changer-container").on({
     }
 });
 
-$(".profile-picture-preview, .profile-cover-picture-preview, #edit-profile-container").click(function(event) {
+/*
+we stopped propagation because we don't need to hide the element when we click on them because, we can only hide them when we
+click ooutside of them
+*/
+$(".profile-picture-preview, .profile-cover-picture-preview, #edit-profile-container, #cover-changer-container").click(function(event) {
     event.stopPropagation();
 })
 
 $(".viewer").click(function() {
     $(this).css("display", "none");
+    $("body").css("overflow-y", "scroll");
 })
 
 $(".user-info-section-link").on( {
@@ -83,7 +89,19 @@ $(".user-info-section-link").on( {
 
 $(".user-info-square-shape").css("height", $(".user-info-square-shape").css("width"))
 
-$("#change-cover-button").click(function() {
+$("#change-cover-button, #change-picture-button").click(function(event) {
     
-    return false;
 });
+
+$("#private-account-button").click(function() {
+    console.log("TET");
+    if($("#private-account-state").val() == "1") {
+        $("#private-account-button").css("backgroundImage", "url(assets/images/icons/off.png)");
+        $("#private-account-state").val("-1");
+    } else {
+        $(this).css("backgroundImage", "url(assets/images/icons/on.png)");
+        $("#private-account-state").val("1");
+    }
+});
+
+//$("#edit-sub-container").height($("#edit-sub-container").parent().height() - $("#edit-profile-header").height());

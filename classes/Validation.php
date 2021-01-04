@@ -90,6 +90,10 @@ class Validation {
                                 $this->addError("Invalid email address.");
                             }
                         break;
+                        case 'range':
+                            if(!in_array($value, $rule_value))
+                                $this->addError("{$rules['name']} field is either not set or invalid !");
+                        break;
                     }
                 }
             }

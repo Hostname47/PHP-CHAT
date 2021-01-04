@@ -12,6 +12,43 @@ if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
 }
 
+if(isset($_POST["save"])) {
+    if(Token::check(Common::getInput($_POST, "save_token"), "saveEdits")) {
+        $validate = new Validation();
+        $validate->check($_POST, array(
+            "firstname"=>array(
+                "name"=>"Firstname",
+                "required"=>true,
+                "min"=>6,
+                "max"=>40
+            ),
+            "lastname"=>array(
+                "name"=>"Lastname",
+                "required"=>true,
+                "min"=>6,
+                "max"=>40
+            ),
+            "private"=>array(
+                "name"=>"Profile (public/private)",
+                "range"=>array(-1, 1)
+            )
+        ));
+
+        if($validate->passed()) {
+            $user->setPropertyValue("firstname", $_POST["firstname"]);
+            $user->setPropertyValue("lastname", $_POST["lastname"]);
+            $user->setPropertyValue("bio", $_POST["bio"]);
+            $user->setPropertyValue("private", $_POST["private"]);
+
+            $user->update();
+        } else {
+            foreach($validate->errors() as $error) {
+                echo $error . "<br>";
+            }
+        }
+    }
+}
+
 if(isset($_POST["logout"])) {
     if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
         $user->logout();
@@ -79,43 +116,57 @@ if(isset($_POST["logout"])) {
                 </div>
                 <div>
                     <a href="" class="button-style-2" id="edit-profile-button">Edit profile</a>
-                    <div class="viewer" style="display: block">
+                    <div class="viewer">
                         <div id="edit-profile-container">
                             <div class="flex-space" id="edit-profile-header">
                                 <a href="" class="close-style-1 close-viewer"></a>
                                 <h2 class="title-style-5 black">Edit profile</h2>
-                                <a href="" class="button-style-3">Save</a>
+
+                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="save-profile-edits-form" enctype="multipart/form-data">
+                                    <input type="hidden" name="save_token" value="<?php echo Token::generate("saveEdits"); ?>">
+                                    <input type="submit" value="Save" name="save" class="button-style-3">
+                                </form>
+
                             </div>
-                            <div id="picture-and-cover-container">
-                                <a href="" id="change-cover-button">
-                                    <div id="cover-changer-container" class="relative">
-                                        <img src="assets/images/icons/change-image.png" class="absolute image-size-1 change-image-icon" alt="">
-                                        <img src="" id="cover-changer-shadow" style="z-index: 0" class="absolute" alt="">
-                                        <img src="assets/images/programming.png" id="cover-changer-dim" alt="">
-                                    </div>
-                                </a>
-                                <div class="relative flex-justify">
-                                    <a href="" id="change-picture-button" class="absolute">
-                                        <div id="picture-changer-container" class="relative">
-                                            <img src="assets/images/read.png" class="former-picture-dim" alt="">
+                            <div id="edit-sub-container">
+                                <div id="picture-and-cover-container">
+                                    <div href="" id="change-cover-button">
+                                        <div id="cover-changer-container" class="relative">
                                             <img src="assets/images/icons/change-image.png" class="absolute image-size-1 change-image-icon" alt="">
-                                            <img src="" class="former-picture-dim former-picture-shadow absolute" style="z-index: 0" alt="">
+                                            <input type="file" class="absolute change-image-icon" style="opacity: 0;" name="cover" form="save-profile-edits-form">
+                                            <img src="assets/images/programming.png" id="cover-changer-dim" alt="">
+                                            <img src="" id="cover-changer-shadow" style="z-index: 0" class="absolute" alt="">
                                         </div>
-                                    </a>
+                                    </div>
+                                    <div class="relative flex-justify">
+                                        <div id="change-picture-button" class="absolute">
+                                            <div id="picture-changer-container" class="relative">
+                                                <img src="assets/images/read.png" class="former-picture-dim" alt="">
+                                                <img src="assets/images/icons/change-image.png" class="absolute change-image-icon" alt="">
+                                                <input type="file" class="absolute change-image-icon" style="opacity: 0;" name="picture" form="save-profile-edits-form">
+                                                <img src="" class="former-picture-dim former-picture-shadow absolute" style="z-index: 0" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="textual-data-edit">
-                                <div class="field-style-1">
-                                    <label for="display-name" class="label-style-1">Display name</label>
-                                    <input type="text" class="input-style-1" name="display-name">
-                                </div>
-                                <div class="field-style-1">
-                                    <label for="bio" class="label-style-1">Bio</label>
-                                    <textarea type="text" class="textarea-style-1" placeholder="Add your bio.." name="bio"></textarea>
-                                </div>
-                                <div class="field-style-1">
-                                    <label for="private" class="label-style-1">Private account</label>
-                                    <input type="text" class="input-style-1" name="display-name">
+                                <div id="textual-data-edit">
+                                    <div class="field-style-1">
+                                        <label for="display-name" class="label-style-1">First name</label>
+                                        <input type="text" form="save-profile-edits-form" class="input-style-1" value="<?php echo htmlspecialchars($user->getPropertyValue("firstname")); ?>" name="firstname">
+                                    </div>
+                                    <div class="field-style-1">
+                                        <label for="display-name" class="label-style-1">Last name</label>
+                                        <input type="text" form="save-profile-edits-form" class="input-style-1" value="<?php echo htmlspecialchars($user->getPropertyValue("lastname")); ?>" name="lastname">
+                                    </div>
+                                    <div class="field-style-1">
+                                        <label for="bio" class="label-style-1">Bio</label>
+                                        <textarea type="text" form="save-profile-edits-form" maxlength="800" class="textarea-style-1" placeholder="Add your bio.." name="bio"><?php echo $user->getPropertyValue('bio'); ?></textarea>
+                                    </div>
+                                    <div class="field-style-2" style="margin-bottom: 12px">
+                                        <label for="private" class="label-style-1">Private account</label>
+                                        <div class="toggle-button-style-1" id="private-account-button"></div>
+                                        <input type="hidden" form="save-profile-edits-form" name="private" value="-1" id="private-account-state">
+                                    </div>
                                 </div>
                             </div>
                         </div>
