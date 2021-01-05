@@ -113,7 +113,7 @@
                             <a href="profile.php" class="sub-option">
                                 <div class="message-option-item" style="align-items: center">
                                     <div>
-                                        <img src="assets/images/icons/user.png" class="image-style-1" alt="user's profile picture">
+                                        <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="image-style-1" alt="user's profile picture">
                                     </div>
                                     <div class="message-content-container">
                                         <p class="account-user"><?php echo $user->getPropertyValue("username"); ?></p>

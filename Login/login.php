@@ -107,7 +107,12 @@
                     "private"=>-1
                 ));
                 $user->add();
-    
+                
+                mkdir("../data/users/" . Common::getInput($_POST, "username")."/");
+                mkdir("../data/users/" . Common::getInput($_POST, "username")."/media/");
+                mkdir("../data/users/" . Common::getInput($_POST, "username")."/media/pictures/");
+                mkdir("../data/users/" . Common::getInput($_POST, "username")."/media/covers/");
+
                 $reg_success_message = "Your account has been created successfully.";
                 /* The following flash will be shown in the index page if the user is new, and we'll also check if the user registered 
                 is the same person log in because the user could create a new account but login with other account, in that case we won't

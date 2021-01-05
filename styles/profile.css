@@ -84,7 +84,6 @@ main {
 .profile-cover-picture-preview {
     display: flex;
     margin: 0 auto;
-    width: 80%;
     height: 70%;
     margin-top: 20px;
     background-color: rgb(177, 177, 177);

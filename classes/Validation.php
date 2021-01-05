@@ -37,6 +37,57 @@ class Validation {
     */
     public function check($source, $items = array()) {
         error_reporting(E_ERROR | E_PARSE);
+
+        if($source === $_FILES) {
+            foreach($items as $item=>$rules) {
+                foreach($rules as $rule => $rule_value) {
+                    $item = htmlspecialchars($item);
+                    $name = $_FILES[$item]["name"];
+                    if($rule === "required" && $rule_value == true && empty($name)) {
+                        $this->addError("{$rules['name']} field is required");
+                    } else if(!empty($name)) {
+                        switch($rule) {
+                            // Some are implemented here in switch and some of them has their own functions like email func
+                            case 'image':
+                                /*if($source[$item]['type'] != "image/png") {
+                                    $this->addError("Only PNG images are allowed in {$rules['name']} image!");
+                                }
+
+                                 Do not rely on any of the data in $_FILES. Many sites tell you to check the mime type of the file, 
+                                either from $_FILES[0]['type'] or by checking the filename's extension. Do not do this. Everything under
+                                $_FILES with the exception of tmp_name can be manipulated by a malicious user. If you know you want images 
+                                ony call getimagesize as it actually reads image data and will know if the file is really an image. 
+                                
+                                CAUTION: (from PHP Doc)
+                                Do not use getimagesize() to check that a given file is a valid image. Use a purpose-built solution such as the Fileinfo 
+                                extension instead. 
+                                */
+                                // ----------------------      CHCK IMAGE TYPE      ----------------------
+
+                                $file = $_FILES[$item]["name"];
+                                $allowedImageExtensions = array(".png", ".jpeg", ".gif", ".jpg");
+
+                                $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
+
+                                $finfo = new \finfo(FILEINFO_MIME);
+                                $type = $finfo->file($file);
+                                if (!in_array($original_extension, $allowedImageExtensions))
+                                {
+                                    $this->addError("Only PNG, JPG, JPEG, and GIF image types are allowed to be used in {$rules['name']} image!");
+                                }
+
+                                if ($source[$item]["size"] > 5500000) {
+                                    $this->addError("Sorry, your file is too large.");
+                                }
+
+                                // Add some layer of image upload security later
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         foreach($items as $item=>$rules) {
             foreach($rules as $rule => $rule_value) {
                 $value = trim($source[$item]);
@@ -101,6 +152,8 @@ class Validation {
 
         if(empty($this->_errors)) {
             $this->_passed = true;
+        } else {
+            $this->_passed = false;
         }
 
         return $this;

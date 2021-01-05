@@ -12,9 +12,10 @@ if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
 }
 
-if(isset($_POST["save"])) {
+if(isset($_POST["save-profile-edites"])) {
     if(Token::check(Common::getInput($_POST, "save_token"), "saveEdits")) {
         $validate = new Validation();
+
         $validate->check($_POST, array(
             "firstname"=>array(
                 "name"=>"Firstname",
@@ -33,12 +34,61 @@ if(isset($_POST["save"])) {
                 "range"=>array(-1, 1)
             )
         ));
+        
+        $validate->check($_FILES, array(
+            "picture"=>array(
+                "name"=>"Picture",
+                "image"=>"image"
+            ),
+            "cover"=>array(
+                "name"=>"Cover",
+                "image"=>"image"
+            )
+        ));
 
         if($validate->passed()) {
             $user->setPropertyValue("firstname", $_POST["firstname"]);
             $user->setPropertyValue("lastname", $_POST["lastname"]);
             $user->setPropertyValue("bio", $_POST["bio"]);
             $user->setPropertyValue("private", $_POST["private"]);
+
+            $profilePicturesDir = 'data/users/' . $user->getPropertyValue("username") . "/media/pictures/";
+            $coversDir = 'data/users/' . $user->getPropertyValue("username") . "/media/covers/";
+
+            // First we check if the user is changed the image
+            if(!empty($_FILES["picture"]["name"])) {
+                // If so we generate a unique hash to name the image
+                $generatedName = Hash::unique();
+                $generatedName = htmlspecialchars($generatedName);
+
+                // Then we fetch the image type t o concatenate it with the generated name
+                $file = $_FILES["picture"]["name"];
+                $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
+
+                $targetFile = $profilePicturesDir . $generatedName . $original_extension;
+                if (move_uploaded_file($_FILES["picture"]["tmp_name"], $targetFile)) {
+                    $user->setPropertyValue("picture", $targetFile);
+                } else {
+                    $validate->addError("Sorry, there was an error uploading your profile picture.");
+                }
+            }
+
+            if(!empty($_FILES["cover"]["name"])) {
+                // If so we generate a unique hash to name the image
+                $generatedName = Hash::unique();
+                $generatedName = htmlspecialchars($generatedName);
+
+                // Then we fetch the image type t o concatenate it with the generated name
+                $file = $_FILES["cover"]["name"];
+                $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
+
+                $targetFile = $coversDir . $generatedName . $original_extension;
+                if (move_uploaded_file($_FILES["cover"]["tmp_name"], $targetFile)) {
+                    $user->setPropertyValue("cover", $targetFile);
+                } else {
+                    $validate->addError("Sorry, there was an error uploading your profile picture.");
+                }
+            }
 
             $user->update();
         } else {
@@ -80,7 +130,7 @@ if(isset($_POST["logout"])) {
             <div class="relative flex-column">
                 <div>
                     <div id="cover-container">
-                        <img src="assets/images/programming.png" class="cover-photo" alt="">
+                        <img src="<?php echo $user->getPropertyValue("cover"); ?>" class="cover-photo" alt="">
                     </div>
                     <div class="viewer">
                         <div class="relative">
@@ -91,7 +141,7 @@ if(isset($_POST["logout"])) {
                 </div>
                 <div id="profile-picture-container">
                     <div class="relative" style="border-radius: 50%">
-                        <img src="assets/images/read.png" class="profile-picture" alt="">
+                        <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="profile-picture" alt="">
                         <img src="" class="profile-picture shadow-profile-picture absolute" alt="">
                     </div>
                     <div class="viewer">
@@ -124,7 +174,7 @@ if(isset($_POST["logout"])) {
 
                                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="save-profile-edits-form" enctype="multipart/form-data">
                                     <input type="hidden" name="save_token" value="<?php echo Token::generate("saveEdits"); ?>">
-                                    <input type="submit" value="Save" name="save" class="button-style-3">
+                                    <input type="submit" value="Save" name="save-profile-edites" class="button-style-3">
                                 </form>
 
                             </div>
@@ -134,14 +184,14 @@ if(isset($_POST["logout"])) {
                                         <div id="cover-changer-container" class="relative">
                                             <img src="assets/images/icons/change-image.png" class="absolute image-size-1 change-image-icon" alt="">
                                             <input type="file" class="absolute change-image-icon" style="opacity: 0;" name="cover" form="save-profile-edits-form">
-                                            <img src="assets/images/programming.png" id="cover-changer-dim" alt="">
+                                            <img src="<?php echo $user->getPropertyValue("cover"); ?>" id="cover-changer-dim" alt="">
                                             <img src="" id="cover-changer-shadow" style="z-index: 0" class="absolute" alt="">
                                         </div>
                                     </div>
                                     <div class="relative flex-justify">
                                         <div id="change-picture-button" class="absolute">
                                             <div id="picture-changer-container" class="relative">
-                                                <img src="assets/images/read.png" class="former-picture-dim" alt="">
+                                                <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="former-picture-dim" alt="">
                                                 <img src="assets/images/icons/change-image.png" class="absolute change-image-icon" alt="">
                                                 <input type="file" class="absolute change-image-icon" style="opacity: 0;" name="picture" form="save-profile-edits-form">
                                                 <img src="" class="former-picture-dim former-picture-shadow absolute" style="z-index: 0" alt="">
