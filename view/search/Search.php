@@ -2,10 +2,12 @@
 
 namespace view\search;
 
+use classes\Config;
+
 class Search {
     public function generateSearchPerson($user) {
         // Notice we fetch data of users like they are objects; That's because search function get users as objects
-        $picture = $user->picture;
+        $picture = (!empty($user->picture)) ? $user->picture : Config::get("root/path") . "assets/images/icons/user.png";
         $fullname = $user->firstname . " " . $user->lastname;
         $username = $user->username;
         

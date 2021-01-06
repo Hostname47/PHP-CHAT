@@ -145,6 +145,10 @@ class User {
     }
 
     public static function search($keyword) {
+        if(empty($keyword)) {
+            return array();
+        }
+
         $keywords = strtolower($keyword);
         $keywords = htmlspecialchars($keywords);
         $keywords = trim($keywords);

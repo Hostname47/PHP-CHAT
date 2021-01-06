@@ -131,7 +131,7 @@ border-bottom-color: #ffffff;
     background-position: center center;
     background-size: 30px 30px;
     background-repeat: no-repeat;
-    background-image: url("../assets/images/icons/user.png");
+    background-image: url(../assets/images/icons/more.png);
 }
 
 .options-separator-style-1 {

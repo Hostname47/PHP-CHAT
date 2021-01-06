@@ -84,6 +84,7 @@ body {
 
 .image-style-1 {
     display: block;
+    background-color: rgb(130, 130, 130);
     border-radius: 50%;
     height: 55px;
     width: 55px;

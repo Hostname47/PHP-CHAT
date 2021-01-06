@@ -1,5 +1,6 @@
 
 .search-result-type-container {
+    display: none;
     margin-bottom: 12px;
     background-color: rgb(78, 78, 78);
     border-radius: 6px;
@@ -18,6 +19,7 @@
     cursor: pointer;
     padding: 6px 12px;
     border-bottom: 1px solid rgb(99, 99, 99);
+    border-radius: 6px;
 }
 
 .search-result-item:hover {
@@ -26,4 +28,22 @@
 
 .search-result {
     margin-top: 6px;
+}
+
+.no-search-container {
+    display: none;
+    border-radius: 6px;
+    
+    background-color: rgb(78, 78, 78);
+    padding: 12px;
+    margin: 0;
+}
+
+.no-search-results {
+    padding: 40px 0 4px 0;
+    background-image: url(../assets/images/icons/no-result.png);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: center 0;
+    margin: 0;
 }

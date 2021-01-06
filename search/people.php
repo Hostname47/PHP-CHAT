@@ -1,6 +1,6 @@
 <?php
-    require_once "vendor/autoload.php";
-    require_once "core/init.php";
+    require_once "../vendor/autoload.php";
+    require_once "../core/init.php";
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
     use models\User;
@@ -9,7 +9,7 @@
     // Here we check if the user is not logged in and we redirect him to login page
 
     if(!$user->getPropertyValue("isLoggedIn")) {
-        Redirect::to("login/login.php");
+        Redirect::to("../login/login.php");
     }
     if(Session::exists("register_success") && $user->getPropertyValue("username") == Session::get("new_username")) {
         $welcomeMessage = Session::flash("register_success");
@@ -17,13 +17,14 @@
     if(isset($_POST["logout"])) {
         if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
             $user->logout();
-            Redirect::to("login/login.php");
+            Redirect::to("../login/login.php");
         }
     }
     $welcomeMessage = '';
     
     $search = new Search();
     $showingNumber = 4;
+    
     $searchKeyword = isset($_GET["q"]) ? $_GET["q"] : '';
     
     /*
@@ -41,19 +42,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V01D47 - search</title>
-    <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/index.css">
-    <link rel="stylesheet" href="styles/search.css">
+    <link rel='shortcut icon' type='../image/x-icon' href='../assets/images/favicons/favicon.ico' />
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/search.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="javascript/header.js" defer></script>
-    <script src="javascript/index.js" defer></script>
-    <script src="javascript/search.js" defer></script>
+    <script src="../javascript/header.js" defer></script>
+    <script src="../javascript/index.js" defer></script>
+    <script src="../javascript/search.js" defer></script>
 </head>
 <body>
-    <?php include_once "components/basic/header.php"; ?>
+    <?php include_once "../components/basic/header.php"; ?>
     <main>
         <div id="global-container">
             <div id="master-left">
@@ -73,41 +74,17 @@
                 </div>
                 <div class="search-result-type-container">
                     <div style="padding: 8px">
-                        <div class="flex-space">
+                        <div>
                             <h1 class="title-style-4">People</h1>
-                            <a href="<?php echo Config::get("root/path") . "search/people.php?q=" . trim(htmlspecialchars($searchKeyword)); ?>" class="link-style-2">see more</a>
                         </div>
                         <p class="label-style-2">Showing <span>
                             <?php echo ($number_of_users > $showingNumber) ? $showingNumber : $number_of_users; ?>
-                            </span> of <span><?php echo $number_of_users; ?></span> results
-                        </p>
+                            </span> of <span><?php echo $number_of_users; ?></span> results</p>
                     </div>
                     <div class="search-result">
                         <?php
-                            $count = 0;
                             foreach($searchUsersResult as $u) {
-                                if($count == $showingNumber) {
-                                    break;
-                                }
-                                $count++;
                                 echo $search->generateSearchPerson($u);
-                            }
-                        ?>
-                    </div>
-                </div>
-                
-                <div class="search-result-type-container">
-                    <div style="padding: 8px">
-                        <div class="flex-space">
-                            <h1 class="title-style-4">Groups</h1>
-                            <a href="" class="link-style-2">see more</a>
-                        </div>
-                        <p class="label-style-2">Showing <span>4</span> of <span>7</span> results</p>
-                    </div>
-                    <div class="search-result">
-                        <?php
-                            foreach($searchUsersResult as $u) {
-                                
                             }
                         ?>
                     </div>

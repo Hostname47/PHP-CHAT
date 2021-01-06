@@ -5,11 +5,21 @@ require_once "vendor/autoload.php";
 require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
+use models\User;
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
 
 if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
+}
+
+
+$username = isset($_GET["username"]) ? $_GET["username"] : '';
+if(!($user->getPropertyValue("username") == $username)) {
+    $fetched_user = new User();
+    $fetched_user->fetchUser("username", $username);
+} else {
+    $fetched_user = $user;
 }
 
 if(isset($_POST["save-profile-edites"])) {
@@ -129,7 +139,7 @@ if(isset($_POST["logout"])) {
             <div class="relative flex-column">
                 <div>
                     <div id="cover-container">
-                        <img src="<?php echo $user->getPropertyValue("cover"); ?>" class="cover-photo" alt="">
+                        <img src="<?php echo $fetched_user->getPropertyValue("cover"); ?>" class="cover-photo" alt="">
                     </div>
                     <div class="viewer">
                         <div class="relative">
@@ -140,7 +150,7 @@ if(isset($_POST["logout"])) {
                 </div>
                 <div id="profile-picture-container">
                     <div class="relative" style="border-radius: 50%">
-                        <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="profile-picture" alt="">
+                        <img src="<?php echo $fetched_user->getPropertyValue("picture"); ?>" class="profile-picture" alt="">
                         <img src="" class="profile-picture shadow-profile-picture absolute" alt="">
                     </div>
                     <div class="viewer">
@@ -152,8 +162,8 @@ if(isset($_POST["logout"])) {
                 </div>
             </div>
             <div id="name-and-username-container">
-                <h1 class="title-style-3"><?php echo $user->getPropertyValue("firstname") . " " . $user->getPropertyValue("lastname"); ?></h1>
-                <p class="regular-text-style-1">@<?php echo $user->getPropertyValue("username"); ?></p>
+                <h1 class="title-style-3"><?php echo $fetched_user->getPropertyValue("firstname") . " " . $fetched_user->getPropertyValue("lastname"); ?></h1>
+                <p class="regular-text-style-1">@<?php echo $fetched_user->getPropertyValue("username"); ?></p>
             </div>
             <div class="flex-space" id="owner-profile-menu-and-profile-edit">
                 <div id="profile-menu">
@@ -183,14 +193,14 @@ if(isset($_POST["logout"])) {
                                         <div id="cover-changer-container" class="relative">
                                             <img src="assets/images/icons/change-image.png" class="absolute image-size-1 change-image-icon" alt="">
                                             <input type="file" class="absolute change-image-icon" style="opacity: 0;" name="cover" form="save-profile-edits-form">
-                                            <img src="<?php echo $user->getPropertyValue("cover"); ?>" id="cover-changer-dim" alt="">
+                                            <img src="<?php echo $fetched_user->getPropertyValue("cover"); ?>" id="cover-changer-dim" alt="">
                                             <img src="" id="cover-changer-shadow" style="z-index: 0" class="absolute" alt="">
                                         </div>
                                     </div>
                                     <div class="relative flex-justify">
                                         <div id="change-picture-button" class="absolute">
                                             <div id="picture-changer-container" class="relative">
-                                                <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="former-picture-dim" alt="">
+                                                <img src="<?php echo $fetched_user->getPropertyValue("picture"); ?>" class="former-picture-dim" alt="">
                                                 <img src="assets/images/icons/change-image.png" class="absolute change-image-icon" alt="">
                                                 <input type="file" class="absolute change-image-icon" style="opacity: 0;" name="picture" form="save-profile-edits-form">
                                                 <img src="" class="former-picture-dim former-picture-shadow absolute" style="z-index: 0" alt="">
@@ -201,15 +211,15 @@ if(isset($_POST["logout"])) {
                                 <div id="textual-data-edit">
                                     <div class="field-style-1">
                                         <label for="display-name" class="label-style-1">First name</label>
-                                        <input type="text" form="save-profile-edits-form" class="input-style-1" value="<?php echo htmlspecialchars($user->getPropertyValue("firstname")); ?>" name="firstname">
+                                        <input type="text" form="save-profile-edits-form" class="input-style-1" value="<?php echo htmlspecialchars($fetched_user->getPropertyValue("firstname")); ?>" name="firstname">
                                     </div>
                                     <div class="field-style-1">
                                         <label for="display-name" class="label-style-1">Last name</label>
-                                        <input type="text" form="save-profile-edits-form" class="input-style-1" value="<?php echo htmlspecialchars($user->getPropertyValue("lastname")); ?>" name="lastname">
+                                        <input type="text" form="save-profile-edits-form" class="input-style-1" value="<?php echo htmlspecialchars($fetched_user->getPropertyValue("lastname")); ?>" name="lastname">
                                     </div>
                                     <div class="field-style-1">
                                         <label for="bio" class="label-style-1">Bio</label>
-                                        <textarea type="text" form="save-profile-edits-form" maxlength="800" class="textarea-style-1" placeholder="Add your bio.." name="bio"><?php echo $user->getPropertyValue('bio'); ?></textarea>
+                                        <textarea type="text" form="save-profile-edits-form" maxlength="800" class="textarea-style-1" placeholder="Add your bio.." name="bio"><?php echo $fetched_user->getPropertyValue('bio'); ?></textarea>
                                     </div>
                                     <div class="field-style-2" style="margin-bottom: 12px">
                                         <label for="private" class="label-style-1">Private account</label>
