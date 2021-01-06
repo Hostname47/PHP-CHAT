@@ -8,7 +8,8 @@
         "psr-4": {
             "classes\\": "classes/",
             "models\\": "models/",
-            "Mailgun\\": "Mailgun/"
+            "Mailgun\\": "Mailgun/",
+            "view\\": "view/"
         }
     }
 }

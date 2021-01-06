@@ -1,0 +1,29 @@
+
+.search-result-type-container {
+    margin-bottom: 12px;
+    background-color: rgb(78, 78, 78);
+    border-radius: 6px;
+    box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.89);
+}
+
+.search-result-item:nth-of-type(1) {
+    border-top: 1px solid rgb(99, 99, 99);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item {
+    cursor: pointer;
+    padding: 6px 12px;
+    border-bottom: 1px solid rgb(99, 99, 99);
+}
+
+.search-result-item:hover {
+    background-color: rgb(90, 90, 90);
+}
+
+.search-result {
+    margin-top: 6px;
+}

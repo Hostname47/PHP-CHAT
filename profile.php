@@ -47,6 +47,7 @@ if(isset($_POST["save-profile-edites"])) {
         ));
 
         if($validate->passed()) {
+            // Set textual data
             $user->setPropertyValue("firstname", $_POST["firstname"]);
             $user->setPropertyValue("lastname", $_POST["lastname"]);
             $user->setPropertyValue("bio", $_POST["bio"]);
@@ -74,11 +75,9 @@ if(isset($_POST["save-profile-edites"])) {
             }
 
             if(!empty($_FILES["cover"]["name"])) {
-                // If so we generate a unique hash to name the image
                 $generatedName = Hash::unique();
                 $generatedName = htmlspecialchars($generatedName);
-
-                // Then we fetch the image type t o concatenate it with the generated name
+                
                 $file = $_FILES["cover"]["name"];
                 $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
 

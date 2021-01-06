@@ -57,6 +57,11 @@ body {
     font-size: 22px;
 }
 
+.title-style-6 {
+    margin: 0;
+    font-size: 18px;
+}
+
 .title-style-2 {
     margin: 4px 4px 6px 4px;
     font-size: 18px;
@@ -105,9 +110,35 @@ body {
     width: 10px;
 }
 
+.image-style-5 {
+    display: block;
+    height: 22px;
+    width: 22px;
+}
+
+.image-style-6 {
+    display: block;
+    border-radius: 6px;
+    height: 50px;
+    width: 70px;
+    background-color: gray;
+}
+
 .label-style-1 {
     font-size: 13.5px;
     margin: 0 0 5px 5px;
+    display: block;
+}
+
+.label-style-2 {
+    font-size: 14px;
+    margin: 0px;
+    display: block;
+}
+
+.label-style-3 {
+    font-size: 14px;
+    margin: 0px 0 0 6px;
     display: block;
 }
 
@@ -125,6 +156,12 @@ body {
 .row-v-flex {
     display: flex;
     align-items: center;
+}
+
+.flex-row-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .flex-justify {
@@ -157,6 +194,22 @@ body {
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
+}
+
+.link-style-2 {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 900;
+
+    padding: 2px 8px;
+    border: 2px solid white;
+    border-radius: 5px;
+}
+
+.link-style-2:hover {
+    background-color: white;
+    color: black;
 }
 
 .link:hover {
@@ -216,6 +269,24 @@ body {
 
 .button-style-3:hover {
     background-color: rgb(56, 56, 56);
+}
+
+.button-style-4 {
+    display: flex;
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+    border: 1px solid white;
+    border-radius: 18px;
+    background: none;
+    font-size: 13px;
+
+    padding: 6px 12px;
+}
+
+.button-style-4:hover {
+    background-color: white;
+    color: black;
 }
 
 .toggle-button-style-1 {
@@ -372,6 +443,32 @@ body {
 
 .menu-button-style-2:hover {
     background-color: rgb(70, 70, 70);
+}
+
+.menu-button-style-3 {
+    margin: 0 3px;
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background-position: center center;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+
+    transition: all 0.4s ease;
+}
+
+.menu-button-style-3:hover {
+    background-color: rgb(27, 27, 27);
+}
+
+.search-background {
+    background-image: url(../assets/images/icons/white-search.png);
+}
+
+.video-background {
+    background-image: url(../assets/images/icons/videos.png);
 }
 
 .green-message

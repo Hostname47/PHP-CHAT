@@ -144,6 +144,42 @@ class User {
         return ($this->db->error()) ? false : true;
     }
 
+    public static function search($keyword) {
+        $keywords = strtolower($keyword);
+        $keywords = htmlspecialchars($keywords);
+        $keywords = trim($keywords);
+
+        /*
+        keyword could be multiple keywords separated by spaces.
+        keep in mind that if the keyword is empty, explode will return an array with one empty element
+        meaning you need to handle the situation where the first element is empty
+        */
+        $keywords = explode(' ', $keyword);
+
+        if($keywords[0] == '') {
+            // Handle situation where $keyword passed is empty
+            $query = "";
+        } else {
+            $query = "SELECT * FROM user_info ";
+            for($i=0;$i<count($keywords);$i++) {
+                $k = $keywords[$i];
+                if($i==0)
+                    $query .= "WHERE username LIKE '%$k%' OR firstname LIKE '%$k%' OR lastname LIKE '%$k%' ";
+                else
+                    $query .= "OR username LIKE '%$k%' OR firstname LIKE '%$k%' OR lastname LIKE '%$k%' ";
+            }
+        }
+
+        /*
+        We set WHERE false because if the $keywords is empty we don't appear anything and we display a message to the user
+        informing him to fill in the search box to find friends or posts ..
+        */
+
+        DB::getInstance()->query($query);
+        return DB::getInstance()->results();
+    }
+
+
     /*
     This function basically accepts two arguments, first the username and then the password in plaintext. First we check if
     the username exists in database, if so we need we fetch this user and compare the password of that user with the plain text passes by adding salt
