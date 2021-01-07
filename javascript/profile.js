@@ -17,7 +17,6 @@ $("#edit-profile-button").on({
     click: function() {
         let viewer = $(this).parent().find(".viewer");
         viewer.css("display", "block");
-        $("body").css("overflow-y", "hidden");
         return false;
     }
 });
@@ -74,7 +73,6 @@ $(".profile-picture-preview, .profile-cover-picture-preview, #edit-profile-conta
 
 $(".viewer").click(function() {
     $(this).css("display", "none");
-    $("body").css("overflow-y", "scroll");
 })
 
 $(".user-info-section-link").on( {

@@ -199,6 +199,23 @@ border-bottom-color: #ffffff;
     margin: 0;
 }
 
+#user-profile-button {
+    padding: 3px 6px 3px 4px;
+    display: flex;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: 600;
+    margin: 0 4px;
+
+    background-color: rgb(37, 37, 37);
+    transition: all 0.4s ease;
+}
+
+#user-profile-button:hover {
+    background-color: rgb(70, 70, 70);
+}
+
 .options-container {
     max-height: 450px;
 }

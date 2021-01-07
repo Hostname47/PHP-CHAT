@@ -4,7 +4,7 @@ namespace models;
 
 use classes\{Hash, Config, Session, DB, Cookie};
 
-class User {
+class User implements \JsonSerializable {
     private $db,
         $sessionName,
         $cookieName,
@@ -250,17 +250,12 @@ class User {
         return $this->isLoggedIn;
     }
 
-    public function toString() {
-        return "User with:
-            id: $this->id, 
-            firstname: $this->firstname, 
-            lastname: $this->lastname, 
-            username: $this->username, 
-            bio: $this->bio, 
-            email: $this->email, 
-            password: $this->password, 
-            salt: $this->salt, 
-            joined: $this->joined, 
-            user_type: $this->user_type";
+    public function jsonSerialize()
+    {
+        //$vars = get_object_vars($this);
+        $vars = array(
+            "username"=>$this->username
+        );
+        return $vars;
     }
 }

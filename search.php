@@ -71,6 +71,10 @@
                 <div class="no-search-container flex-row-column">
                     <p class="no-search-results">No search results.</p>
                 </div>
+
+                <div class="flex-row-column empty-search">
+                    <p style="margin: 0">Type in the box above and submit to perform a search.</p>
+                </div>
                 <div class="search-result-type-container">
                     <div style="padding: 8px">
                         <div class="flex-space">
@@ -114,32 +118,183 @@
                 </div>
                 <script defer>
                     $(document).ready(function () {
-                        let containers = $(".search-result-type-container");
-                        let dataExists = false;
-                        jQuery.each(containers, function(index, item) {
-                            /*
-                            Here when we loop through all containers, we need to check wether at least one of the containers
-                            contains a data, if so we don't have to print results not found.
-                            */
-                            if($(this).find(".search-result .search-result-item").length != 0) {
-                                dataExists = true;
-                                $(this).css("display", "block");
-                            }
-                        })
-
-                        if(!dataExists) {
-                            $(".no-search-container").css("display", "flex");
-                            console.log("display error !");
+                        const params = new URLSearchParams(window.location.search)
+                        if(params.get('q') == '') {
+                            $(".empty-search").css("display", "flex");
                         } else {
-                            $(".no-search-container").css("display", "none");
-                            console.log("none");
+                            let containers = $(".search-result-type-container");
+                            let dataExists = false;
+                            jQuery.each(containers, function(index, item) {
+                                /*
+                                Here when we loop through all containers, we need to check wether at least one of the containers
+                                contains a data, if so we don't have to print results not found.
+                                */
+                                if($(this).find(".search-result .search-result-item").length != 0) {
+                                    dataExists = true;
+                                    $(this).css("display", "block");
+                                }
+                            })
+    
+                            if(!dataExists) {
+                                $(".no-search-container").css("display", "flex");
+                                console.log("display error !");
+                            } else {
+                                $(".no-search-container").css("display", "none");
+                                console.log("none");
+                            }
                         }
                     });
 
                 </script>
             </div>
             <div id="master-right">
-                
+                <div class="flex-space relative">
+                    <h3 class="title-style-2">Contacts</h3>
+                    <div>
+                        <a href="" id="contact-search"></a>
+                    </div>
+                    <div class="absolute" id="contact-search-field-container">
+                        <input type="text" id="contact-search-field" placeholder="Search by friend or group ..">
+                        <a class="not-link" href=""><img src="assets/images/icons/close.png" id="close-contact-search" class="image-style-4" alt=""></a>
+                    </div>
+                </div>
+                <div id="contacts-container">
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto489</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto223</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto489</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto223</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a><a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto489</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto223</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a><a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto489</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto223</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a><a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto489</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto223</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a><a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto489</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto223</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a><a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                    <a href="" class="contact-user-button">
+                        <div class="contact-user">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="contact-user-name">grotto489</p>
+                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </main>

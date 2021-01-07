@@ -18,7 +18,7 @@
         <div id="global-header-strip-container">
             <div class="row-v-flex header-menu">
                 <div class="horizontal-menu-item-wrapper">
-                    <a href="" class="horizontal-menu-link menu-button-style-1" id="home-button">Home</a>
+                    <a href="<?php echo Config::get("root/path");?>index.php" class="horizontal-menu-link menu-button-style-1" id="home-button">Home</a>
                 </div>
                 <div class="horizontal-menu-item-wrapper">
                     <a href="" class="horizontal-menu-link menu-button-style-1" id="explore-button">Explore</a>
@@ -29,6 +29,16 @@
             </div>
             <div class="menu-items-separator">〡</div>
             <div class="row-v-flex header-menu">
+
+                <div class="horizontal-menu-item-wrapper">
+                    <a href="<?php echo Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");?>" id="user-profile-button" class="flex-row-column">
+                        <img src="<?php echo Config::get("root/path") . $user->getPropertyValue("picture"); ?>" class="image-style-2" style="margin-right: 6px">
+                        <?php echo $user->getPropertyValue("username");?>
+                    </a>
+                    <div class="sub-label">
+                        <!-- "Notifications" will appear when user hover over the abov link button -->
+                    </div>
+                </div>
                 <div class="horizontal-menu-item-wrapper">
                     <a href="" class="menu-button-style-2 button-with-suboption" id="notification-button"></a>
                     <div class="sub-label">
@@ -41,7 +51,7 @@
                             <a href="" class="sub-option">
                                 <div class="notif-option-item">
                                     <div>
-                                        <img src="assets/images/logos/logo512.png" class="image-style-1" alt="user's profile picture">
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/logos/logo512.png"; ?>" class="image-style-1" alt="user's profile picture">
                                     </div>
                                     <div class="notification-content-container">
                                         <p class="notif-content"><span class="action-doer">Mouad Nassri</span> <span class="notif-action">commented</span> <span> in your profile picture</span></p>
@@ -52,7 +62,7 @@
                             <a href="" class="sub-option">
                                 <div class="notif-option-item">
                                     <div>
-                                        <img src="assets/images/logos/logo512.png" class="image-style-1" alt="user's profile picture">
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/logos/logo512.png"; ?>" class="image-style-1" alt="user's profile picture">
                                     </div>
                                     <div class="notification-content-container">
                                         <p class="notif-content"><span class="action-doer">Mouad Nassri</span> <span class="notif-action">commented</span> <span> in your profile picture</span></p>
@@ -72,7 +82,7 @@
                             <a href="" class="sub-option">
                                 <div class="message-option-item">
                                     <div>
-                                        <img src="assets/images/logos/logo512.png" class="image-style-1" alt="user's profile picture">
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/logos/logo512.png"; ?>" class="image-style-1" alt="user's profile picture">
                                     </div>
                                     <div class="message-content-container">
                                         <p class="message-sender">Mouad Nassri</p>
@@ -80,14 +90,14 @@
                                         <p class="notif-date">40 minutes ago</p>
                                     </div>
                                     <div>
-                                        <img src="assets/images/icons/sent.png" class="message-state-sign" alt="message state icon">
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/icons/sent.png"; ?>" class="message-state-sign" alt="message state icon">
                                     </div>
                                 </div>
                             </a>
                             <a href="" class="sub-option">
                                 <div class="message-option-item">
                                     <div>
-                                        <img src="assets/images/logos/logo512.png" class="image-style-1" alt="user's profile picture">
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/logos/logo512.png"; ?>" class="image-style-1" alt="user's profile picture">
                                     </div>
                                     <div class="message-content-container">
                                         <p class="message-sender">Loup Garou</p>
@@ -95,7 +105,7 @@
                                         <p class="notif-date">40 minutes ago</p>
                                     </div>
                                     <div>
-                                        <img src="assets/images/icons/received.png" class="message-state-sign" alt="message state icon">
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/icons/received.png"; ?>" class="message-state-sign" alt="message state icon">
                                     </div>
                                 </div>
                             </a>
@@ -113,7 +123,7 @@
                             <a href="profile.php" class="sub-option">
                                 <div class="message-option-item" style="align-items: center">
                                     <div>
-                                        <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="image-style-1" alt="user's profile picture">
+                                        <img src="<?php echo Config::get("root/path") . $user->getPropertyValue("picture"); ?>" class="image-style-1" alt="user's profile picture">
                                     </div>
                                     <div class="message-content-container">
                                         <p class="account-user"><?php echo $user->getPropertyValue("username"); ?></p>
@@ -125,17 +135,27 @@
                             <a href="" class="sub-option">
                                 <div class="row-v-flex">
                                     <div>
-                                        <img src="assets/images/icons/settings.png" class="image-style-2" alt="user's profile picture">
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/icons/settings.png" ?>" class="image-style-2" alt="user's profile picture">
                                     </div>
                                     <div class="message-content-container">
                                         <p style="margin: 4px">Settings</p>
                                     </div>
                                 </div>
                             </a>
+                            <a href="" class="sub-option">
+                                <div class="row-v-flex">
+                                    <div>
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/icons/log.png" ?>" class="image-style-2" alt="user activity log">
+                                    </div>
+                                    <div class="message-content-container">
+                                        <p style="margin: 4px">Activity Log</p>
+                                    </div>
+                                </div>
+                            </a>
                             <button name="logout" type="submit" form="logout-form" class="sub-option logout-button">
                                 <div class="row-v-flex">
                                     <div>
-                                        <img src="assets/images/icons/logout.png" class="image-style-2" alt="user's profile picture">
+                                        <img src="<?php echo Config::get("root/path") . "assets/images/icons/logout.png" ?>" class="image-style-2" alt="user's profile picture">
                                     </div>
                                     <div class="message-content-container">
                                         <p style="margin: 4px">Logout</p>
