@@ -113,11 +113,11 @@ border-bottom-color: #ffffff;
     color: #ff5656;
 }
 
-#notification-button {
+.notification-button {
     background-image: url("../assets/images/icons/notification.png");
 }
 
-#messages-button {
+.messages-button {
     background-image: url("../assets/images/icons/messages.png");
 }
 

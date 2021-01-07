@@ -19,7 +19,7 @@ $(".search-result-person").click(function() {
             let result = JSON.parse(this.responseText);
             if(result["problem"] == undefined) {
                 let username = result["username"];
-                
+
                 location.href = "profile.php?username="+username;
             } else {
                 // Handle when the id is not present in database, or an invalid data is provided
@@ -30,4 +30,4 @@ $(".search-result-person").click(function() {
     xmlhttprequest.send();
 
     return false;
-})
+});

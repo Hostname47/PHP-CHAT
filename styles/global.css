@@ -464,6 +464,25 @@ body {
     background-color: rgb(27, 27, 27);
 }
 
+.menu-button-style-4 {
+    margin: 0 4px;
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    background-color: rgb(37, 37, 37);
+    background-position: center center;
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+
+    transition: all 0.4s ease;
+}
+
+.menu-button-style-4:hover {
+    background-color: rgb(27, 27, 27);
+}
+
 .search-background {
     background-image: url(../assets/images/icons/white-search.png);
 }

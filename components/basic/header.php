@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="horizontal-menu-item-wrapper">
-                    <a href="" class="menu-button-style-2 button-with-suboption" id="notification-button"></a>
+                    <a href="" class="menu-button-style-2 button-with-suboption notification-button"></a>
                     <div class="sub-label">
                         <!-- "Notifications" will appear when user hover over the abov link button -->
                     </div>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="horizontal-menu-item-wrapper">
-                    <a href="" class="menu-button-style-2 button-with-suboption" id="messages-button"></a>
+                    <a href="" class="menu-button-style-2 button-with-suboption messages-button"></a>
                     <div class="sub-options-container">
                         <h2 class="title-style-1">Messages</h2>
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
