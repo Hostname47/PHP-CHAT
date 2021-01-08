@@ -18,7 +18,7 @@ main {
     box-sizing: border-box;
     width: 280px;
 
-    background-color: rgb(73, 73, 73);
+    background-color: rgb(56, 56, 56);
 }
 
 #master-right {
@@ -149,4 +149,17 @@ main {
 
 .menu-item-style-2:hover {
     background-color: rgb(99, 99, 99);
+}
+
+.create-post-container {
+    background-color: rgb(236, 236, 236);
+    border-radius: 12px;
+    padding-bottom: 8px;
+}
+
+.create-post-header {
+    border-radius: 8px 8px 0 0;
+    padding: 8px;
+    border-bottom: 1px solid rgb(51, 51, 51);
+    background-color: rgb(24, 24, 24);
 }

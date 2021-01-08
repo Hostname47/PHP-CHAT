@@ -48,7 +48,7 @@
                     <h3 class="title-style-2">Home</h3>
                     <div class="flex">
                         <a href="" class="menu-button-style-3 video-background" id="go-to-videos"></a>
-                        <a href="" class="menu-button-style-3" id="messages-button"></a>
+                        <a href="" class="menu-button-style-3 messages-button"></a>
                         <a href="" class="menu-button-style-3 search-background go-to-search"></a>
                     </div>
                 </div>
@@ -89,8 +89,60 @@
                         }
                     </script>
                 </div>
+                <div class="create-post-container">
+                    <div class="flex-space create-post-header">
+                        <div class="row-v-flex">
+                            <img src="<?php echo Config::get("root/path") . $user->getPropertyValue("picture"); ?>" class="image-style-2" alt="">
+                            <div class="horizontal-menu-item-wrapper" style="margin-left: 8px">
+                                <a href="" class="button-style-4 button-with-suboption">Post to timeline</a>
+                                <div class="sub-options-container sub-options-container-style-2">
+                                    <div class="paragraph-wrapper-style-1">
+                                        <p class="label-style-2">Post to: Timeline</p>
+                                    </div>
+                                    <!-- When this link get pressed you need to redirect the user to the notification post -->
+                                    <div class="options-container-style-1">
+                                        <div class="sub-option-style-2 post-to-option">
+                                            <label for="" class="flex">Timeline</label>
+                                            <input type="radio" checked name="post-to" class="flex">
+                                        </div>
+                                        <div class="sub-option-style-2 post-to-option">
+                                            <label for="" class="flex">Groups</label>
+                                            <div class="flex-row-column">
+                                                <input type="radio" name="post-to" class="flex">
+                                                <a href="" class="button-more-style-1">></a>
+                                            </div>
+                                        </div>
+                                        <div class="sub-option-style-2 post-to-option" style="margin-bottom: 4px">
+                                            <label for="" class="flex">Pages</label>
+                                            <div class="flex-row-column">
+                                                <input type="radio" name="post-to" class="flex">
+                                                <a href="" class="button-more-style-1">></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="full-screen-create-post" class="relative">
+                            <a href="" class="button-style-5 full-screen-background "></a>
+                            <div class="viewer">
 
-
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <textarea name="post-textual-content" class="textarea-style-2" placeholder="What's on your mind .."></textarea>
+                    </div>
+                    <div class="row-v-flex horizontal-frame-style-1">
+                        <a href="" class="button-style-6 photo-or-video-background"></a>
+                        <a href="" class="button-style-6 photo-or-video-background"></a>
+                        <a href="" class="button-style-6 photo-or-video-background"></a>
+                        <a href="" class="button-style-6 photo-or-video-background"></a>
+                    </div>
+                    <div class="button-style-7-container">
+                        <input type="submit" value="POST" class="button-style-7">
+                    </div>
+                </div>
             </div>
             <div id="master-right">
                 <div class="flex-space relative">

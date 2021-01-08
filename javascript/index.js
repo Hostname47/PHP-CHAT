@@ -27,3 +27,8 @@ $("#close-contact-search").click(function() {
     }, 300);
     return false;
 })
+
+$(".post-to-option").click(function() {
+    $(this).parent().find("input[name='post-to']").prop("checked", false);
+    $(this).find("input").prop("checked", true);
+});

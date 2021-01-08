@@ -51,7 +51,7 @@
                     <div class="sub-label">
                         <!-- "Notifications" will appear when user hover over the abov link button -->
                     </div>
-                    <div class="sub-options-container">
+                    <div class="sub-options-container sub-options-container-style-1">
                         <h2 class="title-style-1">Notifications</h2>
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
                         <div class="options-container">
@@ -82,7 +82,7 @@
                 </div>
                 <div class="horizontal-menu-item-wrapper">
                     <a href="" class="menu-button-style-2 button-with-suboption messages-button"></a>
-                    <div class="sub-options-container">
+                    <div class="sub-options-container sub-options-container-style-1">
                         <h2 class="title-style-1">Messages</h2>
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
                         <div class="options-container">
@@ -124,7 +124,7 @@
             <div class="row-v-flex header-menu">
                 <div class="horizontal-menu-item-wrapper">
                     <a href="" id="user-photo-button" class="button-with-suboption"></a>
-                    <div class="sub-options-container">
+                    <div class="sub-options-container sub-options-container-style-1">
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
                         <div class="options-container">
                             <a href="profile.php" class="sub-option">

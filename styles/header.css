@@ -47,7 +47,7 @@ header {
     position: relative;
 }
 
-.sub-options-container {
+.sub-options-container-style-1 {
     display: none;
     position: absolute;
     right: 0;
@@ -60,13 +60,13 @@ header {
     color: black;
 }
 
-.sub-options-container::after {
+.sub-options-container-style-1::after {
 left: 25px;
 border: 5px solid transparent;
 border-bottom-color: #ffffff;
 }
 
-.sub-options-container::before, .sub-options-container::after {
+.sub-options-container-style-1::before, .sub-options-container-style-1::after {
     content: '';
     position: absolute;
     bottom: 100%;
