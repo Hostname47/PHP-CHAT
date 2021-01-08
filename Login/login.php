@@ -40,6 +40,7 @@
                 if($log) {
                     Redirect::to("../index.php");
                 } else {
+                    // Here define a variable with value and display it in error div in case credentials are wrong
                     echo "<p>Bad credentials</p>";
                 }
             } else {
@@ -68,7 +69,7 @@
                 "username"=>array(
                     "name"=>"Username",
                     "required"=>true,
-                    "min"=>2,
+                    "min"=>6,
                     "max"=>20,
                     "unique"=>true
                 ),
@@ -118,7 +119,7 @@
                 is the same person log in because the user could create a new account but login with other account, in that case we won't
                 show any welcome message*/
                 
-                Session::flash("register_success", "Welcome to VOID47 chat application.");
+                Session::flash("register_success", "welcome to VOID47 chat application");
                 Session::flash("new_username", Common::getInput($_POST, "username"));
             } else {
                 foreach($validate->errors() as $key =>$error) {

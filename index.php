@@ -15,14 +15,11 @@
     $welcomeMessage = '';
     
     if(Session::exists("register_success") && $user->getPropertyValue("username") == Session::get("new_username")) {
-        $welcomeMessage = Session::flash("register_success");
-    }
-
-    if(isset($_POST["logout"])) {
-        if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
-            $user->logout();
-            Redirect::to("login/login.php");
-        }
+        $welcomeMessage = Session::flash("new_username") . ", " . Session::flash("register_success");
+    } else {
+        Session::delete("register_success");
+        Session::delete("new_username");
+        Session::delete("register");
     }
 
 ?>
@@ -92,6 +89,8 @@
                         }
                     </script>
                 </div>
+
+
             </div>
             <div id="master-right">
                 <div class="flex-space relative">

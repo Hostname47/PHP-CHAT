@@ -197,7 +197,7 @@ if(isset($_POST["logout"])) {
                 </div>
                 <div class="user-info-section">
                     <h2 class="title-style-4">About</h2>
-                    <p class="calendar-icon regular-text-style-2">Member since <!-- Join date should be fetched from db -->March 2020</p>
+                    <p class="calendar-icon regular-text-style-2">Member since <?php echo date("F Y", strtotime($fetched_user->getPropertyValue("joined"))) ?></p>
                 </div>
                 <div class="user-info-section">
                     <div class="flex-space">

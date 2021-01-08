@@ -243,6 +243,7 @@ class User implements \JsonSerializable {
         $this->db->query("DELETE FROM users_session WHERE user_id = ?", array($this->id));
 
         Session::delete($this->sessionName);
+        Session::delete(Config::get("session/tokens/logout"));
         Cookie::delete($this->cookieName);
     }
 

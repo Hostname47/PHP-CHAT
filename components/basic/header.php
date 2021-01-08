@@ -1,6 +1,13 @@
 
 <?php
-    use classes\{Config, Token};
+    use classes\{Config, Token, Session, Common, Redirect};
+
+    if(isset($_POST["logout"])) {
+        if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
+            $user->logout();
+            Redirect::to("login/login.php");
+        }
+    }
 ?>
 <header>
     <div id="top-header">
@@ -11,7 +18,7 @@
         <div class="inline-logo-separator">〡</div>
         <div class="row-v-flex">
             <form action="<?php echo Config::get("root/path") . htmlspecialchars('search.php'); ?>" method="GET" id="header-search-form">
-                <input type="text" name="q" class="input-text-style-1 search-back" placeholder="Search for friends, posts, events ..">
+                <input type="text" name="q" value="<?php echo isset($_GET["q"]) ? trim(htmlspecialchars($_GET["q"])) : '' ?>" class="input-text-style-1 search-back" placeholder="Search for friends, posts, events ..">
                 <input type="submit" value="search" class="search-button-style-1">
             </form>
         </div>
@@ -161,10 +168,16 @@
                                         <p style="margin: 4px">Logout</p>
                                     </div>
                                 </div>
-                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="logout-form">
-                                    <input type="hidden" name="token_logout" value="<?php echo Token::generate("logout"); ?>">
-                                </form>
                             </button>
+                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="logout-form">
+                                <input type="hidden" name="token_logout" value="<?php 
+                                    if(Session::exists("logout")) 
+                                        echo Session::get("logout");
+                                    else {
+                                        echo Token::generate("logout");
+                                    }
+                                ?>">
+                            </form>
                         </div>
                     </div>
                 </div>
