@@ -16,10 +16,6 @@
     
     if(Session::exists("register_success") && $user->getPropertyValue("username") == Session::get("new_username")) {
         $welcomeMessage = Session::flash("new_username") . ", " . Session::flash("register_success");
-    } else {
-        Session::delete("register_success");
-        Session::delete("new_username");
-        Session::delete("register");
     }
 
 ?>
@@ -38,6 +34,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="javascript/header.js" defer></script>
     <script src="javascript/index.js" defer></script>
+    <script src="javascript/global.js" defer></script>
 </head>
 <body>
     <?php include_once "components/basic/header.php"; ?>
@@ -55,7 +52,7 @@
                 <div>
                     <div>
                         <div class="menu-item-style-1 row-v-flex">
-                            <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="image-style-2" alt="">
+                            <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-2" alt="">
                             <p class="label-style-3"><?php echo $user->getPropertyValue("username"); ?></p>
                         </div>
                         <div class="menu-item-style-2 row-v-flex">
@@ -90,12 +87,15 @@
                     </script>
                 </div>
                 <div class="create-post-container">
+                    <div class="post-created-message">
+                        <p>Post created successfully and added to your <span id="post-creation-place">timeline</span>.</p>
+                    </div>
                     <div class="flex-space create-post-header">
                         <div class="row-v-flex">
                             <img src="<?php echo Config::get("root/path") . $user->getPropertyValue("picture"); ?>" class="image-style-2" alt="">
                             <div class="horizontal-menu-item-wrapper" style="margin-left: 8px">
-                                <a href="" class="button-style-4 button-with-suboption">Post to timeline</a>
-                                <div class="sub-options-container sub-options-container-style-2">
+                                <a href="" class="button-style-4 button-with-suboption more-button">Post to timeline</a>
+                                <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
                                     <div class="paragraph-wrapper-style-1">
                                         <p class="label-style-2">Post to: Timeline</p>
                                     </div>
@@ -103,20 +103,20 @@
                                     <div class="options-container-style-1">
                                         <div class="sub-option-style-2 post-to-option">
                                             <label for="" class="flex">Timeline</label>
-                                            <input type="radio" checked name="post-to" class="flex">
+                                            <input type="radio" checked name="post-to" form="create-post-form" value="timeline" class="flex rad-opt">
                                         </div>
                                         <div class="sub-option-style-2 post-to-option">
                                             <label for="" class="flex">Groups</label>
                                             <div class="flex-row-column">
-                                                <input type="radio" name="post-to" class="flex">
-                                                <a href="" class="button-more-style-1">></a>
+                                                <input type="radio" name="post-to" form="create-post-form" disabled value="group" class="flex rad-opt">
+                                                <div href="" class="button-more-style-1">></div>
                                             </div>
                                         </div>
                                         <div class="sub-option-style-2 post-to-option" style="margin-bottom: 4px">
                                             <label for="" class="flex">Pages</label>
                                             <div class="flex-row-column">
-                                                <input type="radio" name="post-to" class="flex">
-                                                <a href="" class="button-more-style-1">></a>
+                                                <input type="radio" name="post-to" form="create-post-form" disabled value="page" class="flex rad-opt">
+                                                <div href="" class="button-more-style-1">></div>
                                             </div>
                                         </div>
                                     </div>
@@ -131,16 +131,25 @@
                         </div>
                     </div>
                     <div>
-                        <textarea name="post-textual-content" class="textarea-style-2" placeholder="What's on your mind .."></textarea>
+                        <textarea name="post-textual-content" form="create-post-form" id="create-post-textual-content" class="textarea-style-2" placeholder="What's on your mind .."></textarea>
+                    </div>
+                    <div class="image-post-uploaded-container">
+                        
                     </div>
                     <div class="row-v-flex horizontal-frame-style-1">
-                        <a href="" class="button-style-6 photo-or-video-background"></a>
-                        <a href="" class="button-style-6 photo-or-video-background"></a>
-                        <a href="" class="button-style-6 photo-or-video-background"></a>
-                        <a href="" class="button-style-6 photo-or-video-background"></a>
+                        <div class="relative" style="overflow: hidden; width: 40px">
+                            <input type="file" name="photo-or-video" multiple form="create-post-form" id="create-post-photo-or-video" class="absolute no-opacity-element">
+                            <div class="photo-or-video-background button-style-6"></div>
+                        </div>
+                        <div class="relative" style="overflow: hidden; width: 40px">
+                            <a type="file" class="no-opacity-element"></a>
+                            <div class="black-live button-style-6"></div>
+                        </div>
                     </div>
-                    <div class="button-style-7-container">
-                        <input type="submit" value="POST" class="button-style-7">
+                    <div class="button-style-7-container" id="post-create-button">
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" id="create-post-form" enctype="multipart/form-data">
+                            <input type="submit" name="share-post" value="POST" class="button-style-7 share-post">
+                        </form>
                     </div>
                 </div>
             </div>

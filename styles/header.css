@@ -88,39 +88,6 @@ border-bottom-color: #ffffff;
     margin: 0 4px;
 }
 
-#home-button {
-    background-image: url("../assets/images/icons/home-w.png");
-}
-
-#home-button:hover {
-    background-image: url("../assets/images/icons/home-green.png");
-}
-
-#explore-button {
-    background-image: url("../assets/images/icons/explore-w.png");
-}
-
-#explore-button:hover {
-    background-image: url("../assets/images/icons/explore-green.png");
-}
-
-#live-button {
-    background-image: url("../assets/images/icons/live-w.png");
-}
-
-#live-button:hover {
-    background-image: url("../assets/images/icons/live-red.png");
-    color: #ff5656;
-}
-
-.notification-button {
-    background-image: url("../assets/images/icons/notification.png");
-}
-
-.messages-button {
-    background-image: url("../assets/images/icons/messages.png");
-}
-
 #user-photo-button {
     margin: 0 4px;
     width: 36px;

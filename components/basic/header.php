@@ -31,7 +31,7 @@
                     <a href="" class="horizontal-menu-link menu-button-style-1" id="explore-button">Explore</a>
                 </div>
                 <div class="horizontal-menu-item-wrapper">
-                    <a href="" class="horizontal-menu-link menu-button-style-1" id="live-button">Live</a>
+                    <a href="" class="horizontal-menu-link menu-button-style-1 live-button">Live</a>
                 </div>
             </div>
             <div class="menu-items-separator">〡</div>
@@ -39,7 +39,7 @@
 
                 <div class="horizontal-menu-item-wrapper">
                     <a href="<?php echo Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");?>" id="user-profile-button" class="flex-row-column">
-                        <img src="<?php echo Config::get("root/path") . $user->getPropertyValue("picture"); ?>" class="image-style-2" style="margin-right: 6px">
+                        <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-2" style="margin-right: 6px">
                         <?php echo $user->getPropertyValue("username");?>
                     </a>
                     <div class="sub-label">
@@ -130,7 +130,7 @@
                             <a href="profile.php" class="sub-option">
                                 <div class="message-option-item" style="align-items: center">
                                     <div>
-                                        <img src="<?php echo Config::get("root/path") . $user->getPropertyValue("picture"); ?>" class="image-style-1" alt="user's profile picture">
+                                        <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-1" alt="user's profile picture">
                                     </div>
                                     <div class="message-content-container">
                                         <p class="account-user"><?php echo $user->getPropertyValue("username"); ?></p>
