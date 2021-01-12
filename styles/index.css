@@ -199,6 +199,7 @@ main {
 
 .post-created-message {
     display: none;
+    opacity: 0;
     padding: 0 8px 0 36px;
     background-color: rgb(20, 20, 20);
     margin: 0;

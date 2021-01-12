@@ -35,9 +35,13 @@ $("#create-post-photo-or-video").change(function(event) {
                     // FileList in javascript is readonly So: for now let's botter our heads with only posting one image
                     //Here we need only to remove this image and not all the images in the queue
                     $("#create-post-photo-or-video").val("");
-                    console.log(event.target.files);
                     // Also here use the following to remove only the deleted image: $(this).parent().remove();
                     $(this).parent().parent().find(".post-creation-item").remove();
+                    if($("#create-post-textual-content").val() != "") {
+                        $("#post-create-button").css("display", "block");
+                    } else {
+                        $("#post-create-button").css("display", "none");
+                    }
                 });
             };
         
@@ -49,8 +53,49 @@ $("#create-post-photo-or-video").change(function(event) {
 });
 
 $(".share-post").click(function(event) {
+    /*
+    I SPENT WITH THAT FEATURE More than 2 Hours in a row and I got a headache so please read the following statement:
+    When share-post submit button get clicked we prevent the default behaviour of submitting data to the server
+    So we need to get the posted data from the form
+    IMPORTANT: when we prevent the default behaviour of submit button this button will not be submitted with the form
+    and in the API we based our post task on this buttton so we need to APPEND THIS SUBMIT BUTTON TO THE FORM DATA with it's proper name used in the api (share-post)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Actually we don't have to :)
+    In the api we don't have to check wether the submit button is set or not because we do it here and we only call the 
+    api to add a post and because the api is RESTful it has no state or state of button to be depend on
+    */
+
     event.preventDefault();
 
-    // ADD POST THROUGH AJAX
-    console.log("post");
-})
+    $(".share-post").attr('disabled','disabled');
+    $(".share-post").attr('value', "POSTING ..");
+
+    let formData = new FormData($("#create-post-form").get(0));
+
+    $.ajax({
+        url: $("#create-post-form").attr('action'),
+        method: 'POST',
+        enctype: 'multipart/form-data',
+        contentType: false,
+        processData: false,
+        data: formData,
+        success: function(response){
+            $(".share-post").removeAttr('disabled');
+            $(".share-post").attr('value', "POST");
+
+            $(".post-created-message").css("display", "block");
+            $(".post-created-message").animate({
+                    opacity: 1
+            }, 300);
+            setTimeout(function() { 
+                $(".post-created-message").animate({
+                    opacity: 0
+                }, 300);
+            }, 3000, function() {$(".post-created-message").css("display", "none");});
+        },
+        error: function(){
+            console.log('error')
+        }
+    });
+});

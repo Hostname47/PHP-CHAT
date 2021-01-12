@@ -5,6 +5,7 @@
     require_once "core/init.php";
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
+    use models\Post;
     // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
     // Here we check if the user is not logged in and we redirect him to login page
 
@@ -13,7 +14,6 @@
     }
 
     $welcomeMessage = '';
-    
     if(Session::exists("register_success") && $user->getPropertyValue("username") == Session::get("new_username")) {
         $welcomeMessage = Session::flash("new_username") . ", " . Session::flash("register_success");
     }
@@ -108,14 +108,7 @@
                                         <div class="sub-option-style-2 post-to-option">
                                             <label for="" class="flex">Groups</label>
                                             <div class="flex-row-column">
-                                                <input type="radio" name="post-to" form="create-post-form" disabled value="group" class="flex rad-opt">
-                                                <div href="" class="button-more-style-1">></div>
-                                            </div>
-                                        </div>
-                                        <div class="sub-option-style-2 post-to-option" style="margin-bottom: 4px">
-                                            <label for="" class="flex">Pages</label>
-                                            <div class="flex-row-column">
-                                                <input type="radio" name="post-to" form="create-post-form" disabled value="page" class="flex rad-opt">
+                                                <input type="radio" name="post-to" form="create-post-form" value="group" class="flex rad-opt">
                                                 <div href="" class="button-more-style-1">></div>
                                             </div>
                                         </div>
@@ -138,7 +131,7 @@
                     </div>
                     <div class="row-v-flex horizontal-frame-style-1">
                         <div class="relative" style="overflow: hidden; width: 40px">
-                            <input type="file" name="photo-or-video" multiple form="create-post-form" id="create-post-photo-or-video" class="absolute no-opacity-element">
+                            <input type="file" name="photo-or-video" multiple size="5" form="create-post-form" id="create-post-photo-or-video" class="absolute no-opacity-element">
                             <div class="photo-or-video-background button-style-6"></div>
                         </div>
                         <div class="relative" style="overflow: hidden; width: 40px">
@@ -147,8 +140,16 @@
                         </div>
                     </div>
                     <div class="button-style-7-container" id="post-create-button">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" id="create-post-form" enctype="multipart/form-data">
-                            <input type="submit" name="share-post" value="POST" class="button-style-7 share-post">
+                        <form action="api/post/post.php" method="POST" id="create-post-form" name="create-post-form" enctype="multipart/form-data">
+                            <input type="hidden" name="post_owner" value="<?php echo $user->getPropertyValue("id"); ?>">
+                            <input type="hidden" name="token_post" value="<?php 
+                                    if(Session::exists("share-post")) 
+                                        echo Session::get("share-post");
+                                    else {
+                                        echo Token::generate("share-post");
+                                    }
+                            ?>">
+                            <input type="submit" name="share-post-button" value="POST" class="button-style-7 share-post">
                         </form>
                     </div>
                 </div>

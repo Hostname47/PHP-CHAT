@@ -110,6 +110,7 @@
                 $user->add();
                 
                 mkdir("../data/users/" . Common::getInput($_POST, "username")."/");
+                mkdir("../data/users/" . Common::getInput($_POST, "username")."/posts/");
                 mkdir("../data/users/" . Common::getInput($_POST, "username")."/media/");
                 mkdir("../data/users/" . Common::getInput($_POST, "username")."/media/pictures/");
                 mkdir("../data/users/" . Common::getInput($_POST, "username")."/media/covers/");

@@ -27,6 +27,7 @@ $GLOBALS["config"] = array(
             "login"=>"login",
             "reset-pasword"=>"reset-pasword",
             "saveEdits"=>"saveEdits",
+            "share-post"=>"share-post",
             "logout"=>"logout"
         )
     ),

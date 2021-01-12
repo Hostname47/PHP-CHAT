@@ -86,68 +86,68 @@ class Validation {
                     }
                 }
             }
-        }
-
-        foreach($items as $item=>$rules) {
-            foreach($rules as $rule => $rule_value) {
-                $value = trim($source[$item]);
-                $item = htmlspecialchars($item);
-
-                if($rule === "required" && $rule_value == true && empty($value)) {
-                    $this->addError("{$rules['name']} field is required");
-                } else if(!empty($value)) {
-                    switch($rule) {
-                        // Some are implemented here in switch and some of them has their own functions like email func
-                        case 'min':
-                            if(strlen($value) < $rule_value) {
-                                $this->addError("{$rules['name']} must be a minimum of $rule_value characters.");
-                            }
-                        break;
-                        case 'max':
-                            if(strlen($value) > $rule_value) {
-                                $this->addError("{$rules['name']} must be a maximum of $rule_value characters.");
-                            }
-                        break;
-                        case 'matches':
-                            if($value != $source[$rule_value]) {
-                                $this->addError("Passwords should be the same.");
-                            }
-                        break;
-                        case 'unique':
-                            $this->_db->query("SELECT * from user_info WHERE $item = '$value'");
-                            if($this->_db->count()) {
-                                $this->addError("{$rules['name']} already exists.");
-                            }
-                        break;
-                        case 'email-or-username':
-                            $email_or_username = trim($value);
-                            $email_or_username = filter_var($email_or_username, FILTER_SANITIZE_EMAIL);
-                            if(strpos($email_or_username, '@') == true) {
-                                if(!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email_or_username)) {
+        } else {
+            foreach($items as $item=>$rules) {
+                foreach($rules as $rule => $rule_value) {
+                    $value = trim($source[$item]);
+                    $item = htmlspecialchars($item);
+    
+                    if($rule === "required" && $rule_value == true && empty($value)) {
+                        $this->addError("{$rules['name']} field is required");
+                    } else if(!empty($value)) {
+                        switch($rule) {
+                            // Some are implemented here in switch and some of them has their own functions like email func
+                            case 'min':
+                                if(strlen($value) < $rule_value) {
+                                    $this->addError("{$rules['name']} must be a minimum of $rule_value characters.");
+                                }
+                            break;
+                            case 'max':
+                                if(strlen($value) > $rule_value) {
+                                    $this->addError("{$rules['name']} must be a maximum of $rule_value characters.");
+                                }
+                            break;
+                            case 'matches':
+                                if($value != $source[$rule_value]) {
+                                    $this->addError("Passwords should be the same.");
+                                }
+                            break;
+                            case 'unique':
+                                $this->_db->query("SELECT * from user_info WHERE $item = '$value'");
+                                if($this->_db->count()) {
+                                    $this->addError("{$rules['name']} already exists.");
+                                }
+                            break;
+                            case 'email-or-username':
+                                $email_or_username = trim($value);
+                                $email_or_username = filter_var($email_or_username, FILTER_SANITIZE_EMAIL);
+                                if(strpos($email_or_username, '@') == true) {
+                                    if(!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email_or_username)) {
+                                        $this->addError("Invalid email address.");
+                                    }
+                                } else {
+                                    // Handle username to be alphanumeric or just keep it like so (it's fine at least for now)
+                                }
+                            break;
+                            case 'email':
+                                $email = trim($value);
+                                $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+                                if(strpos($email, '@') == true) {
+                                    if(!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) {
+                                        $this->addError("Invalid email address.");
+                                    }
+                                } else {
                                     $this->addError("Invalid email address.");
                                 }
-                            } else {
-                                // Handle username to be alphanumeric or just keep it like so (it's fine at least for now)
-                            }
-                        break;
-                        case 'email':
-                            $email = trim($value);
-                            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-                            if(strpos($email, '@') == true) {
-                                if(!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) {
-                                    $this->addError("Invalid email address.");
-                                }
-                            } else {
-                                $this->addError("Invalid email address.");
-                            }
-                        break;
-                        case 'range':
-                            if(!in_array($value, $rule_value))
-                                $this->addError("{$rules['name']} field is either not set or invalid !");
-                        break;
+                            break;
+                            case 'range':
+                                if(!in_array($value, $rule_value))
+                                    $this->addError("{$rules['name']} field is either not set or invalid !");
+                            break;
+                        }
                     }
                 }
-            }
+            }   
         }
 
         if(empty($this->_errors)) {

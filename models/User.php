@@ -47,6 +47,16 @@ class User implements \JsonSerializable {
     public function setPropertyValue($propertyName, $propertyValue) {
         $this->$propertyName = $propertyValue;
     }
+
+    public static function user_exists($field, $value) {
+        DB::getInstance()->query("SELECT * FROM user_info WHERE $field = ?", array($value));
+
+        if(DB::getInstance()->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     public function fetchUser($field_name, $field_value) {
         $this->db->query("SELECT * FROM user_info WHERE $field_name = ?", array($field_value));
@@ -255,6 +265,7 @@ class User implements \JsonSerializable {
     {
         //$vars = get_object_vars($this);
         $vars = array(
+            "id"=>$this->id,
             "username"=>$this->username
         );
         return $vars;
