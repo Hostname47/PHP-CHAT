@@ -3,7 +3,7 @@
 require_once "../../vendor/autoload.php";
 require_once "../../core/rest_init.php";
 
-use classes\{Config, Validation, Hash, Token, Common};
+use classes\{Config, Validation, Hash, Token, Common, DB};
 use models\{User, Post};
 
 header("Access-Control-Allow-Origin: *");
@@ -24,7 +24,26 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
     $validator = new Validation();
     if(isset($_POST["post_owner"])) {
         $id = sanitize_id($_POST["post_owner"]);
-        $post_visibility = 0;
+        // Sanitize id used here because it has the same task to perform
+        $post_visibility = sanitize_id($_POST["post-visibility"]);
+        $post_place = sanitize_id($_POST["post-place"]);
+
+        // CHECK IF POST_VISIBILITY ID IS THERE IN THE DB
+        DB::getInstance()->query("SELECT * FROM post_visibility WHERE id = ?", array($post_visibility));
+        if(DB::getInstance()->count() > 0) {
+            $post_visibility = $post_visibility;
+        } else {
+            $post_visibility = 1;
+        }
+
+        // CHECK IF POST_PLACE ID IS THERE IN THE DB
+        DB::getInstance()->query("SELECT * FROM post_place WHERE id = ?", array($post_place));
+        if(DB::getInstance()->count() > 0) {
+            $post_place = $post_place;
+        } else {
+            $post_place = 1;
+        }
+
         $text_content = sanitize_text($_POST["post-textual-content"]);
 
         $validator->check($_FILES, array(
@@ -59,7 +78,8 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
                 $post = new Post();
                 $post->setData(array(
                     "post_owner"=> $id,
-                    "post_visibility"=> 0,
+                    "post_visibility"=> $post_visibility,
+                    "post_visibility"=> $post_place,
                     "post_date"=> date("Y/m/d h:i:s"),
                     "text_content"=> $text_content,
                     "picture_media"=> "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/pictures/",

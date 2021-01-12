@@ -4,11 +4,14 @@ $("#create-post-textual-content").on({
         if($(this).val() != "") {
             $("#post-create-button").css("display", "block");
         } else {
-            $("#post-create-button").css("display", "none");
+            if($("#create-post-photo-or-video").val() == "") {
+                $("#post-create-button").css("display", "none");
+            }
         }
     }
 });
 
+// This will track image uploads but will take only one image
 $("#create-post-photo-or-video").change(function(event) {
     let xmlhttprequest = new XMLHttpRequest();
     xmlhttprequest.onreadystatechange = function() {
@@ -35,8 +38,9 @@ $("#create-post-photo-or-video").change(function(event) {
                     // FileList in javascript is readonly So: for now let's botter our heads with only posting one image
                     //Here we need only to remove this image and not all the images in the queue
                     $("#create-post-photo-or-video").val("");
+                    $(this).parent().remove();
                     // Also here use the following to remove only the deleted image: $(this).parent().remove();
-                    $(this).parent().parent().find(".post-creation-item").remove();
+                    
                     if($("#create-post-textual-content").val() != "") {
                         $("#post-create-button").css("display", "block");
                     } else {
@@ -83,6 +87,22 @@ $(".share-post").click(function(event) {
         success: function(response){
             $(".share-post").removeAttr('disabled');
             $(".share-post").attr('value', "POST");
+
+            // Clear text
+            $("#create-post-textual-content").val("");
+            // Remove image template components
+            $(".image-post-uploaded-container").find(".post-creation-item").remove();
+            // Clear file
+            $("#create-post-photo-or-video").val("");
+
+            /*
+            IMPORTANT: WHEN token is generated along with the form, we push it to the session server superglobal, But when we
+            use this token in the api we use it with Token::check function which check it and delete it when it uses it so we need
+            some way to regenrate the token again and assignn it to the token_post as well as to session superglobal so that the 
+            user could post 2 posts in the same page without refreshing the page to regenerate the token again
+            Aim: when the post created we call other php file through AJAX and generate other token and store it into session and 
+            assign it to token_post via javascript
+            */
 
             $(".post-created-message").css("display", "block");
             $(".post-created-message").animate({

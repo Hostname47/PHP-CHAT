@@ -126,11 +126,13 @@ if(isset($_POST["logout"])) {
     <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/create-post-style.css">
     <link rel="stylesheet" href="styles/profile.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
     <script src="javascript/header.js" defer></script>
     <script src="javascript/profile.js" defer></script>
+    <script src="javascript/global.js" defer></script>
 </head>
 <body>
     <?php include_once "components/basic/header.php"; ?>
@@ -238,16 +240,7 @@ if(isset($_POST["logout"])) {
                 </div>
             </div>
             <div id="posts-container">
-                <div class="post-item1">
-
-                </div>    
-                <div class="post-item">
-
-                </div>
-                <div class="post-item">
-
-                </div>
-            </div>
+            <?php include_once "components/basic/create-post.php"; ?>
         </section>
     </main>
 </body>
