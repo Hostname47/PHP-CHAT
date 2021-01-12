@@ -125,6 +125,28 @@ body {
     background-color: gray;
 }
 
+.image-style-7 {
+    display: block;
+    border-radius: 50%;
+    height: 44px;
+    width: 44px;
+    background-color: gray;
+}
+
+.image-style-8 {
+    display: block;
+    border-radius: 50%;
+    height: 13px;
+    width: 13px;
+}
+
+.image-style-9 {
+    display: block;
+    border-radius: 50%;
+    height: 36px;
+    width: 36px;
+}
+
 .label-style-1 {
     font-size: 13.5px;
     margin: 0 0 5px 5px;
@@ -211,6 +233,18 @@ body {
 .link-style-2:hover {
     background-color: white;
     color: black;
+}
+
+.link-style-3 {
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 4px;
+}
+
+.link-style-3:hover {
+    text-decoration: underline;
 }
 
 .link:hover {
@@ -678,8 +712,32 @@ body {
     background-image: url("../assets/images/icons/lock.png");
 }
 
+.white-like-back {
+    background-image: url("../assets/images/icons/like-white.png");
+}
+
+.white-like-back:hover {
+    background-image: url("../assets/images/icons/like-white-filled.png");
+}
+
+.white-comment-back {
+    background-image: url("../assets/images/icons/white-comment.png");
+}
+
+.white-comment-back:hover {
+    background-image: url("../assets/images/icons/white-comment-filled.png");
+}
+
 .eye-background:hover {
     background-image: url("../assets/images/icons/eye.png");
+}
+
+.dotted-more-back {
+    background-image: url("../assets/images/icons/dotted-more-white.png");
+}
+
+.dotted-more-back:hover {
+    background-image: url("../assets/images/icons/dotted-more.png");
 }
 
 .no-opacity-element {

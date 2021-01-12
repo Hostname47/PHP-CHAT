@@ -12,7 +12,6 @@ header {
     background-color: black;
     display: flex;
     justify-content: center;
-    max-width: 1600px;
 }
 
 #header-logo-container {

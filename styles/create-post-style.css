@@ -4,6 +4,11 @@
     padding-bottom: 8px;
 }
 
+#create-post-textual-content {
+    white-space: pre-line;
+    white-space: pre-wrap;
+}
+
 .create-post-header {
     border-radius: 8px 8px 0 0;
     padding: 8px;
