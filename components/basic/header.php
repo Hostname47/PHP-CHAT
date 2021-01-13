@@ -127,7 +127,7 @@
                     <div class="sub-options-container sub-options-container-style-1">
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
                         <div class="options-container">
-                            <a href="profile.php" class="sub-option">
+                            <a href="<?php echo Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");?>" class="sub-option">
                                 <div class="message-option-item" style="align-items: center">
                                     <div>
                                         <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-1" alt="user's profile picture">

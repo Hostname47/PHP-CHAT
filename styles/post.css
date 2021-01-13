@@ -1,8 +1,4 @@
 
-#posts-container {
-    
-}
-
 .post-header {
     padding: 12px;
 }
@@ -27,7 +23,7 @@
 .post-owner-name {
     display: flex;
     text-decoration: none;
-    color: rgb(56, 245, 56);
+    color: rgb(102, 250, 102);
     font-weight: 600;
     font-size: 16px;
     margin-bottom: 4px

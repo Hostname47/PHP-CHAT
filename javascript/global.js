@@ -115,7 +115,7 @@ $(".share-post").click(function(event) {
             }, 3000, function() {$(".post-created-message").css("display", "none");});
         },
         error: function(){
-            console.log('error')
+            console.log('error');
         }
     });
 });

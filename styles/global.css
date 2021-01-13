@@ -345,7 +345,23 @@ body {
     color: black;
 }
 
+.button-style-9 {
+    display: flex;
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+    border: 1px solid white;
+    border-radius: 20px;
+    background: none;
+    font-size: 13px;
 
+    padding: 8px 16px;
+}
+
+.button-style-9:hover {
+    border-color: rgb(27, 27, 27);
+    background-color: rgb(27, 27, 27);
+}
 
 .more-button {
     padding-right: 30px;
@@ -738,6 +754,21 @@ body {
 
 .dotted-more-back:hover {
     background-image: url("../assets/images/icons/dotted-more.png");
+}
+
+.follow-user, .add-user {
+    padding-left: 34px;
+    background-position: 8px center;
+    background-size: 20px;
+    background-repeat: no-repeat;
+}
+
+.follow-user {
+    background-image: url(../assets/images/icons/follow-user.png);
+}
+
+.add-user {
+    background-image: url(../assets/images/icons/add-friend.png);
 }
 
 .no-opacity-element {

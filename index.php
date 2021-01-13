@@ -18,6 +18,8 @@
         $welcomeMessage = Session::flash("new_username") . ", " . Session::flash("register_success");
     }
 
+    
+
 ?>
 
 <!DOCTYPE html>

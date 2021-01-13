@@ -14,12 +14,17 @@ if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
 }
 
-$username = isset($_GET["username"]) ? $_GET["username"] : '';
-if(!($user->getPropertyValue("username") == $username)) {
+$username = isset($_GET["username"]) ? trim(htmlspecialchars($_GET["username"])) : '';
+if(!($user->getPropertyValue("username") == $username) && $username != "") {
     $fetched_user = new User();
-    $fetched_user->fetchUser("username", $username);
+    if($fetched_user->fetchUser("username", $username)) {
+        $posts = Post::get("post_owner", $fetched_user->getPropertyValue("id"));
+    } else {
+        Redirect::to("errors/404.php");
+    }
 } else {
     $fetched_user = $user;
+    $posts = Post::get("post_owner", $user->getPropertyValue("id"));
 }
 
 if(isset($_POST["save-profile-edites"])) {
@@ -115,7 +120,6 @@ if(isset($_POST["logout"])) {
     }
 }
 
-$posts = Post::get("post_owner", $user->getPropertyValue("id"));
 usort($posts, 'post_date_latest_sort');
 
 function post_date_latest_sort($post1, $post2) {
@@ -129,7 +133,7 @@ function post_date_latest_sort($post1, $post2) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V01D47 - Profile</title>
+    <title>V01D47 - <?php echo $fetched_user->getPropertyValue("username"); ?></title>
     <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/header.css">
@@ -247,15 +251,17 @@ function post_date_latest_sort($post1, $post2) {
 
                 </div>
             </div>
-            <div id="posts-container">
+            <div id="profile-posts-section">
                 <?php include_once "components/basic/create-post.php"; ?>
-                <?php
-                    foreach($posts as $post) {
-                        $post_view = new Post_view();
+                <div id="posts-container">
+                    <?php
+                        foreach($posts as $post) {
+                            $post_view = new Post_view();
 
-                        echo $post_view->generate_timeline_post($post);
-                    }
-                ?>
+                            echo $post_view->generate_timeline_post($post);
+                        }
+                    ?>
+                </div>
             </div>
         </section>
     </main>

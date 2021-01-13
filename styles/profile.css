@@ -306,5 +306,10 @@ main {
 #posts-container {
     width: 100%;
     box-sizing: border-box;
+}
+
+#profile-posts-section {
     margin-left: 12px;
+    width: 100%;
+    box-sizing: border-box;
 }

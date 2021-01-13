@@ -102,4 +102,37 @@ $("#private-account-button").click(function() {
     }
 });
 
+$(".follow-user").click(function(event) {
+    event.preventDefault();
+
+    let form = $(this).parent();
+    let url = 'functions/security/check_current_user.php';
+    
+    // First we check if the current user is valid
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(), // serializes the form's elements.
+        success: function(response)
+        {
+            if(response) {
+                // If the current user id is valide the we can add follow record (This basically add some layer of security)
+                url = "api/follow/add.php";
+                $.ajax({
+                    type: "POST",
+                    url: form.attr("action"), // api/follow/add.php
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function(response)
+                    {
+                        
+                    }
+                });
+            } else {
+                console.log("ID changed ! error.");
+            }
+        }
+    });
+
+})
+
 //$("#edit-sub-container").height($("#edit-sub-container").parent().height() - $("#edit-profile-header").height());
