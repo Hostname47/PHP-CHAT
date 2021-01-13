@@ -79,16 +79,18 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
                 $post->setData(array(
                     "post_owner"=> $id,
                     "post_visibility"=> $post_visibility,
-                    "post_visibility"=> $post_place,
+                    "post_place"=> $post_place,
                     "post_date"=> date("Y/m/d h:i:s"),
                     "text_content"=> $text_content,
-                    "picture_media"=> "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/pictures/",
-                    "video_media"=> "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/videos/",
+                    "picture_media"=> Config::get("root/path") . "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/media/pictures/",
+                    "video_media"=> Config::get("root/path") . "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/media/videos/",
                 ));
 
                 if(!empty($_FILES["photo-or-video"]["name"])) {
                     if(move_uploaded_file($_FILES["photo-or-video"]["tmp_name"], $targetFile)) {
-                    
+                        // Here if you implement multiple files loop through them and try to fetch picture_media dir and append image files with extensions one by one
+                        $image_path = Config::get("root/path") . "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/media/pictures/" . $generatedName . $original_extension;
+                        $post->set_property("picture_media", $image_path);
                     } else {
                         $validator->addError("Sorry, there was an error uploading your post picture.");
                     }

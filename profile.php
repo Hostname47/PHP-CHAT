@@ -5,14 +5,14 @@ require_once "vendor/autoload.php";
 require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-use models\User;
+use models\{User, Post};
+use view\post\{Post as Post_view};
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
 
 if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
 }
-
 
 $username = isset($_GET["username"]) ? $_GET["username"] : '';
 if(!($user->getPropertyValue("username") == $username)) {
@@ -115,6 +115,13 @@ if(isset($_POST["logout"])) {
     }
 }
 
+$posts = Post::get("post_owner", $user->getPropertyValue("id"));
+usort($posts, 'post_date_latest_sort');
+
+function post_date_latest_sort($post1, $post2) {
+    return $post1->get_property('post_date') == $post2->get_property('post_date') ? 0 : ($post1->get_property('post_date') > $post2->get_property('post_date')) ? -1 : 1;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -128,6 +135,7 @@ if(isset($_POST["logout"])) {
     <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="styles/create-post-style.css">
     <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/post.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
     <script src="javascript/header.js" defer></script>
@@ -240,7 +248,15 @@ if(isset($_POST["logout"])) {
                 </div>
             </div>
             <div id="posts-container">
-            <?php include_once "components/basic/create-post.php"; ?>
+                <?php include_once "components/basic/create-post.php"; ?>
+                <?php
+                    foreach($posts as $post) {
+                        $post_view = new Post_view();
+
+                        echo $post_view->generate_timeline_post($post);
+                    }
+                ?>
+            </div>
         </section>
     </main>
 </body>

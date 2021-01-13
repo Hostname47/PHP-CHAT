@@ -1,7 +1,8 @@
 .create-post-container {
     background-color: rgb(236, 236, 236);
     border-radius: 12px;
-    padding-bottom: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
 }
 
 #create-post-textual-content {
