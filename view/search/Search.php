@@ -21,7 +21,7 @@ class Search {
                     <p class="label-style-2">@{$username}</p>
                 </div>
             </div>
-            <a href="" class="button-style-4 follow-user">Follow</a>
+            <a href="" class="button-style-9 follow-user">Follow</a>
             <input type="hidden" value="{$id}" class="uid">
         </div>
 QQ;

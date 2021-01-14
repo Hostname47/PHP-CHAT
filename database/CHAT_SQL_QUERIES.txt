@@ -1,0 +1,61 @@
+CREATE DATABASE CHAT;
+
+CREATE TABLE user_info
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    username varchar(20),
+    password varchar(64),
+    salt varchar(32),
+    firstname varchar(50),
+    lastname varchar(50),
+    joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_type int
+)
+
+CREATE TABLE user_type
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    type_name varchar(30),
+    type TEXT
+)
+
+CREATE Table users_session
+(
+    id 	INT PRIMARY KEY AUTO_INCREMENT,
+    user_id int,
+    hash varchar(50)
+)
+
+CREATE TABLE post_visibility
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    visibility varchar(40)
+);
+
+CREATE TABLE Post
+(
+    id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    post_owner int NOT NULL REFERENCES user_info(id),
+    post_visibility int NOT NULL REFERENCES post_visibility(id),
+    post_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    post_edit_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    text_content TEXT,
+    picture_media TEXT,
+    video_media TEXT
+);
+
+CREATE TABLE post_place
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    post_place varchar(40)
+);
+
+// THE ADDED TABLE TO IMPLEMENT FOLLOW SYSTEM
+
+CREATE TABLE IF NOT EXISTS `user_follow` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `follower_id` int(11) NOT NULL REFERENCES user_info(id),
+  `followed_id` int(11) NOT NULL REFERENCES user_info(id),
+  UNIQUE KEY `follow_unique` (`follower_id`,`followed_id`)
+);
+

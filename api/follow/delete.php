@@ -45,7 +45,7 @@ $followed = $_POST["followed_id"];
 if($follower === $followed) {
     echo json_encode(
         array(
-            "message"=>"You can't follow yourself",
+            "message"=>"You can't unfollow yourself",
             "success"=>false
         )
     );
@@ -57,29 +57,32 @@ if($follower === $followed) {
 if(($follower = sanitize_id($_POST["follower_id"])) && 
     User::user_exists("id", $follower)) {
         // Same check here with the followed user
-        if(isset($_POST["followed_id"]) && 
-            ($followed = sanitize_id($_POST["followed_id"])) && 
+        if(($followed = sanitize_id($_POST["followed_id"])) && 
             User::user_exists("id", $followed)) {
                 if(Follow::follow_exists($follower, $followed)) {
-                    echo json_encode(
-                        array(
-                            "message"=>"The follower user is already following the followed user",
-                            "success"=>false
-                        )
-                    );
-                } else {
-                    // Now we know the follower id is valid as well as the followed id, now we can add it to our database
+
                     $follow = new Follow();
+                    
                     $follow->set_data(array(
                         "follower"=>$follower,
                         "followed"=>$followed
                     ));
-                    $follow->add();
+
+                    $follow->fetch_follow();
+
+                    $follow->delete();
 
                     echo json_encode(
                         array(
-                            "message"=>"user with id: " . $follower . " followed user with id: " . $followed . " successfully !",
+                            "message"=>"The follower with id: $follower unfollows the user with id: $followed successully !",
                             "success"=>true
+                        )
+                    );
+                } else {
+                    echo json_encode(
+                        array(
+                            "message"=>"The user with id: $follower cannot unfollow the user with id: $followed because he is not followed him !",
+                            "success"=>false
                         )
                     );
                 }

@@ -14,8 +14,8 @@
     </div>
     <div class="flex-row-column">
         <form action="<?php echo Config::get("root/path") . "functions/security/check_current_user.php" ?>" method="POST" class="flex follow-form" enctype="form-data">
-            <input type="hidden" name="current_user_id" value="<?php echo $user->getPropertyValue("id"); ?>">
-            <input type="hidden" name="current_profile_id" value="<?php echo $fetched_user->getPropertyValue("id"); ?>">
+            <input type="hidden" name="follower_id" value="<?php echo $user->getPropertyValue("id"); ?>">
+            <input type="hidden" name="followed_id" value="<?php echo $fetched_user->getPropertyValue("id"); ?>">
             <input type="submit" class="button-style-9 follow-user" value="Follow" style="margin-left: 4px; font-weight: 400">
         </form>
 
