@@ -1,9 +1,4 @@
 
-$(".follow-user").click(function(event) {
-    // Handle follow
-
-    return false;
-});
 
 $(".search-result-person").click(function() {
     /*
@@ -20,13 +15,13 @@ $(".search-result-person").click(function() {
             if(result["problem"] == undefined) {
                 let username = result["username"];
 
-                location.href = "profile.php?username="+username;
+                location.href = root + "profile.php?username="+username;
             } else {
                 // Handle when the id is not present in database, or an invalid data is provided
             }
         }
     };
-    xmlhttprequest.open("GET", "api/user/GET.php?id="+id, true);
+    xmlhttprequest.open("GET", root+"api/user/GET.php?id="+id, true);
     xmlhttprequest.send();
 
     return false;

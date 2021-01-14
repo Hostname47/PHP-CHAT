@@ -106,6 +106,12 @@ class Post {
         return $posts;
     }
 
+    public static function get_posts_number($user_id) {
+        DB::getInstance()->query("SELECT * FROM post WHERE post_owner = ?", array($user_id));
+
+        return DB::getInstance()->count();
+    }
+
     public function toString() {
         return 'Post with id: ' . $this->post_id . " and owner of id: " . $this->post_owner . " published at: " . $this->post_date . "<br>";
     }

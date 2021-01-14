@@ -5,7 +5,7 @@ require_once "vendor/autoload.php";
 require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-use models\{User, Post};
+use models\{User, Post, Follow};
 use view\post\{Post as Post_view};
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
@@ -26,6 +26,8 @@ if(!($user->getPropertyValue("username") == $username) && $username != "") {
     $fetched_user = $user;
     $posts = Post::get("post_owner", $user->getPropertyValue("id"));
 }
+
+$profile_user_id = $fetched_user->getPropertyValue("id");
 
 if(isset($_POST["save-profile-edites"])) {
     if(Token::check(Common::getInput($_POST, "save_token"), "saveEdits")) {
@@ -126,6 +128,10 @@ function post_date_latest_sort($post1, $post2) {
     return $post1->get_property('post_date') == $post2->get_property('post_date') ? 0 : ($post1->get_property('post_date') > $post2->get_property('post_date')) ? -1 : 1;
 }
 
+$posts_number = Post::get_posts_number($profile_user_id);
+$followers_number = Follow::get_user_followers_number($profile_user_id);
+$followed_number = Follow::get_followed_users_number($profile_user_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -142,6 +148,7 @@ function post_date_latest_sort($post1, $post2) {
     <link rel="stylesheet" href="styles/post.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
+    <script src="javascript/config.js" defer></script>
     <script src="javascript/header.js" defer></script>
     <script src="javascript/profile.js" defer></script>
     <script src="javascript/global.js" defer></script>
@@ -192,19 +199,19 @@ function post_date_latest_sort($post1, $post2) {
                 <div class="user-info-section row-v-flex">
                     <a href="" class="user-info-section-link">
                         <div>
-                            <h2 class="title-style-4">2.9K</h2>
+                            <h2 class="title-style-4"><?php echo $posts_number; ?></h2>
                             <p class="regular-text-style-2">Posts</p>
                         </div>
                     </a>
                     <a href="" class="user-info-section-link">
                         <div>
-                            <h2 class="title-style-4">10</h2>
+                            <h2 class="title-style-4"><?php echo $followers_number; ?></h2>
                             <p class="regular-text-style-2">Followers</p>
                         </div>
                     </a>
                     <a href="" class="user-info-section-link">
                         <div>
-                            <h2 class="title-style-4">156</h2>
+                            <h2 class="title-style-4"><?php echo $followed_number; ?></h2>
                             <p class="regular-text-style-2">Following</p>
                         </div>
                     </a>

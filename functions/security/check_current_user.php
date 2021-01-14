@@ -19,7 +19,7 @@ use models\User;
 
 require_once "../../functions/sanitize_id.php";
 
-$id = isset($_POST["current_user_id"]) ? $_POST["current_user_id"] : false;
+$id = isset($_POST["follower_id"]) ? $_POST["follower_id"] : false;
 
 if($id = sanitize_id($id)) {
     if(User::user_exists("id", $id) && $user->getPropertyValue("id") == $id) {

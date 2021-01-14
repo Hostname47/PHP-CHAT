@@ -68,6 +68,18 @@ class Follow {
         return $followers;
     }
 
+    public static function get_user_followers_number($id) {
+        DB::getInstance()->query("SELECT * FROM user_follow WHERE followed_id = ?", array($id));
+
+        return DB::getInstance()->count();
+    }
+
+    public static function get_followed_users_number($id) {
+        DB::getInstance()->query("SELECT * FROM user_follow WHERE follower_id = ?", array($id));
+
+        return DB::getInstance()->count();
+    }
+
     public static function get_followed_users($id) {
         DB::getInstance()->query("SELECT * FROM user_follow WHERE follower_id = ?", array($id));
 

@@ -756,7 +756,7 @@ body {
     background-image: url("../assets/images/icons/dotted-more.png");
 }
 
-.follow-user, .add-user {
+.follow-user, .add-user, .followed-user, .added-user {
     padding-left: 34px;
     background-position: 8px center;
     background-size: 20px;
@@ -767,8 +767,18 @@ body {
     background-image: url(../assets/images/icons/follow-user.png);
 }
 
+.followed-user {
+    background-color: rgb(32, 32, 32);
+    border-color: rgb(32, 32, 32);
+    background-image: url(../assets/images/icons/followed.png);
+}
+
 .add-user {
     background-image: url(../assets/images/icons/add-friend.png);
+}
+
+.added-user {
+    background-image: url(../assets/images/icons/is-friend.png);
 }
 
 .no-opacity-element {

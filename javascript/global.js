@@ -119,3 +119,65 @@ $(".share-post").click(function(event) {
         }
     });
 });
+
+/*
+    IMPORTANT: what happens when user click follow button ?
+    -> First we check if the user who click the button is the same as the user who is currently logged in by sending the user_id
+       to the check file within 'functions/security/check_current_user.php' to check the user, Then we want to make follow
+       add as the default behaviour of follow button, If the user who clicks follow is not following the followed user
+       we add the follow record and the user follow him successfully. In the other hand if the user is already follow
+       him we know that from the response of add api file by checking success array element if the success is return false
+       meaning iether the id is not valide or there's already a record with these 2 ids meaning the current user is already
+       follow this guy
+       In case of failure we asume that there's already follow between the two, so we call delete api file to delete the record
+       Note: Notice when a user unfollow another user, that doesn't mean the later one unfollow the first one because the 
+       following record only describe one way follow (if A follows B and B follows A and later B unfollow A; A still follows B)
+*/
+$(".follow-button").click(function(event) {
+    event.preventDefault();
+
+    let followButton = $(this);
+    let form = $(this).parent();
+    let url = root + 'functions/security/check_current_user.php';
+    
+    // First we check if the current user is valid
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response)
+        {
+            if(response) {
+                // If the current user id is valide the we can add follow record (This basically add some layer of security)
+                url = root + "api/follow/add.php";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(response)
+                    {
+                        if(response["success"]) {
+                            followButton.removeClass("follow-user");
+                            followButton.addClass("followed-user");
+                            followButton.attr("value", "Followed");
+                        } else {
+                            url = root + "api/follow/delete.php";
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: form.serialize(),
+                                success: function() {
+                                    followButton.removeClass("followed-user");
+                                    followButton.addClass("follow-user");
+                                    followButton.attr("value", "Follow");
+                                }
+                            });
+                        }
+                    }
+                });
+            } else {
+                console.log("ID changed ! error.");
+            }
+        }
+    });
+})

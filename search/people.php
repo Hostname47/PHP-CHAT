@@ -49,8 +49,10 @@
     <link rel="stylesheet" href="../styles/search.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../javascript/config.js" defer></script>
     <script src="../javascript/header.js" defer></script>
     <script src="../javascript/index.js" defer></script>
+    <script src="../javascript/global.js" defer></script>
     <script src="../javascript/search.js" defer></script>
 </head>
 <body>
@@ -84,7 +86,7 @@
                     <div class="search-result">
                         <?php
                             foreach($searchUsersResult as $u) {
-                                echo $search->generateSearchPerson($u);
+                                echo $search->generateSearchPerson($user->getPropertyValue("id"), $u);
                             }
                         ?>
                     </div>

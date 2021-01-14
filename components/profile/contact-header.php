@@ -1,7 +1,7 @@
 <?php
 
     use classes\{Config};
-    use models\{User};
+    use models\{User, Follow};
 
 ?>
 
@@ -13,10 +13,22 @@
         <a href="" class="profile-menu-item">Videos</a>
     </div>
     <div class="flex-row-column">
-        <form action="<?php echo Config::get("root/path") . "functions/security/check_current_user.php" ?>" method="POST" class="flex follow-form" enctype="form-data">
+        <form action="" method="GET" class="flex follow-form">
             <input type="hidden" name="follower_id" value="<?php echo $user->getPropertyValue("id"); ?>">
             <input type="hidden" name="followed_id" value="<?php echo $fetched_user->getPropertyValue("id"); ?>">
-            <input type="submit" class="button-style-9 follow-user" value="Follow" style="margin-left: 4px; font-weight: 400">
+            <?php
+                $follow = new Follow();
+                $follow->set_data(array(
+                    "follower"=>$user->getPropertyValue("id"),
+                    "followed"=>$fetched_user->getPropertyValue("id")
+                ));
+
+                if($follow->fetch_follow()) {
+            ?>
+            <input type="submit" class="button-style-9 follow-button followed-user" value="Followed" style="margin-left: 4px; font-weight: 400">
+            <?php } else { ?>
+            <input type="submit" class="button-style-9 follow-button follow-user" value="Follow" style="margin-left: 4px; font-weight: 400">
+            <?php } ?>
         </form>
 
         <form action="<?php echo Config::get("root/path") . "functions/security/check_current_user.php" ?>" method="POST" class="flex follow-form" enctype="form-data">

@@ -3,15 +3,35 @@
 namespace view\search;
 
 use classes\Config;
+use models\{Follow};
 
 class Search {
-    public function generateSearchPerson($user) {
+    public function generateSearchPerson($current_user_id, $user) {
         // Notice we fetch data of users like they are objects; That's because search function get users as objects
         $picture = (!empty($user->picture)) ? Config::get("root/path") . $user->picture : Config::get("root/path") . "assets/images/icons/user.png";
         $fullname = $user->firstname . " " . $user->lastname;
         $username = $user->username;
         $id = $user->id;
-        
+
+        $follower_id = $current_user_id;
+        $followed_id = $user->id;
+
+        $follow = new Follow();
+        $follow->set_data(array(
+            "follower"=>$follower_id,
+            "followed"=>$followed_id
+        ));
+
+        if($follow->fetch_follow()) {
+            $follow_btn = <<<F_BTN
+                <input type="submit" class="button-style-9 follow-button followed-user" value="Followed" style="margin-left: 4px; font-weight: 400">
+            F_BTN;
+        } else {
+            $follow_btn = <<<F_BTN
+                <input type="submit" class="button-style-9 follow-button follow-user" value="Follow" style="margin-left: 4px; font-weight: 400">
+            F_BTN;
+        }
+
         return <<<QQ
         <div class="search-result-item flex-space search-result-person">
             <div class="flex">
@@ -21,7 +41,11 @@ class Search {
                     <p class="label-style-2">@{$username}</p>
                 </div>
             </div>
-            <a href="" class="button-style-9 follow-user">Follow</a>
+            <form action="" method="GET" class="flex follow-form">
+                <input type="hidden" name="follower_id" value="$follower_id">
+                <input type="hidden" name="followed_id" value="$followed_id">
+                $follow_btn
+            </form>
             <input type="hidden" value="{$id}" class="uid">
         </div>
 QQ;
