@@ -212,6 +212,21 @@ class UserRelation {
         }
     }
 
+    public function get_relation_by_status($status) {
+        $this->db->query("SELECT * FROM user_relation WHERE `from` = ? AND `to` = ? AND `status` = ?",
+        array(
+            $this->from,
+            $this->to,
+            $status
+        ));
+
+        if($this->db->count() > 0) {
+            return $this->db->results()[0]->status;
+        } else {
+            return false;
+        }
+    }
+
     public function micro_relation_exists($from, $to, $status) {
         $this->db->query("SELECT * FROM user_relation WHERE `from` = ? AND `to` = ? AND `status` = ?",
         array(

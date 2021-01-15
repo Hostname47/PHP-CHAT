@@ -773,11 +773,13 @@ body {
     background-image: url(../assets/images/icons/followed.png);
 }
 
-.add-user {
+.add-user-back {
     background-image: url(../assets/images/icons/add-friend.png);
 }
 
-.added-user {
+.added-user-back {
+    background-color: rgb(32, 32, 32);
+    border-color: rgb(32, 32, 32);
     background-image: url(../assets/images/icons/is-friend.png);
 }
 

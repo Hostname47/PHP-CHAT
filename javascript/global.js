@@ -142,10 +142,11 @@ $(".share-post").click(function(event) {
 */
 $(".follow-button").click(function(event) {
     event.preventDefault();
+    event.stopPropagation();
 
     let followButton = $(this);
     let form = $(this).parent();
-    let url = root + 'functions/security/check_current_user.php';
+    let url = root + 'security/check_current_user.php';
     
     // First we check if the current user is valid
     $.ajax({
@@ -177,6 +178,57 @@ $(".follow-button").click(function(event) {
                                     followButton.removeClass("followed-user");
                                     followButton.addClass("follow-user");
                                     followButton.attr("value", "Follow");
+                                }
+                            });
+                        }
+                    }
+                });
+            } else {
+                console.log("ID changed ! error.");
+            }
+        }
+    });
+})
+
+$(".add-user").click(function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let addButton = $(this);
+    let form = $(this).parent();
+    let url = root + 'security/check_current_user.php';
+    
+    // First we check if the current user is valid
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response)
+        {
+            if(response) {
+                // If the current user id is valide the we can add user relation record (This basically add some layer of security)
+                url = root + "api/user_relation/send_request.php";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(response)
+                    {
+                        if(response["error"]) {
+                            // Here add code to display error div to user or something
+                        }
+                        else if(response["success"]) {
+                            addButton.attr("value", "Cancel Request");
+                        } else {
+                            url = root + "api/follow/cancel_request.php";
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: form.serialize(),
+                                success: function() {
+                                    addButton.removeClass("followed-user");
+                                    addButton.addClass("follow-user");
+                                    addButton.attr("value", "Follow");
                                 }
                             });
                         }

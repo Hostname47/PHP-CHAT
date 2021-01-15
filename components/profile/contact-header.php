@@ -1,7 +1,7 @@
 <?php
 
     use classes\{Config};
-    use models\{User, Follow};
+    use models\{User, Follow, UserRelation};
 
 ?>
 
@@ -14,7 +14,7 @@
     </div>
     <div class="flex-row-column">
         <form action="" method="GET" class="flex follow-form">
-            <input type="hidden" name="follower_id" value="<?php echo $user->getPropertyValue("id"); ?>">
+            <input type="hidden" name="current_user_id" value="<?php echo $user->getPropertyValue("id"); ?>">
             <input type="hidden" name="followed_id" value="<?php echo $fetched_user->getPropertyValue("id"); ?>">
             <?php
                 $follow = new Follow();
@@ -31,10 +31,55 @@
             <?php } ?>
         </form>
 
-        <form action="<?php echo Config::get("root/path") . "functions/security/check_current_user.php" ?>" method="POST" class="flex follow-form" enctype="form-data">
+        <form action="" method="POST" class="flex follow-form" enctype="form-data">
             <input type="hidden" name="current_user_id" value="<?php echo $user->getPropertyValue("id"); ?>">
             <input type="hidden" name="current_profile_id" value="<?php echo $fetched_user->getPropertyValue("id"); ?>">
-            <input type="submit" class="button-style-9 add-user" value="Add" style="margin-left: 8px; font-weight: 400">
+            <?php
+
+                $current = $user->getPropertyValue("id");
+                $friend = $fetched_user->getPropertyValue("id");
+
+                $user_relation = new UserRelation();
+                $user_relation->set_property("from", $current);
+                $user_relation->set_property("to", $friend);
+
+                $is_blocked = $user_relation->get_relation_by_status("B");
+                $is_friend = $user_relation->get_relation_by_status("F");
+                $is_pending = $user_relation->get_relation_by_status("P");
+                /*
+                                                                          -------  --------
+                                                                            from      to                                                                     
+                */
+                $wait_your_accept = $user_relation->micro_relation_exists($friend, $current, "P");
+
+                if($is_blocked) {
+                    echo <<<EOS
+                        <input type="submit" class="button-style-9 block-user unblock-user-back" value="Unblock" style="margin-left: 8px; font-weight: 400">
+EOS;
+                } 
+                if($is_friend){
+                    echo <<<EOS
+                        <input type="submit" class="button-style-9 added-user-back" value="Friend" style="margin-left: 8px; font-weight: 400">
+EOS;
+                } else if($is_pending) {
+                    echo <<<EOS
+                        <input type="submit" class="button-style-9 add-user add-user-back" value="Cancel Request" style="margin-left: 8px; font-weight: 400">
+EOS;
+                } else if($wait_your_accept) {
+                    echo <<<EOS
+                        <input type="submit" class="button-style-9 add-user add-user-back" value="Accept Request" style="margin-left: 8px; font-weight: 400">
+                        <input type="submit" class="button-style-9 add-user add-user-back" value="Decline Request" style="margin-left: 8px; font-weight: 400">
+EOS;
+                }
+                else {
+                    echo <<<EOS
+                        <input type="submit" class="button-style-9 add-user add-user-back" value="" style="margin-left: 8px; font-weight: 400">
+EOS;
+                }
+                
+            ?>
+                
+            
         </form>
     </div>
 </div>

@@ -12,14 +12,14 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-require_once "../../vendor/autoload.php";
-require_once "../../core/init.php";
+require_once "../vendor/autoload.php";
+require_once "../core/init.php";
 
 use models\User;
 
-require_once "../../functions/sanitize_id.php";
+require_once "../functions/sanitize_id.php";
 
-$id = isset($_POST["follower_id"]) ? $_POST["follower_id"] : false;
+$id = isset($_POST["current_user_id"]) ? $_POST["current_user_id"] : false;
 
 if($id = sanitize_id($id)) {
     if(User::user_exists("id", $id) && $user->getPropertyValue("id") == $id) {

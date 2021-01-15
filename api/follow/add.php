@@ -3,7 +3,6 @@
 require_once "../../vendor/autoload.php";
 require_once "../../core/rest_init.php";
 
-use classes\{Config, Validation, Hash, Token, Common, DB};
 use models\{User, Follow};
 
 header("Access-Control-Allow-Origin: *");
@@ -14,10 +13,10 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 require_once "../../functions/sanitize_id.php";
 
-if(!isset($_POST["follower_id"])) {
+if(!isset($_POST["current_user_id"])) {
     echo json_encode(
         array(
-            "message"=>"You should provide follower_id as post form input",
+            "message"=>"You should provide current_user_id as post form input",
             "success"=>false
         )
     );
@@ -35,7 +34,7 @@ if(!isset($_POST["followed_id"])) {
     exit();
 }
 
-$follower = $_POST["follower_id"];
+$follower = $_POST["current_user_id"];
 $followed = $_POST["followed_id"];
 
 /*
@@ -54,7 +53,7 @@ if($follower === $followed) {
 }
 
 // Check if the follower id is set, and if it is numeric by calling sanitize_id, and exists in the database using user_exists
-if(($follower = sanitize_id($_POST["follower_id"])) && 
+if(($follower = sanitize_id($follower)) && 
     User::user_exists("id", $follower)) {
         // Same check here with the followed user
         if(isset($_POST["followed_id"]) && 

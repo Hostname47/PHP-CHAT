@@ -15,8 +15,10 @@ if(!$user->getPropertyValue("isLoggedIn")) {
 }
 
 $username = isset($_GET["username"]) ? trim(htmlspecialchars($_GET["username"])) : '';
+
 if(!($user->getPropertyValue("username") == $username) && $username != "") {
     $fetched_user = new User();
+    // If there's now user with the given username in the link it will redirect the user to 404 error page
     if($fetched_user->fetchUser("username", $username)) {
         $posts = Post::get("post_owner", $fetched_user->getPropertyValue("id"));
     } else {
@@ -131,13 +133,6 @@ function post_date_latest_sort($post1, $post2) {
 $posts_number = Post::get_posts_number($profile_user_id);
 $followers_number = Follow::get_user_followers_number($profile_user_id);
 $followed_number = Follow::get_followed_users_number($profile_user_id);
-
-// Testing
-$relation = new UserRelation();
-$relation->set_property("from", 5);
-$relation->set_property("to", 1);
-
-$relation->block();
 
 ?>
 

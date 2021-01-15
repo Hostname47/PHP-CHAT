@@ -3,7 +3,6 @@
 require_once "../../vendor/autoload.php";
 require_once "../../core/rest_init.php";
 
-use classes\{Config, Validation, Hash, Token, Common, DB};
 use models\{User, Follow};
 
 header("Access-Control-Allow-Origin: *");
