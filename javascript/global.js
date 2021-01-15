@@ -1,4 +1,11 @@
 
+$(".post-to-option").click(function() {
+    if(!$(this).find(".rad-opt").is(":disabled")) {
+        $(this).parent().find("input[name='post-to']").prop("checked", false);
+        $(this).find("input").prop("checked", true);
+    }
+});
+
 $("#create-post-textual-content").on({
     keyup: function() {
         if($(this).val() != "") {

@@ -27,10 +27,3 @@ $("#close-contact-search").click(function() {
     }, 300);
     return false;
 })
-
-$(".post-to-option").click(function() {
-    if(!$(this).find(".rad-opt").is(":disabled")) {
-        $(this).parent().find("input[name='post-to']").prop("checked", false);
-        $(this).find("input").prop("checked", true);
-    }
-});

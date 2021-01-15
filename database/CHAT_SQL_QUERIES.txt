@@ -51,7 +51,6 @@ CREATE TABLE post_place
 );
 
 // THE ADDED TABLE TO IMPLEMENT FOLLOW SYSTEM
-
 CREATE TABLE IF NOT EXISTS `user_follow` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `follower_id` int(11) NOT NULL REFERENCES user_info(id),
@@ -59,3 +58,11 @@ CREATE TABLE IF NOT EXISTS `user_follow` (
   UNIQUE KEY `follow_unique` (`follower_id`,`followed_id`)
 );
 
+CREATE TABLE user_relation
+(
+    `from` int NOT NULL REFERENCES user_info(id),
+    `to` int NOT NULL REFERENCES user_info(id),
+    `status` varchar(1),
+    `since` timestamp DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY `UNIQUE_RELATION` (`from`,`to`, `status`)
+);

@@ -5,7 +5,7 @@ require_once "vendor/autoload.php";
 require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-use models\{User, Post, Follow};
+use models\{User, Post, Follow, UserRelation};
 use view\post\{Post as Post_view};
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
@@ -131,6 +131,13 @@ function post_date_latest_sort($post1, $post2) {
 $posts_number = Post::get_posts_number($profile_user_id);
 $followers_number = Follow::get_user_followers_number($profile_user_id);
 $followed_number = Follow::get_followed_users_number($profile_user_id);
+
+// Testing
+$relation = new UserRelation();
+$relation->set_property("from", 5);
+$relation->set_property("to", 1);
+
+$relation->block();
 
 ?>
 
