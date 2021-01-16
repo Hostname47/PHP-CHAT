@@ -363,6 +363,19 @@ body {
     background-color: rgb(27, 27, 27);
 }
 
+.button-style-9-black {
+    display: flex;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 20px;
+    background: none;
+    font-size: 13px;
+
+    padding: 5px 12px;
+    color: black;
+    border: 1px solid black;
+}
+
 .more-button {
     padding-right: 30px;
     background-image: url(../assets/images/icons/more.png);
@@ -756,7 +769,11 @@ body {
     background-image: url("../assets/images/icons/dotted-more.png");
 }
 
-.follow-user, .add-user, .followed-user, .added-user {
+.unfriend-black {
+    background-image: url("../assets/images/icons/unfriend-black.png");
+}
+
+.follow-user, .add-user, .followed-user, .added-user-back, .add-user-back, .unfriend-black {
     padding-left: 34px;
     background-position: 8px center;
     background-size: 20px;
@@ -765,6 +782,14 @@ body {
 
 .follow-user {
     background-image: url(../assets/images/icons/follow-user.png);
+}
+
+.follow-black {
+    background-image: url(../assets/images/icons/follow-black.png);
+}
+
+.unfollow-black {
+    background-image: url(../assets/images/icons/unfollow-black.png);
 }
 
 .followed-user {
@@ -831,6 +856,11 @@ body {
 
 .sub-option-style-2:hover {
     background-color: rgb(231, 231, 231);
+}
+
+.take-all-button {
+    height: 100%;
+    width: 100%;
 }
 
 .sub-options-container-style-2 {

@@ -1,4 +1,35 @@
 
+
+$(".button-with-suboption").click(function() {
+    let container = $(this).parent().find(".sub-options-container");
+    if(container.css("display") == "none") {
+        $(".sub-options-container").css("display", "none");
+        container.css("display", "block");
+    } else {
+        container.css("display", "none");
+    }
+    return false;
+});
+
+/* When the user click somewhere in bofy section all absolute containers will disappear except if the section is a
+header container itself */
+/*$("body").click(function(evt) {
+    $(".sub-options-container").css("display", "none");
+});*/
+
+document.addEventListener("click", function(event) {
+    $(".sub-options-container").css("display", "none");
+}, false);
+
+// we prevent
+let subContainers = document.querySelectorAll('.sub-options-container');
+for(let i = 0;i<subContainers.length;i++) {
+    subContainers[i].addEventListener("click", function(evt) {
+        $(this).css("display", "block");
+        evt.stopPropagation();
+    }, false);
+}
+
 $(".post-to-option").click(function() {
     if(!$(this).find(".rad-opt").is(":disabled")) {
         $(this).parent().find("input[name='post-to']").prop("checked", false);
@@ -140,12 +171,23 @@ $(".share-post").click(function(event) {
        Note: Notice when a user unfollow another user, that doesn't mean the later one unfollow the first one because the 
        following record only describe one way follow (if A follows B and B follows A and later B unfollow A; A still follows B)
 */
+
 $(".follow-button").click(function(event) {
     event.preventDefault();
     event.stopPropagation();
 
     let followButton = $(this);
     let form = $(this).parent();
+
+    /*
+        We do that because some inputs are not directly child of the form so when followButton get clicked we need to start from this button
+        to the first form ancestor and use it as form because in friend sub-option we have an inut inside div which is not a direct
+        child of follow-form
+    */
+    while(form.prop("tagName") != "FORM") {
+        form = form.parent();
+    }
+
     let url = root + 'security/check_current_user.php';
     
     // First we check if the current user is valid
@@ -166,8 +208,17 @@ $(".follow-button").click(function(event) {
                     {
                         if(response["success"]) {
                             followButton.removeClass("follow-user");
-                            followButton.addClass("followed-user");
-                            followButton.attr("value", "Followed");
+                            followButton.attr("value", "Unfollow");
+
+                            if($(".follow-label")) {
+                                $(".follow-label").text("Unfollow");
+                            }
+
+                            if($(".follow-menu-header-form").find(".follow-button")) {
+                                $(".follow-menu-header-form").find(".follow-button").removeClass("follow-user");
+                                $(".follow-menu-header-form").find(".follow-button").addClass("followed-user");
+                                $(".follow-menu-header-form").find(".follow-button").attr("value", "Followed");
+                            }
                         } else {
                             url = root + "api/follow/delete.php";
                             $.ajax({
@@ -176,8 +227,17 @@ $(".follow-button").click(function(event) {
                                 data: form.serialize(),
                                 success: function() {
                                     followButton.removeClass("followed-user");
-                                    followButton.addClass("follow-user");
                                     followButton.attr("value", "Follow");
+
+                                    if($(".follow-label")) {
+                                        $(".follow-label").text("Follow");
+                                    }
+
+                                    if($(".follow-menu-header-form").find(".follow-button")) {
+                                        $(".follow-menu-header-form").find(".follow-button").removeClass("followed-user");
+                                        $(".follow-menu-header-form").find(".follow-button").addClass("follow-user");
+                                        $(".follow-menu-header-form").find(".follow-button").attr("value", "Follow");
+                                    }
                                 }
                             });
                         }
@@ -188,7 +248,9 @@ $(".follow-button").click(function(event) {
             }
         }
     });
-})
+});
+
+
 
 $(".add-user").click(function(event) {
     event.preventDefault();
@@ -240,3 +302,57 @@ $(".add-user").click(function(event) {
         }
     });
 })
+
+$(".unfriend").click(function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let unfriend = $(this);
+    let form = unfriend.parent();
+
+    /*
+        We do that because some inputs are not directly child of the form so when followButton get clicked we need to start from this button
+        to the first form ancestor and use it as form because in friend sub-option we have an inut inside div which is not a direct
+        child of follow-form
+    */
+    while(form.prop("tagName") != "FORM") {
+        form = form.parent();
+    }
+
+    let url = root + 'security/check_current_user.php';
+    
+    // First we check if the current user is valid
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response)
+        {
+            if(response) {
+                // If the current user id is valide the we can add follow record (This basically add some layer of security)
+                url = root + "api/user_relation/unfriend_relation.php";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(response)
+                    {
+                        if(response["success"]) {
+                            unfriend.parent().parent().parent().remove();
+                            $(".friend-state-button").attr("value", "Add");
+                            $(".friend-state-button").removeClass("added-user-back");
+                            $(".friend-state-button").addClass("add-user-back");
+                        } else {
+                            
+                        }
+                    }
+                });
+            } else {
+                console.log("ID changed ! error.");
+            }
+        }
+    });
+})
+
+// This button will changed from friends to add button with class: friend-state-button
+// Meaning it will have the same functionality of add friend button

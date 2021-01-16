@@ -42,8 +42,8 @@ class Search {
                 </div>
             </div>
             <form action="" method="GET" class="flex follow-form">
-                <input type="hidden" name="follower_id" value="$follower_id">
-                <input type="hidden" name="followed_id" value="$followed_id">
+                <input type="hidden" name="current_user_id" value="$follower_id">
+                <input type="hidden" name="current_profile_id" value="$followed_id">
                 $follow_btn
             </form>
             <input type="hidden" value="{$id}" class="uid">

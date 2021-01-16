@@ -23,7 +23,7 @@ if(!isset($_POST["current_user_id"])) {
 
     exit();
 }
-if(!isset($_POST["followed_id"])) {
+if(!isset($_POST["current_profile_id"])) {
     echo json_encode(
         array(
             "message"=>"You should provide followed_id as post form input",
@@ -35,7 +35,7 @@ if(!isset($_POST["followed_id"])) {
 }
 
 $follower = $_POST["current_user_id"];
-$followed = $_POST["followed_id"];
+$followed = $_POST["current_profile_id"];
 
 /*
     Here we can't allow user to follow himself because we create a UNIQUE constraint(follower_id, followed_id) in the database,
@@ -56,8 +56,8 @@ if($follower === $followed) {
 if(($follower = sanitize_id($follower)) && 
     User::user_exists("id", $follower)) {
         // Same check here with the followed user
-        if(isset($_POST["followed_id"]) && 
-            ($followed = sanitize_id($_POST["followed_id"])) && 
+        if(isset($followed) && 
+            ($followed = sanitize_id($followed)) && 
             User::user_exists("id", $followed)) {
                 if(Follow::follow_exists($follower, $followed)) {
                     echo json_encode(

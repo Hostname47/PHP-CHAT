@@ -24,7 +24,7 @@ $friend = sanitize_id($_POST["current_profile_id"]);
 if($current_user === $friend) {
     echo json_encode(
         array(
-            "message"=>"You can't add yourself",
+            "message"=>"You can't unfriend yourself",
             "success"=>false
         )
     );
@@ -44,10 +44,10 @@ if(($current_user) &&
             $user_relation->set_property("from", $current_user);
             $user_relation->set_property("to", $friend);
 
-            if($user_relation->send_request()) {
+            if($user_relation->unfriend()) {
                 echo json_encode(
                     array(
-                        "message"=>"user with id: $current_user sends a friend request to user with id: $friend",
+                        "message"=>"user with id: $current_user unfriends user with id: $friend successfully",
                         "success"=>true,
                         "error"=>false
                     )
@@ -55,7 +55,7 @@ if(($current_user) &&
             } else {
                 echo json_encode(
                     array(
-                        "message"=>"user with id: $current_user elready send a friend request to user with id: $friend",
+                        "message"=>"user with id: $current_user is not a friend of user with id: $friend or some invalide data is provided",
                         "success"=>false,
                         "error"=>false
                     )
@@ -66,6 +66,7 @@ if(($current_user) &&
             echo json_encode(
                 array(
                     "message"=>"friend's id is either not valid or not exists in our db",
+                    "success"=>false,
                     "error"=>true
                 )
             );
@@ -74,6 +75,7 @@ if(($current_user) &&
     echo json_encode(
         array(
             "message"=>"your id is either not valid or not exists in our db",
+            "success"=>false,
             "error"=>true
         )
     );

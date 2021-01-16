@@ -2,6 +2,16 @@
 
     use classes\{Config};
     use models\{User, Follow, UserRelation};
+    
+    $current = $user->getPropertyValue("id");
+    $friend = $fetched_user->getPropertyValue("id");
+
+    $follow = new Follow();
+    $follow->set_data(array(
+        "follower"=>$current,
+        "followed"=>$friend
+    ));
+
 
 ?>
 
@@ -13,20 +23,27 @@
         <a href="" class="profile-menu-item">Videos</a>
     </div>
     <div class="flex-row-column">
-        <form action="" method="GET" class="flex follow-form">
-            <input type="hidden" name="current_user_id" value="<?php echo $user->getPropertyValue("id"); ?>">
-            <input type="hidden" name="followed_id" value="<?php echo $fetched_user->getPropertyValue("id"); ?>">
+        <form action="" method="GET" class="flex follow-form follow-menu-header-form">
+            <input type="hidden" name="current_user_id" value="<?php echo $current ?>">
+            <input type="hidden" name="current_profile_id" value="<?php echo $friend ?>">
             <?php
-                $follow = new Follow();
-                $follow->set_data(array(
-                    "follower"=>$user->getPropertyValue("id"),
-                    "followed"=>$fetched_user->getPropertyValue("id")
-                ));
-
                 if($follow->fetch_follow()) {
+                    $follow_unfollow = <<<EOS
+                        <div class="sub-option-style-2 post-to-option">
+                            <label for="" class="flex padding-back-style-1 unfollow-black follow-label">Unfollow</label>
+                            <input type="submit" class="button-style-9-black follow-button" value="Unfollow" style="margin-left: 8px; font-weight: 400">
+                        </div>
+EOS;
             ?>
             <input type="submit" class="button-style-9 follow-button followed-user" value="Followed" style="margin-left: 4px; font-weight: 400">
-            <?php } else { ?>
+            <?php } else {
+                $follow_unfollow = <<<EOS
+                    <div class="sub-option-style-2 post-to-option">
+                        <label for="" class="flex padding-back-style-1 follow-black follow-label">Follow</label>
+                        <input type="submit" class="button-style-9-black follow-button" value="Follow" style="margin-left: 8px; font-weight: 400">
+                    </div>
+EOS;            
+            ?>
             <input type="submit" class="button-style-9 follow-button follow-user" value="Follow" style="margin-left: 4px; font-weight: 400">
             <?php } ?>
         </form>
@@ -35,9 +52,6 @@
             <input type="hidden" name="current_user_id" value="<?php echo $user->getPropertyValue("id"); ?>">
             <input type="hidden" name="current_profile_id" value="<?php echo $fetched_user->getPropertyValue("id"); ?>">
             <?php
-
-                $current = $user->getPropertyValue("id");
-                $friend = $fetched_user->getPropertyValue("id");
 
                 $user_relation = new UserRelation();
                 $user_relation->set_property("from", $current);
@@ -59,7 +73,24 @@ EOS;
                 } 
                 if($is_friend){
                     echo <<<EOS
-                        <input type="submit" class="button-style-9 added-user-back" value="Friend" style="margin-left: 8px; font-weight: 400">
+                        <div class="relative">
+                            <input type="submit" class="button-style-9 added-user-back button-with-suboption friend-state-button" value="Friend" style="margin-left: 8px; font-weight: 400">
+                            <div class="sub-options-container sub-options-container-style-2" style="top: 40px; z-index: 3">
+                                <div class="paragraph-wrapper-style-1">
+                                    <p class="label-style-2">Friend options</p>
+                                </div>
+                                <div class="options-container-style-1">
+                                    <div class="sub-option-style-2 post-to-option">
+                                        <label for="" class="flex padding-back-style-1 unfriend-black">Unfriend</label>
+                                        <input type="submit" class="button-style-9-black unfriend" value="Unfriend" style="margin-left: 8px; font-weight: 400">
+                                    </div>
+                                </div>
+                                <div class="options-container-style-1">
+                                    $follow_unfollow
+                                </div>
+                            </div>
+                        </div>
+
 EOS;
                 } else if($is_pending) {
                     echo <<<EOS
@@ -73,7 +104,7 @@ EOS;
                 }
                 else {
                     echo <<<EOS
-                        <input type="submit" class="button-style-9 add-user add-user-back" value="" style="margin-left: 8px; font-weight: 400">
+                        <input type="submit" class="button-style-9 add-user add-user-back" value="Add" style="margin-left: 8px; font-weight: 400">
 EOS;
                 }
                 

@@ -103,9 +103,8 @@ class UserRelation {
     }
 
     public function unfriend() {
-
-        // Only unfriend if there's a relation between the two
-        $existed_relation_status = $this->bidirectional_relation_exists();
+        // Only unfriend if there's a relation between the two and it shoulf be friend relationship
+        $existed_relation_status = $this->get_relation_by_status("F");
         if($existed_relation_status) {
             $this->delete_relation("F");
 

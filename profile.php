@@ -157,7 +157,7 @@ $followed_number = Follow::get_followed_users_number($profile_user_id);
 </head>
 <body>
     <?php include_once "components/basic/header.php"; ?>
-    <main>
+    <main class="relative">
         <section id="first-section">
             <div class="relative flex-column">
                 <div>
