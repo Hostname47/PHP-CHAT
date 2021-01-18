@@ -1,8 +1,7 @@
 <?php
 
 namespace models;
-
-use classes\{DB};
+use classes\{DB, Config, Common};
 
 class Post {
     private $db,
@@ -76,6 +75,56 @@ class Post {
         }
 
         return false;
+    }
+
+    public static function fetch_journal_posts($user_id) {
+        // Algorithm to fetch jounral posts of a specific user
+
+        // First we get all users relevent to the user's journal
+        $fetched_users = array();
+
+        /*
+            We use user_id as from to get all his friend in to column; We will take to column in the result set to fetch his
+            friends' ids
+        */
+        // First we get all his friends
+        $friends = UserRelation::get_friends($user_id);
+
+        // second we get the followed users
+        $followed_users = Follow::get_followed_users($user_id);
+        
+        $fetched_users = array_merge($friends, $followed_users);
+        // User could be followed and friend at the same time sowe need to be sure that we don't have duplicates
+        $fetched_users = Common::unique_multidim_array($fetched_users, "id");
+        // Now we have merge friends along with followed users, all what we need to do is fetch posts of these users
+        $posts = array();
+
+        foreach($fetched_users as $friend) {
+            $poster_id = $friend->getPropertyValue("id");
+
+            DB::getInstance()->query("SELECT * FROM post WHERE post_owner = ?", array($poster_id));
+    
+            if(DB::getInstance()->count() > 0) {
+                $fetched_posts = DB::getInstance()->results();
+    
+                foreach($fetched_posts as $post) {
+                    $f_post = new Post();
+    
+                    $f_post->post_id = $post->id;
+                    $f_post->post_owner = $post->post_owner;
+                    $f_post->post_visibility = $post->post_visibility;
+                    $f_post->post_place = $post->post_place;
+                    $f_post->post_date = $post->post_date;
+                    $f_post->text_content = $post->text_content;
+                    $f_post->picture_media = $post->picture_media;
+                    $f_post->video_media = $post->video_media;
+    
+                    $posts[] = $f_post;
+                }
+            }
+        }
+
+        return $posts;
     }
 
     public static function get($field_name, $field_value) {

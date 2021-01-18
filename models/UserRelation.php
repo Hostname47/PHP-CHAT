@@ -219,6 +219,41 @@ class UserRelation {
         return false;
     }
 
+    public static function get_friends($user_id) {
+        /*
+            This function will take user_id and find his friends in relations table and get his frinds in form of users
+            using User class and fetch each user based on his id and return array of friends
+        */
+
+        DB::getInstance()->query("SELECT * FROM user_relation WHERE `from` = ? AND `status` = 'F'",
+        array(
+            $user_id
+        ));
+
+        $relations = DB::getInstance()->results();
+        $friends = array();
+
+        foreach($relations as $relation) {
+            $friend_id = $relation->to;
+
+            $user = new User();
+            $user->fetchUser("id", $friend_id);
+
+            $friends[] = $user;
+        }
+
+        return $friends;
+    }
+
+    public static function get_friends_number($user_id) {
+        DB::getInstance()->query("SELECT * FROM user_relation WHERE `from` = ? AND `status` = 'F'",
+        array(
+            $user_id
+        ));
+
+        return DB::getInstance()->count();
+    }
+
     public function get_relation_by_status($status) {
         $this->db->query("SELECT * FROM user_relation WHERE `from` = ? AND `to` = ? AND `status` = ?",
         array(

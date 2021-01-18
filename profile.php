@@ -133,6 +133,7 @@ function post_date_latest_sort($post1, $post2) {
 $posts_number = Post::get_posts_number($profile_user_id);
 $followers_number = Follow::get_user_followers_number($profile_user_id);
 $followed_number = Follow::get_followed_users_number($profile_user_id);
+$friends_number = UserRelation::get_friends_number($profile_user_id);
 
 ?>
 
@@ -172,15 +173,19 @@ $followed_number = Follow::get_followed_users_number($profile_user_id);
                     </div>
                 </div>
                 <div id="profile-picture-container">
-                    <div class="relative" style="border-radius: 50%">
-                        <img src="<?php echo $fetched_user->getPropertyValue("picture"); ?>" class="profile-picture" alt="">
+                    <div class="relative" style="border-radius: 50%; overflow: hidden">
+                        <div class="profile-picture-cnt">
+                            <img src="<?php echo $fetched_user->getPropertyValue("picture"); ?>" class="profile-picture" alt="">
+                        </div>
                         <img src="" class="profile-picture shadow-profile-picture absolute" alt="">
                     </div>
                     <div class="viewer">
                         <div class="relative">
                             <a href="" class="close-viewer-style close-viewer"></a>
                         </div>
-                        <img src="" class="profile-picture-preview" alt="User's name Profile picture">
+                        <div class="profile-picture-preview-container">
+                            <img src="" class="profile-picture-preview" alt="User's name Profile picture">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,6 +220,12 @@ $followed_number = Follow::get_followed_users_number($profile_user_id);
                         <div>
                             <h2 class="title-style-4"><?php echo $followed_number; ?></h2>
                             <p class="regular-text-style-2">Following</p>
+                        </div>
+                    </a>
+                    <a href="" class="user-info-section-link">
+                        <div>
+                            <h2 class="title-style-4"><?php echo $friends_number; ?></h2>
+                            <p class="regular-text-style-2">Friends</p>
                         </div>
                     </a>
                 </div>

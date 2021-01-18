@@ -5,7 +5,8 @@
     require_once "core/init.php";
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-    use models\Post;
+    use models\{Post, UserRelation};
+    use view\post\Post as Post_View;
     // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
     // Here we check if the user is not logged in and we redirect him to login page
 
@@ -18,8 +19,14 @@
         $welcomeMessage = Session::flash("new_username") . ", " . Session::flash("register_success");
     }
 
-    
+    $journal_posts = Post::fetch_journal_posts($user->getPropertyValue("id"));
+    // Let's randomly sort array for now
+    shuffle($journal_posts);
+    /*usort($journal_posts, 'post_date_latest_sort');
 
+    function post_date_latest_sort($post1, $post2) {
+        return $post1->get_property('post_date') == $post2->get_property('post_date') ? 0 : ($post1->get_property('post_date') > $post2->get_property('post_date')) ? -1 : 1;
+    }*/
 ?>
 
 <!DOCTYPE html>
@@ -92,90 +99,19 @@
                 </div>
                 <?php include_once "components/basic/create-post.php"; ?>
                 <div id="posts-container">
-                    <div class="timeline-post">
-                        <div class="post-header flex-space">
-                            <div class="post-header-without-more-button">
-                                <img src="assets/images/read.png" class="image-style-7 post-owner-picture" alt="">
-                                <div class="post-header-textual-section">
-                                    <a href="" class="post-owner-name">Nassri - @grotto</a>
-                                    <div class="row-v-flex">
-                                        <p class="regular-text"><a href="" class="post-date">January 9 at 1:34 PM</a> <span style="font-size: 8px">.</span></p>
-                                        <img src="assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <a href="" class="button-style-6 dotted-more-back"></a>
-                            </div>
-                        </div>
-                        <p class="post-text">
-                            hello community,
-                            My post will sound weird or stupid to you, but I assume... After spending years and years watching movies and series of all kinds, I finally took stock, yes a point or decided to classify the series s that have scored me too much. Finally, I found the best show I could watch is Artugrul. Yes this Turkish series that little knows. Despite its budget not reaching $ 100 million in game of thrones, but the Turkish series has everything to be the best.... History, tragedy, drama, reality, hope, religion, glory..... A certain Vinking but actually....
-                            I recommend everyone to see this $ 1 billion series and translated into 75 languages.
-                            Thank you
-                        </p>
-                        <div class="media-container">
-                            <div class="post-media-item-container">
-                                <img src="assets/images/read.png" class="post-media-image" alt="">
-                                <div class="viewer">
+                    <?php
+                        /*
+                        foreach($journal_posts as $post) {
+                            $post_view = new Post_view();
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="react-on-opost-buttons-container">
-                            <a href="" class="white-like-back post-bottom-button">Like</a>
-                            <a href="" class="white-comment-back post-bottom-button">Comment</a>
-                            <a href="" class="white-like-back post-bottom-button">Like</a>
-                        </div>
-                        <div class="comment-section">
-                            <div class="comment-block">
-                                <div>
-                                    <img src="assets/images/read.png" class="image-style-9" alt="">
-                                </div>
-                                <div>
-                                    <div class="comment-wrapper">
-                                        <a href="" class="comment-owner">grotto</a>
-                                        <p class="comment-text">This is a comment for testing stuff</p>
-                                    </div>
-                                    <div class="row-v-flex underneath-comment-buttons-container">
-                                        <a href="" class="link-style-3">like</a>
-                                        <a href="" class="link-style-3">reply</a>
-                                        <div style="margin-left: 6px">
-                                            <p class="regular-text-style-2"> . <span class="time-of-comment">5min</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="comment-block">
-                                <div>
-                                    <img src="assets/images/programming.png" class="image-style-9" alt="">
-                                </div>
-                                <div>
-                                    <div class="comment-wrapper">
-                                        <a href="" class="comment-owner">Loupgarou</a>
-                                        <p class="comment-text">This is another comment for testing stuff</p>
-                                    </div>
-                                    <div class="row-v-flex underneath-comment-buttons-container">
-                                        <a href="" class="link-style-3">like</a>
-                                        <a href="" class="link-style-3">reply</a>
-                                        <div style="margin-left: 6px">
-                                            <p class="regular-text-style-2"> . <span class="time-of-comment">4h</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="comment-block">
-                                <div>
-                                    <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="image-style-9" alt="">
-                                </div>
-                                <div class="comment-input-form-wrapper">
-                                    <form action="" method="POST" class="comment-form relative">
-                                        <input type="text" name="comment" placeholder="Write a comment .." class="comment-style">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            echo $post_view->generate_timeline_post($post);
+                        }*/
+                        foreach($journal_posts as $post) {
+                            $post_view = new Post_View();
+
+                            echo $post_view->generate_timeline_post($post);
+                        }
+                    ?>
                 </div>
             </div>
             <div id="master-right">
