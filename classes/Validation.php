@@ -65,12 +65,13 @@ class Validation {
                                 // ----------------------      CHCK IMAGE TYPE      ----------------------
 
                                 $file = $_FILES[$item]["name"];
-                                $allowedImageExtensions = array(".png", ".jpeg", ".gif", ".jpg");
+                                $allowedImageExtensions = array(".png", ".jpeg", ".gif", ".jpg", ".jfif");
 
                                 $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
 
-                                $finfo = new \finfo(FILEINFO_MIME);
-                                $type = $finfo->file($file);
+                                // This is more secure (IMPOSTANT: change name to tmp_name ine $file variable if you want to use finfo to check images)
+                                /*$finfo = new \finfo(FILEINFO_MIME_TYPE);
+                                $type = $finfo->file($file);*/
                                 if (!in_array($original_extension, $allowedImageExtensions))
                                 {
                                     $this->addError("Only PNG, JPG, JPEG, and GIF image types are allowed to be used in {$rules['name']} image!");

@@ -10,7 +10,7 @@
     </div>
     <div class="flex-space create-post-header">
         <div class="row-v-flex">
-            <img src="<?php echo Config::get("root/path") . $user->getPropertyValue("picture"); ?>" class="image-style-2" alt="">
+            <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-2" alt="">
             <div class="horizontal-menu-item-wrapper" style="margin-left: 8px">
                 <a href="" class="button-style-4 button-with-suboption more-button">Post to timeline</a>
                 <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">

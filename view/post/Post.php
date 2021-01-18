@@ -10,7 +10,8 @@
             $post_owner_user = new User();
             $post_owner_user->fetchUser("id", $post->get_property("post_owner"));
 
-            $post_owner_picture = Config::get("root/path") . $post_owner_user->getPropertyValue("picture");
+            $post_owner_picture = Config::get("root/path") . (($post_owner_user->getPropertyValue("picture") != "") ? $post_owner_user->getPropertyValue("picture") : "assets/images/icons/user.png");
+            
             $post_owner_name = $post_owner_user->getPropertyValue("firstname") . " " . $post_owner_user->getPropertyValue("lastname") . " -@" . $post_owner_user->getPropertyValue("username");
 
             $post_date = $post->get_property("post_date");
@@ -19,7 +20,7 @@
             $post_owner_profile = Config::get("root/path") . "profile.php?username=" . $post_owner_user->getPropertyValue("username");
 
             $post_image = $post->get_property("picture_media");
-            $post_text_content = $post->get_property("text_content");
+            $post_text_content = htmlspecialchars_decode($post->get_property("text_content"));
 
             return <<<EOS
                 <div class="timeline-post">

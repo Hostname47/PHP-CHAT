@@ -113,6 +113,10 @@ $(".share-post").click(function(event) {
     $(".share-post").attr('disabled','disabled');
     $(".share-post").attr('value', "POSTING ..");
 
+    let value = $("#create-post-textual-content").val().replace(/\n/g, '<br/>');
+    $("#create-post-textual-content").val(value);
+    console.log($("#create-post-textual-content").html());
+
     let formData = new FormData($("#create-post-form").get(0));
 
     $.ajax({
