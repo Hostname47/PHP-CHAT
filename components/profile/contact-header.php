@@ -94,12 +94,12 @@ EOS;
 EOS;
                 } else if($is_pending) {
                     echo <<<EOS
-                        <input type="submit" class="button-style-9 add-user add-user-back" value="Cancel Request" style="margin-left: 8px; font-weight: 400">
+                        <input type="submit" class="button-style-9 add-user unfriend-white-back" value="Cancel Request" style="margin-left: 8px; font-weight: 400">
 EOS;
                 } else if($wait_your_accept) {
                     echo <<<EOS
-                        <input type="submit" class="button-style-9 add-user add-user-back" value="Accept Request" style="margin-left: 8px; font-weight: 400">
-                        <input type="submit" class="button-style-9 add-user add-user-back" value="Decline Request" style="margin-left: 8px; font-weight: 400">
+                        <input type="submit" class="button-style-9 accept-user add-user-back" value="Accept Request" style="margin-left: 8px; font-weight: 400">
+                        <input type="submit" class="button-style-9 decline-user unfriend-white-back" value="Decline Request" style="margin-left: 8px; font-weight: 400">
 EOS;
                 }
                 else {

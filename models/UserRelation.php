@@ -99,7 +99,11 @@ class UserRelation {
                 'since'=>date("Y/m/d h:i:s")
             ));
             $other_end->add();
+
+            return true;
         }
+
+        return false;
     }
 
     public function unfriend() {
@@ -208,7 +212,11 @@ class UserRelation {
                 $this->from,
                 $this->to
             ));
+
+            return true;
         }
+
+        return false;
     }
 
     public function get_relation_by_status($status) {

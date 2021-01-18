@@ -159,6 +159,13 @@ $(".share-post").click(function(event) {
 });
 
 /*
+    REMEMBER: Any relational operation between users need a button with appropriate class like add-user or unfriend and 
+    along with that button you should provide two important inputs: current_user_id which point to the user that is currently
+    logged in, and current_profile_id which point to the target user.
+    The action button and the two fields need to be inside a form regardless on their DOM depth
+*/
+
+/*
     IMPORTANT: what happens when user click follow button ?
     -> First we check if the user who click the button is the same as the user who is currently logged in by sending the user_id
        to the check file within 'functions/security/check_current_user.php' to check the user, Then we want to make follow
@@ -250,8 +257,6 @@ $(".follow-button").click(function(event) {
     });
 });
 
-
-
 $(".add-user").click(function(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -282,15 +287,15 @@ $(".add-user").click(function(event) {
                         else if(response["success"]) {
                             addButton.attr("value", "Cancel Request");
                         } else {
-                            url = root + "api/follow/cancel_request.php";
+                            url = root + "api/user_relation/cancel_request.php";
                             $.ajax({
                                 type: "POST",
                                 url: url,
                                 data: form.serialize(),
                                 success: function() {
-                                    addButton.removeClass("followed-user");
-                                    addButton.addClass("follow-user");
-                                    addButton.attr("value", "Follow");
+                                    addButton.attr("value", "Add");
+                                    addButton.removeClass("unfriend-white-back");
+                                    addButton.addClass("add-user-back");
                                 }
                             });
                         }
@@ -338,12 +343,9 @@ $(".unfriend").click(function(event) {
                     success: function(response)
                     {
                         if(response["success"]) {
-                            unfriend.parent().parent().parent().remove();
-                            $(".friend-state-button").attr("value", "Add");
-                            $(".friend-state-button").removeClass("added-user-back");
-                            $(".friend-state-button").addClass("add-user-back");
+                            location.reload();
                         } else {
-                            
+                            console.log("Open console to see API request response !");
                         }
                     }
                 });
@@ -354,5 +356,98 @@ $(".unfriend").click(function(event) {
     });
 })
 
-// This button will changed from friends to add button with class: friend-state-button
-// Meaning it will have the same functionality of add friend button
+$(".accept-user").click(function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let unfriend = $(this);
+    let form = unfriend.parent();
+
+    /*
+        We do that because some inputs are not directly child of the form so when followButton get clicked we need to start from this button
+        to the first form ancestor and use it as form because in friend sub-option we have an inut inside div which is not a direct
+        child of follow-form
+    */
+    while(form.prop("tagName") != "FORM") {
+        form = form.parent();
+    }
+
+    let url = root + 'security/check_current_user.php';
+    
+    // First we check if the current user is valid
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response)
+        {
+            if(response) {
+                // If the current user id is valide the we can add follow record (This basically add some layer of security)
+                url = root + "api/user_relation/accept_request.php";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(response)
+                    {
+                        if(response["success"]) {
+                            location.reload();
+                        } else {
+                            console.log("Open console to see API request response !");
+                        }
+                    }
+                });
+            } else {
+                console.log("ID changed ! error.");
+            }
+        }
+    });
+});
+
+$(".decline-user").click(function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let unfriend = $(this);
+    let form = unfriend.parent();
+
+    /*
+        We do that because some inputs are not directly child of the form so when followButton get clicked we need to start from this button
+        to the first form ancestor and use it as form because in friend sub-option we have an inut inside div which is not a direct
+        child of follow-form
+    */
+    while(form.prop("tagName") != "FORM") {
+        form = form.parent();
+    }
+
+    let url = root + 'security/check_current_user.php';
+    
+    // First we check if the current user is valid
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response)
+        {
+            if(response) {
+                // If the current user id is valide the we can add follow record (This basically add some layer of security)
+                url = root + "api/user_relation/decline_request.php";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(response)
+                    {
+                        if(response["success"]) {
+                            location.reload();
+                        } else {
+                            console.log("Open console to see API request response !");
+                        }
+                    }
+                });
+            } else {
+                console.log("ID changed ! error.");
+            }
+        }
+    });
+});

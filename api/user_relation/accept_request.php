@@ -41,13 +41,13 @@ if(($current_user) &&
             
             $user_relation = new UserRelation();
 
-            $user_relation->set_property("from", $current_user);
-            $user_relation->set_property("to", $friend);
+            $user_relation->set_property("from", $friend);
+            $user_relation->set_property("to", $current_user);
 
-            if($user_relation->cancel_request()) {
+            if($user_relation->accept_request()) {
                 echo json_encode(
                     array(
-                        "message"=>"user with id: $current_user cancels a request that was sent to user with id: $friend successfully !",
+                        "message"=>"user with id: $current_user accepts a request sent by user with id: $friend successfully !",
                         "success"=>true,
                         "error"=>false
                     )
@@ -55,7 +55,7 @@ if(($current_user) &&
             } else {
                 echo json_encode(
                     array(
-                        "message"=>"user with id: $current_user is not a friend to user with id: $friend",
+                        "message"=>"user with id: $friend did not send a friend request to user with id: $current_user",
                         "success"=>false,
                         "error"=>false
                     )

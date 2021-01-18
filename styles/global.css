@@ -773,7 +773,11 @@ body {
     background-image: url("../assets/images/icons/unfriend-black.png");
 }
 
-.follow-user, .add-user, .followed-user, .added-user-back, .add-user-back, .unfriend-black {
+.unfriend-white-back {
+    background-image: url("../assets/images/icons/unfriend-white.png");
+}
+
+.follow-user, .add-user, .followed-user, .added-user-back, .add-user-back, .unfriend-black, .unfriend-white-back {
     padding-left: 34px;
     background-position: 8px center;
     background-size: 20px;
