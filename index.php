@@ -5,7 +5,7 @@
     require_once "core/init.php";
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-    use models\{Post, UserRelation};
+    use models\{Post, UserRelation, Follow};
     use view\post\Post as Post_View;
     // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
     // Here we check if the user is not logged in and we redirect him to login page
@@ -18,6 +18,7 @@
     if(Session::exists("register_success") && $user->getPropertyValue("username") == Session::get("new_username")) {
         $welcomeMessage = Session::flash("new_username") . ", " . Session::flash("register_success");
     }
+
 
     $journal_posts = Post::fetch_journal_posts($user->getPropertyValue("id"));
     // Let's randomly sort array for now
@@ -43,6 +44,7 @@
     <link rel="stylesheet" href="styles/post.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="javascript/config.js" defer></script>
     <script src="javascript/header.js" defer></script>
     <script src="javascript/index.js" defer></script>
     <script src="javascript/global.js" defer></script>
@@ -51,43 +53,7 @@
     <?php include_once "components/basic/header.php"; ?>
     <main>
         <div id="global-container">
-            <div id="master-left">
-                <div class="flex-space">
-                    <h3 class="title-style-2">Home</h3>
-                    <div class="flex">
-                        <a href="" class="menu-button-style-3 video-background" id="go-to-videos"></a>
-                        <a href="" class="menu-button-style-3 messages-button"></a>
-                        <a href="" class="menu-button-style-3 search-background go-to-search"></a>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <div class="menu-item-style-1 row-v-flex">
-                            <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-2" alt="">
-                            <p class="label-style-3"><?php echo $user->getPropertyValue("username"); ?></p>
-                        </div>
-                        <div class="menu-item-style-2 row-v-flex">
-                            <div class="image-style-2 flex-row-column">
-                                <img src="assets/images/icons/home-w.png" class="image-style-5" alt="">
-                            </div>
-                            <p class="label-style-3">Home</p>
-                        </div>
-                        <div class="menu-item-style-2 row-v-flex">
-                            <div class="image-style-2 flex-row-column">
-                                <img src="assets/images/icons/notification.png" class="image-style-5" alt="">
-                            </div>
-                            <p class="label-style-3">Notifications</p>
-                        </div>
-                        <div class="menu-item-style-2 row-v-flex">
-                            <div class="image-style-2 flex-row-column">
-                                <img src="assets/images/icons/messages.png" class="image-style-5" alt="">
-                            </div>
-                            <p class="label-style-3">Messages</p>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
+            <?php include_once "components/basic/master-left.php"; ?>
             <div id="master-middle">
                 <div class="green-message">
                     <p class="green-message-text"><?php echo $welcomeMessage; ?></p>

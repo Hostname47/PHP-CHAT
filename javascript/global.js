@@ -1,5 +1,12 @@
 
 
+let headerHeight = 55;
+
+$("#master-right").height($(window).height() - headerHeight - 4);
+$("#master-left").height($(window).height() - headerHeight - 4);
+$("#master-left-container").height($("#master-left").height() - 78);
+$("#contacts-container").height($("#master-right").height() - 40);
+
 $(".button-with-suboption").click(function() {
     let container = $(this).parent().find(".sub-options-container");
     if(container.css("display") == "none") {

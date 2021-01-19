@@ -112,13 +112,11 @@ main {
     width: 150px;
     border: 5px solid;
     border-radius: 50%;
-    background-color: rgb(200, 200, 200);
 }
 
 .profile-picture {
     display: flex;
     border: 5px solid;
-    background-color: rgb(200, 200, 200);
     cursor: pointer;
 }
 

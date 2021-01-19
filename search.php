@@ -50,7 +50,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="javascript/config.js" defer></script>
     <script src="javascript/header.js" defer></script>
-    <script src="javascript/index.js" defer></script>
     <script src="javascript/search.js" defer></script>
     <script src="javascript/global.js" defer></script>
 </head>
@@ -58,9 +57,7 @@
     <?php include_once "components/basic/header.php"; ?>
     <main>
         <div id="global-container">
-            <div id="master-left">
-                
-            </div>
+            <?php include_once "components/basic/master-left.php"; ?>
             <div id="master-middle">
                 <div class="green-message">
                     <p class="green-message-text"><?php echo $welcomeMessage; ?></p>

@@ -1,4 +1,14 @@
 
+const urlParams = new URLSearchParams(window.location.search);
+
+$("#edit-profile-button").parent().find(".viewer").css("maxHeight", 700);
+
+if(urlParams.get('edit') !== null) {
+    $("#edit-profile-button").parent().find(".viewer").css("display", "block");
+} else {
+    console.log("don4t shoz edit");
+}
+
 $(".profile-picture").css("borderColor", $("#first-section").css("backgroundColor"));
 
 let p_p_max_height = 150;
