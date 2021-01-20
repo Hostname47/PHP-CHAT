@@ -1,3 +1,8 @@
+$(".header-profile-edit-button").click(function() {
+    window.location.href = root + "profile.php?edit";
+    
+    return false;
+})
 
 
 let headerHeight = 55;

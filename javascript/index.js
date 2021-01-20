@@ -30,9 +30,3 @@ $(".user-info-section-link").on( {
         $(this).find("div p").css("textDecoration", "none");
     }
 });
-
-$(".header-profile-edit-button").click(function() {
-    window.location.href = root + "profile.php?edit";
-    
-    return false;
-})

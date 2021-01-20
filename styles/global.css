@@ -9,6 +9,34 @@ body {
     font-size: 15px;
 }
 
+#global-container {
+    display: flex;
+    position: relative;
+    z-index: 0;
+}
+
+.user-info-section {
+    padding: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    /*box-shadow: 2px 2px 3px 0.1px rgba(255, 255, 255, 0.5);*/
+}
+
+
+.user-info-section-link {
+    display: flex;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 20px;
+}
+
+.header-profile-edit-container {
+    right: 10px;
+    top: 10px;
+}
+
 .flex {
     display: flex;
 }
@@ -27,6 +55,12 @@ body {
 
 .field-style-1 {
     margin-bottom: 6px;
+}
+
+.bold-text-style-1 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 16px;
 }
 
 .field-style-2 {
@@ -147,6 +181,13 @@ body {
     width: 34px;
 }
 
+.image-style-10 {
+    display: block;
+    border-radius: 50%;
+    height: 38px;
+    width: 38px;
+}
+
 .label-style-1 {
     font-size: 13.5px;
     margin: 0 0 5px 5px;
@@ -168,6 +209,12 @@ body {
 .no-underline {
     text-decoration: none;
     color: white;
+}
+
+.not-link {
+    text-decoration: none;
+    display: flex;
+    margin: 0;
 }
 
 .flex-column {
@@ -215,6 +262,12 @@ body {
     text-decoration: none;
     font-size: 13px;
     font-weight: 500;
+}
+
+.black-link {
+    text-decoration: none;
+    color: black;
+    font-size: 13px;
 }
 
 .green-text {
@@ -774,6 +827,10 @@ body {
     background-image: url("../assets/images/icons/eye.png");
 }
 
+.white-dotted-more-back {
+    background-image: url("../assets/images/icons/dotted-more-white.png");
+}
+
 .dotted-more-back {
     background-image: url("../assets/images/icons/dotted-more-white.png");
 }
@@ -903,6 +960,10 @@ body {
     font-weight: 600;
     padding: 4px;
     margin: 0 4px;
+}
+
+.right-pos-margin {
+    margin-left: auto;
 }
 
 .paragraph-wrapper-style-1 {

@@ -1,0 +1,223 @@
+
+#master-middle {
+    display: flex;
+    width: 100%;
+    margin-left: 320px;
+    box-sizing: border-box;
+}
+
+#chat-global-container {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#first-chat-part {
+    width: 440px;
+    background-color: rgb(66, 66, 66);
+}
+
+#second-chat-part {
+    background: rgb(52,52,52);
+    background: linear-gradient(135deg, rgb(39, 39, 39) 0%, rgba(22,22,22,1) 100%);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.friends-chat-search-container,
+#chat-header {
+    height: 60px;
+    padding: 0 11px;
+    background-color: rgb(80, 80, 80);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid gray;
+}
+
+.friends-chat-search-container {
+    border-right: 1px solid gray;
+}
+
+.chat-input-style {
+    display: flex;
+    border-radius: 20px;
+    padding: 11px 14px 11px 32px;
+    background-image: url(../assets/images/icons/white-search.png);
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-color: rgb(32, 32, 32);
+    color: white;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+.chat-disc-user-image {
+    display: flex;
+    margin-right: 6px;
+}
+
+#friend-chat-discussions-container {
+    overflow-y: scroll;
+}
+
+.friend-chat-discussion-item-wraper {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgb(86, 86, 86);
+}
+
+.friend-chat-discussion-item-wraper:hover {
+    background-color: rgb(80, 80, 80);
+}
+
+.chat-disc-name-and-username {
+    display: flex;
+}
+
+.chat-disc-item-username {
+    display: flex;
+    margin-left: 6px;
+}
+
+.chat-header-more-button {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 6px;
+}
+
+.chat-header-more-button:hover {
+    background-color: rgb(196, 196, 196);
+}
+
+.selected-chat-discussion {
+    display: none;
+    background-color: rgb(66, 219, 66);
+    width: 6px;
+    height: 100%;
+    margin-left: 2px;
+
+    position: absolute;
+    right: 0;
+}
+
+#chat-container {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+.message-global-container {
+    display: flex;
+}
+
+.current-user-message-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 22px;
+    margin-left: auto;
+}
+
+.friend-message-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.chat-message-more-button-container {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.chat-message-more-button {
+    display: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.message-wrapper {
+    display: flex;
+    padding: 10px 12px;
+    margin: 0 10px;
+    border-radius: 20px;
+    background-color: rgb(175, 175, 175);
+}
+
+.message-text {
+    color: black;
+}
+
+.message-date {
+    position: absolute;
+    display: none;
+    bottom: -18px;
+    font-size: 13px;
+}
+
+.current-user-message-date {
+    right: 0;
+}
+
+.friend-message-date {
+    left: 0;
+}
+
+.message-input-box {
+    position: absolute;
+    bottom: 0;
+    height: 60px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(80, 80, 80);
+
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+#send-message-button {
+    display: flex;
+    cursor: pointer;
+    background-color: rgb(65, 167, 65);
+    color: white;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 10px 16px;
+    border: none;
+    margin-left: 8px;
+}
+
+#send-message-button:hover {
+    background-color: rgb(22, 104, 22);
+}
+
+.chat-message-settings-button {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+    background-color: rgb(41, 41, 41);
+    border-radius: 50%;
+    cursor: pointer;
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
