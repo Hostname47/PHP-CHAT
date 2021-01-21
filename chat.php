@@ -7,6 +7,7 @@ require_once "core/init.php";
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
 use models\{Post, UserRelation, Follow};
 use view\post\Post as Post_View;
+use view\chat\ChatComponent;
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
 
@@ -91,7 +92,7 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
                                 <p class="regular-text-style-2">34min</p>
                             </div>
                             <input type="hidden" class="uid">
-                            <div class="selected-chat-discussion" style="display: block">
+                            <div class="selected-chat-discussion">
                                 
                             </div>
                         </div>
@@ -113,6 +114,26 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
                                 
                             </div>
                         </div>
+                    </div>
+                    <div class="friends-chat-search-container" style="border-right: none;">
+                        <input type="text" class="chat-input-style" placeholder="Search for a friend to chat with">
+                    </div>
+                    <div id="friends-chat-container">
+                        <div class="friends-chat-item">
+                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                            <p class="regular-text" style="margin-left: 8px">Loupgarou</p>
+                            <img src="assets/images/icons/online.png" class="image-style-4 right-pos-margin" alt="">
+                            <input type="hidden" value="">
+                        </div>
+                        <?php
+                            $user_relation = new UserRelation();
+                            $friends = $user_relation->get_friends($current_user_id);
+    
+                            $chat_component = new ChatComponent();
+                            foreach($friends as $friend) {
+                                $chat_component->generate_chat_page_friend_contact($friend);
+                            }
+                        ?>
                     </div>
                 </div>
                 <div id="second-chat-part" class="relative">
@@ -256,83 +277,6 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
                                     </div>
                                 </div>
                                 <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                            </div>
-                        </div>
-                        
-                        <div class="message-global-container">
-                            <div class="friend-message-container">
-                                <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                                <div class="message-wrapper relative">
-                                    <p class="regular-text message-text">This is current user message</p>
-                                    <div class="absolute message-date friend-message-date">
-                                        <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
-                                    </div>
-                                </div>
-                                <div class="relative">
-                                    <div class="chat-message-more-button-container">
-                                        <a href="" class="chat-message-more-button white-dotted-more-back"></a>
-                                    </div>
-                                    <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                        <div class="options-container-style-1 black">
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Delete message (under construction)</a>
-                                            </div>
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Reply (under construction)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="message-global-container">
-                            <div class="current-user-message-container">
-                                <div class="relative">
-                                    <div class="chat-message-more-button-container">
-                                        <a href="" class="chat-message-more-button white-dotted-more-back"></a>
-                                    </div>
-                                    <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                        <div class="options-container-style-1 black">
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Delete message (under construction)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="message-wrapper relative">
-                                    <p class="regular-text message-text">This is current user message</p>
-                                    <div class="absolute current-user-message-date message-date">
-                                        <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
-                                    </div>
-                                </div>
-                                <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                            </div>
-                        </div>
-                        
-                        <div class="message-global-container">
-                            <div class="friend-message-container">
-                                <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                                <div class="message-wrapper relative">
-                                    <p class="regular-text message-text">This is current user message</p>
-                                    <div class="absolute message-date friend-message-date">
-                                        <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
-                                    </div>
-                                </div>
-                                <div class="relative">
-                                    <div class="chat-message-more-button-container">
-                                        <a href="" class="chat-message-more-button white-dotted-more-back"></a>
-                                    </div>
-                                    <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                        <div class="options-container-style-1 black">
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Delete message (under construction)</a>
-                                            </div>
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Reply (under construction)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

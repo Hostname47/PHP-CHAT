@@ -8,7 +8,7 @@ use models\{Follow};
 class Search {
     public function generateSearchPerson($current_user_id, $user) {
         // Notice we fetch data of users like they are objects; That's because search function get users as objects
-        $picture = (!empty($user->picture)) ? Config::get("root/path") . $user->picture : Config::get("root/path") . "assets/images/icons/user.png";
+        $picture = (!empty($user->picture)) ? Config::get("root/path") . $user->picture : Config::get("root/path") . "assets/images/logos/logo512.png";
         $fullname = $user->firstname . " " . $user->lastname;
         $username = $user->username;
         $id = $user->id;

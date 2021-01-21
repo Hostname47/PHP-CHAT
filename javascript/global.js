@@ -4,7 +4,6 @@ $(".header-profile-edit-button").click(function() {
     return false;
 })
 
-
 let headerHeight = 55;
 
 $("#master-right").height($(window).height() - headerHeight - 4);

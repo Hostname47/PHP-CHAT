@@ -7,9 +7,10 @@
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
     use models\{Post, UserRelation, Follow};
     use view\post\Post as Post_View;
+    use view\master_right\Right as MasterRightComponents;
+
     // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
     // Here we check if the user is not logged in and we redirect him to login page
-
     if(!$user->getPropertyValue("isLoggedIn")) {
         Redirect::to("login/login.php");
     }
@@ -20,7 +21,8 @@
     }
 
 
-    $journal_posts = Post::fetch_journal_posts($user->getPropertyValue("id"));
+    $current_user_id = $user->getPropertyValue("id");
+    $journal_posts = Post::fetch_journal_posts($current_user_id);
     // Let's randomly sort array for now
     shuffle($journal_posts);
     /*usort($journal_posts, 'post_date_latest_sort');
@@ -42,6 +44,7 @@
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/create-post-style.css">
     <link rel="stylesheet" href="styles/master-left-panel.css">
+    <link rel="stylesheet" href="styles/master-right-contacts.css">
     <link rel="stylesheet" href="styles/post.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -49,6 +52,7 @@
     <script src="javascript/header.js" defer></script>
     <script src="javascript/index.js" defer></script>
     <script src="javascript/global.js" defer></script>
+    <script src="javascript/master-right.js" defer></script>
 </head>
 <body>
     <?php include_once "components/basic/header.php"; ?>
@@ -93,141 +97,28 @@
                     </div>
                 </div>
                 <div id="contacts-container">
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">Loupgarou</p>
-                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto489</p>
+                    <div class="contact-user">
+                        <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
+                        <p class="contact-user-name">grotto489</p>
+                        <div class="row-v-flex right-pos-margin">
+                            <div class="contact-item-buttons-container">
+                                <a href="" class="contact-go-to-chat contact-item-button"></a>
+                                <a href="" class="contact-go-to-profile contact-item-button"></a>
+                            </div>
+                            <form action=""></form>
+                            <input type="hidden" class="uid" value="">
                             <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
                         </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto223</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">Loupgarou</p>
-                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto489</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto223</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a><a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">Loupgarou</p>
-                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto489</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto223</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a><a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">Loupgarou</p>
-                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto489</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto223</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a><a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">Loupgarou</p>
-                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto489</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto223</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a><a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">Loupgarou</p>
-                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto489</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto223</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a><a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">Loupgarou</p>
-                            <img src="assets/images/icons/online.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
-                    <a href="" class="contact-user-button">
-                        <div class="contact-user">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="contact-user-name">grotto489</p>
-                            <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
-                        </div>
-                    </a>
+                    </div>
+                    <?php
+                        $user_relation = new UserRelation();
+                        $friends = $user_relation->get_friends($current_user_id);
+
+                        $master_right = new MasterRightComponents();
+                        foreach($friends as $friend) {
+                            $master_right->generateFriendContact($current_user_id, $friend);
+                        }
+                    ?>
                 </div>
             </div>
         </div>

@@ -60,11 +60,14 @@
 }
 
 #friend-chat-discussions-container {
+    height: 225px;
     overflow-y: scroll;
 }
 
 .friend-chat-discussion-item-wraper {
+    cursor: pointer;
     padding: 12px;
+    height: 50px;
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgb(86, 86, 86);
@@ -220,4 +223,21 @@
     background-size: 18px;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+#friends-chat-container {
+    overflow-y: scroll;
+}
+
+.friends-chat-item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    margin: 2px 4px;
+    border-radius: 4px;
+}
+
+.friends-chat-item:hover {
+    background-color: rgb(80, 80, 80);
 }

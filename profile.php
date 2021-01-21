@@ -30,6 +30,7 @@ if(!($user->getPropertyValue("username") == $username) && $username != "") {
 }
 
 $profile_user_id = $fetched_user->getPropertyValue("id");
+$profile_user_picture = empty($fetched_user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $fetched_user->getPropertyValue("picture");
 
 if(isset($_POST["save-profile-edites"])) {
     if(Token::check(Common::getInput($_POST, "save_token"), "saveEdits")) {
@@ -175,7 +176,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
                 <div id="profile-picture-container">
                     <div class="relative" style="border-radius: 50%; overflow: hidden">
                         <div class="profile-picture-cnt">
-                            <img src="<?php echo $fetched_user->getPropertyValue("picture"); ?>" class="profile-picture" alt="">
+                            <img src="<?php echo $profile_user_picture; ?>" class="profile-picture" alt="">
                         </div>
                         <img src="" class="profile-picture shadow-profile-picture absolute" alt="">
                     </div>

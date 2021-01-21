@@ -10,7 +10,7 @@
             $post_owner_user = new User();
             $post_owner_user->fetchUser("id", $post->get_property("post_owner"));
 
-            $post_owner_picture = Config::get("root/path") . (($post_owner_user->getPropertyValue("picture") != "") ? $post_owner_user->getPropertyValue("picture") : "assets/images/icons/user.png");
+            $post_owner_picture = Config::get("root/path") . (($post_owner_user->getPropertyValue("picture") != "") ? $post_owner_user->getPropertyValue("picture") : "assets/images/logos/logo512.png");
             
             $post_owner_name = $post_owner_user->getPropertyValue("firstname") . " " . $post_owner_user->getPropertyValue("lastname") . " -@" . $post_owner_user->getPropertyValue("username");
 
