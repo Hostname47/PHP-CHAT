@@ -14,14 +14,21 @@
 
 #first-chat-part {
     width: 440px;
+    box-sizing: border-box;
     background-color: rgb(66, 66, 66);
 }
 
-#second-chat-part {
+#second-chat-part, #no-discussion-yet {
     background: rgb(52,52,52);
     background: linear-gradient(135deg, rgb(39, 39, 39) 0%, rgba(22,22,22,1) 100%);
     width: 100%;
     box-sizing: border-box;
+}
+
+#no-discussion-yet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .friends-chat-search-container,
@@ -32,6 +39,7 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid gray;
+    box-sizing: border-box;
 }
 
 .friends-chat-search-container {
@@ -240,4 +248,31 @@
 
 .friends-chat-item:hover {
     background-color: rgb(80, 80, 80);
+}
+
+.new-message-button {
+    display: flex;
+    padding: 10px 16px;
+    color: black;
+    background-color: rgb(66, 219, 66);
+    border-radius: 16px;
+    margin: 0 auto;
+    margin-top: 16px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+#styled-border {
+    display: none;
+    opacity: 0;
+
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+    box-shadow: 0px 0px 6px 3px rgb(66, 219, 66);
+    z-index: 1;
+
+    background-color: rgba(22,22,22,0.8);
+    transition: all 0.4s ease;
 }

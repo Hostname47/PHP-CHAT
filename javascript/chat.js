@@ -1,4 +1,6 @@
 
+const urlParams = new URLSearchParams(window.location.search);
+
 $("#second-chat-part").height($(window).height() - 55);
 $("#first-chat-part").height($(window).height() - 55);
 
@@ -15,9 +17,6 @@ $("#first-chat-part").height($(window).height() - 55);
     Hint: Now we set the whole discussion container height so that you can easily take the height of discussion off from height od document to get friends container height left
 */
 $("#friends-chat-container").height($(window).height() - 402);
-
-
-$("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
 
 // Scroll to the last message
 $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
@@ -50,6 +49,101 @@ $(".message-global-container").on({
     }
 })
 
+$(".new-message-button").click(function() {
+    $("#styled-border").css("display","block");
+    $("#styled-border").animate({
+        opacity: '1'
+    }, 600, function() {
+        window.setTimeout(function() {
+            $("#styled-border").animate({
+                opacity: '0'
+            }, 600, function() {
+                $("#styled-border").css("display","none");
+            });
+        }, 600);
+    });
+    return false;
+})
+
+if(urlParams.get('username')) {
+    var values = {
+        'sender': null,
+        'receiver': null
+    };
+    
+    $.ajax({
+        type: "GET",
+        url: root + "security/get_current_user.php",
+        success: function(current_user) {
+            values["sender"] = current_user["id"];
+
+            $.ajax({
+                type: "GET",
+                url: root + "api/user/get_by_username.php?username=" + urlParams.get('username'),
+                success: function(response) {
+                    if(response["success"]) {
+                        values["receiver"] = response["user"]["id"];
+
+                        let url = root + "view/chat/generate_chat_container.php";
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: values,
+                            success: function(data) {
+                                $("#no-discussion-yet").remove();
+                                $("#chat-global-container").append(data);
+                                
+                                $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
+                    
+                                // Here we also call the api to fill in messages to chat container
+
+                                discussion_chat_opened = true;
+                            }
+                        });
+                    } else {
+                        console.log("user fetch failed !");
+                    }
+                }
+            });
+        }
+    });
+}
+
+let no_discussion_chat_opened = false;
+
 $(".friends-chat-item").click(function() {
-    console.log("clicked !");
+
+    let captured_id = $(this).find(".receiver").val();
+    let current_id = $(this).find(".sender").val();
+    var values = {
+        'sender': current_id,
+        'receiver': captured_id
+    };
+
+    let url = root + "api/messages/generate_chat_container.php";
+
+    if(!no_discussion_chat_opened) {
+        $("#second-chat-part").remove();
+    }
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: values,
+        success: function(data) {
+            $("#no-discussion-yet").remove();
+            $("#chat-global-container").append(data);
+            
+            $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
+
+            discussion_chat_opened = true;
+        }
+    });
+
+
+    return false;
+});
+
+$(".send-button").click(function() {
+    console.log("send text clicked !");
 })

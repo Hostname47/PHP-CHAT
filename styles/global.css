@@ -217,6 +217,12 @@ body {
     margin: 0;
 }
 
+.flex-justify-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .flex-column {
     display: flex;
     flex-direction: column;
@@ -243,6 +249,8 @@ body {
     display: flex;
     justify-content: center;
 }
+
+.flex-justify
 
 .small-label {
     font-size: 13px;

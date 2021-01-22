@@ -55,7 +55,10 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
                 </script>
             </div>
             <div id="chat-global-container">
-                <div id="first-chat-part">
+                <div id="first-chat-part" class="relative">
+                    <div id="styled-border" class="absolute">
+                    
+                    </div>
                     <div class="friends-chat-search-container">
                         <input type="text" class="chat-input-style" placeholder="Search for conversations">
                     </div>
@@ -116,9 +119,9 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
                         </div>
                     </div>
                     <div class="friends-chat-search-container" style="border-right: none;">
-                        <input type="text" class="chat-input-style" placeholder="Search for a friend to chat with">
+                        <input type="text" class="chat-input-style friend-search-input" placeholder="Search for a friend to chat with">
                     </div>
-                    <div id="friends-chat-container">
+                    <div id="friends-chat-container" class="relative">
                         <div class="friends-chat-item">
                             <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
                             <p class="regular-text" style="margin-left: 8px">Loupgarou</p>
@@ -129,173 +132,18 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
                             $user_relation = new UserRelation();
                             $friends = $user_relation->get_friends($current_user_id);
     
-                            $chat_component = new ChatComponent();
+                            
                             foreach($friends as $friend) {
-                                $chat_component->generate_chat_page_friend_contact($friend);
+                                ChatComponent::generate_chat_page_friend_contact($current_user_id, $friend);
                             }
                         ?>
                     </div>
                 </div>
-                <div id="second-chat-part" class="relative">
-                    <div id="chat-header">
-                        <div class="chat-disc-user-image">
-                            <img src="assets/images/read.png" class="image-style-7" alt="">
-                        </div>
-                        <a href="" class="no-underline">
-                            <div class="chat-disc-name-and-username">
-                                <p class="bold-text-style-1">Mouad Nassri</p>
-                            </div>
-                            <span> @grotto</span>
-                        </a>
-
-                        <div class="right-pos-margin">
-                            <a href="" class="chat-header-more-button dotted-more-back"></a>
-                        </div>
-                    </div>
-                    <div id="chat-container" class="relative">
-                        <div class="chat-date">
-                            <p class="regular-text" style="text-align: center; margin: 14px 0 20px 0">Jan 19, 2021 9:50 PM</p>
-                        </div>
-                        <div class="message-global-container">
-                            <div class="current-user-message-container">
-                                <div class="relative">
-                                    <div class="chat-message-more-button-container">
-                                        <a href="" class="chat-message-more-button white-dotted-more-back"></a>
-                                    </div>
-                                    <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                        <div class="options-container-style-1 black">
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Delete message (under construction)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="message-wrapper relative">
-                                    <p class="regular-text message-text">This is current user message</p>
-                                    <div class="absolute current-user-message-date message-date">
-                                        <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
-                                    </div>
-                                </div>
-                                <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                            </div>
-                        </div>
-                        
-                        <div class="message-global-container">
-                            <div class="friend-message-container">
-                                <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                                <div class="message-wrapper relative">
-                                    <p class="regular-text message-text">This is current user message</p>
-                                    <div class="absolute message-date friend-message-date">
-                                        <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
-                                    </div>
-                                </div>
-                                <div class="relative">
-                                    <div class="chat-message-more-button-container">
-                                        <a href="" class="chat-message-more-button white-dotted-more-back"></a>
-                                    </div>
-                                    <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                        <div class="options-container-style-1 black">
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Delete message (under construction)</a>
-                                            </div>
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Reply (under construction)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="message-global-container">
-                            <div class="current-user-message-container">
-                                <div class="relative">
-                                    <div class="chat-message-more-button-container">
-                                        <a href="" class="chat-message-more-button white-dotted-more-back"></a>
-                                    </div>
-                                    <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                        <div class="options-container-style-1 black">
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Delete message (under construction)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="message-wrapper relative">
-                                    <p class="regular-text message-text">This is current user message</p>
-                                    <div class="absolute current-user-message-date message-date">
-                                        <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
-                                    </div>
-                                </div>
-                                <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                            </div>
-                        </div>
-                        
-                        <div class="message-global-container">
-                            <div class="friend-message-container">
-                                <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                                <div class="message-wrapper relative">
-                                    <p class="regular-text message-text">This is current user message</p>
-                                    <div class="absolute message-date friend-message-date">
-                                        <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
-                                    </div>
-                                </div>
-                                <div class="relative">
-                                    <div class="chat-message-more-button-container">
-                                        <a href="" class="chat-message-more-button white-dotted-more-back"></a>
-                                    </div>
-                                    <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                        <div class="options-container-style-1 black">
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Delete message (under construction)</a>
-                                            </div>
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Reply (under construction)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="message-global-container">
-                            <div class="current-user-message-container">
-                                <div class="relative">
-                                    <div class="chat-message-more-button-container">
-                                        <a href="" class="chat-message-more-button white-dotted-more-back"></a>
-                                    </div>
-                                    <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                        <div class="options-container-style-1 black">
-                                            <div class="sub-option-style-2">
-                                                <a href="" class="black-link">Delete message (under construction)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="message-wrapper relative">
-                                    <p class="regular-text message-text">This is current user message</p>
-                                    <div class="absolute current-user-message-date message-date">
-                                        <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
-                                    </div>
-                                </div>
-                                <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-input-box">
-                        <form action="" id="send-message-form">
-                        </form>
-                        <div class="relative">
-                            <a href="" class="chat-message-settings-button white-dotted-more-back"></a>
-
-                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
-                                <div class="options-container-style-1 black">
-                                    <div class="sub-option-style-2">
-                                        <a href="" class="black-link">Delete message (under construction)</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="text" form="send-message-form" placeholder="Type a new message" class="chat-input-style">
-                        <input type="submit" value="send" form="send-message-form" id="send-message-button">
+                <div id="no-discussion-yet">
+                    <div class="flex-justify-column" style="text-align: center">
+                        <h2>You don't have a message selected</h2>
+                        <p class="regular-text">Choose one from your existing messages, or start a new one.</p>
+                        <a href="" class="new-message-button">New Message</a>
                     </div>
                 </div>
             </div>

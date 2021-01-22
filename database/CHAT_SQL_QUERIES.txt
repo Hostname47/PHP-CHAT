@@ -66,3 +66,31 @@ CREATE TABLE user_relation
     `since` timestamp DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY `UNIQUE_RELATION` (`from`,`to`, `status`)
 );
+
+/*
+    IMPORTANT: we crate message table to only store the message and the sender user,but regarding the recipient of the message
+    we create another table message_recipient to store the message received by some specific user and we can also know the 
+    sender from recipient table by tracking the message_id table and see the message creator from there using joins
+    Exemple: if user with id: 5 sends a message to user with id: 7 we insert a row to message (5, 'Hello there !')
+    and insert row into recipient (7, 1, FALSE) asuming that 1 is the message's id
+    Now of course we need someway to get the id of message, like when we insert a message into the database we return its id
+    Notice: When a user decide to delete a message, in case the sender want to delete a message he just make message creator NULL
+    and if the case of user is recipient we delete the recipient row (receiver_id + message_id should be unique in that case)
+*/
+
+CREATE TABLE message
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    message_creator int REFERENCES user_info(id),
+    message TEXT,
+    create_date timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE message_recipient
+(
+    id int PRIMARY KEY AUTO_INCREMENT,
+    receiver_id int REFERENCES user_info(id),
+    message_id int REFERENCES messages(id),
+    is_read BOOLEAN NOT NULL DEFAULT 0
+)
+
