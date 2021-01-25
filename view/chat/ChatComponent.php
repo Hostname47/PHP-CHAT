@@ -73,15 +73,17 @@ EOS;
                                 </div>
                             </div>
                         </div>
-                        <input type="text" form="send-message-form" placeholder="Type a new message" class="chat-input-style send-button">
+                        <input type="text" form="send-message-form" placeholder="Type a new message" id="chat-text-input" class="chat-input-style send-button">
                         <input type="submit" value="send" form="send-message-form" id="send-message-button">
                     </div>        
                 <div>
 CHAT_SECTION;
         }
 
-        public static function generate_current_user_message() {
-            echo <<<CUM
+        public static function generate_current_user_message($user, $message, $message_date) {
+            $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
+            $message_date = date("F d \a\\t Y h:i A",strtotime($message_date));
+            return <<<CUM
                 <div class="message-global-container">
                     <div class="current-user-message-container">
                         <div class="relative">
@@ -97,12 +99,12 @@ CHAT_SECTION;
                             </div>
                         </div>
                         <div class="message-wrapper relative">
-                            <p class="regular-text message-text">This is current user message</p>
+                            <p class="regular-text message-text">$message</p>
                             <div class="absolute current-user-message-date message-date">
-                                <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
+                                <p class="regular-text-style-2">$message_date</p>
                             </div>
                         </div>
-                        <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
+                        <a href=""><img src="$user_profile" class="image-style-10" alt=""></a>
                     </div>
                 </div>
 CUM;

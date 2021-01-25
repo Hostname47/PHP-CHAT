@@ -38,17 +38,6 @@ $(".chat-message-more-button").click(function() {
     return false;
 });
 
-$(".message-global-container").on({
-    mouseenter: function() {
-        $(this).find(".chat-message-more-button").css("display", "block");
-        $(this).find(".message-date").css("display", "block");
-    },
-    mouseleave: function() {
-        $(this).find(".chat-message-more-button").css("display", "none");
-        $(this).find(".message-date").css("display", "none");
-    }
-})
-
 $(".new-message-button").click(function() {
     $("#styled-border").css("display","block");
     $("#styled-border").animate({
@@ -120,7 +109,7 @@ $(".friends-chat-item").click(function() {
         'receiver': captured_id
     };
 
-    let url = root + "api/messages/generate_chat_container.php";
+    let url = root + "view/chat/generate_chat_container.php";
 
     if(!no_discussion_chat_opened) {
         $("#second-chat-part").remove();
@@ -136,6 +125,37 @@ $(".friends-chat-item").click(function() {
             
             $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
 
+            // Here we bring every message between the sender and user
+
+            $("#send-message-button").click(function() {
+                let chat_text_content = $('#second-chat-part').find("#chat-text-input").val();
+                let chat_values = values;
+                // Append message content to values passed to the api
+                chat_values.message = chat_text_content;
+                $.ajax({
+                    type: "POST",
+                    url: root + "api/messages/Send.php",
+                    data: values,
+                    success: function(data) {
+                        $("#chat-container").append(data);
+                        $('#second-chat-part').find("#chat-text-input").val("")
+                        
+                        $(".message-global-container").on({
+                            mouseenter: function() {
+                                $(this).find(".chat-message-more-button").css("display", "block");
+                                $(this).find(".message-date").css("display", "block");
+                            },
+                            mouseleave: function() {
+                                $(this).find(".chat-message-more-button").css("display", "none");
+                                $(this).find(".message-date").css("display", "none");
+                            }
+                        });
+                    }
+                });
+
+                //$("#second-chat-part")
+            });
+
             discussion_chat_opened = true;
         }
     });
@@ -144,6 +164,4 @@ $(".friends-chat-item").click(function() {
     return false;
 });
 
-$(".send-button").click(function() {
-    console.log("send text clicked !");
-})
+

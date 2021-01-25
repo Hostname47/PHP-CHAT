@@ -181,6 +181,8 @@
     display: none;
     bottom: -18px;
     font-size: 13px;
+    width: 200px;
+    text-align: right;
 }
 
 .current-user-message-date {

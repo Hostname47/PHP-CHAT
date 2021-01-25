@@ -86,6 +86,10 @@ class DB {
         return $this;
     }
 
+    public function pdo() {
+        return $this->_pdo;
+    }
+
     public function error() {
         return $this->_error;
     }
