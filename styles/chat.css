@@ -13,7 +13,8 @@
 }
 
 #first-chat-part {
-    width: 440px;
+    max-width: 400px;
+    min-width: 400px;
     box-sizing: border-box;
     background-color: rgb(66, 66, 66);
 }
@@ -170,10 +171,12 @@
     margin: 0 10px;
     border-radius: 20px;
     background-color: rgb(175, 175, 175);
+    overflow-wrap: anywhere;
 }
 
 .message-text {
     color: black;
+    white-space: pre-line;
 }
 
 .message-date {
