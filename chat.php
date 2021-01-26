@@ -5,7 +5,7 @@ require_once "vendor/autoload.php";
 require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-use models\{Post, UserRelation, Follow};
+use models\{Post, UserRelation, Follow, Message};
 use view\post\Post as Post_View;
 use view\chat\ChatComponent;
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]

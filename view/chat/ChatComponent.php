@@ -111,15 +111,18 @@ CHAT_SECTION;
 CUM;
         }
 
-        public static function generate_friend_message() {
-            echo <<<FM
+        public static function generate_friend_message($user, $message, $message_date) {
+            $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
+            $user_profile_link = Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");
+            $message_date = date("F d \a\\t Y h:i A",strtotime($message_date));
+            return <<<FM
                 <div class="message-global-container">
                     <div class="friend-message-container">
-                        <a href=""><img src="assets/images/read.png" class="image-style-10" alt=""></a>
+                        <a href="$user_profile_link"><img src="$user_profile" class="image-style-10" alt=""></a>
                         <div class="message-wrapper relative">
-                            <p class="regular-text message-text">This is current user message</p>
+                            <p class="regular-text message-text">$message</p>
                             <div class="absolute message-date friend-message-date">
-                                <p class="regular-text-style-2">Jan 19, 2021 9:50 PM</p>
+                                <p class="regular-text-style-2">$message_date</p>
                             </div>
                         </div>
                         <div class="relative">

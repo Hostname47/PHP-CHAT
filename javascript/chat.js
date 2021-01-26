@@ -134,6 +134,16 @@ $(".friends-chat-item").click(function() {
             $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
 
             // Here we bring every message between the sender and user
+            $.ajax({
+                type: 'POST',
+                url: root + 'api/messages/get_friend_messages.php',
+                data: values,
+                success: function(data) {
+                    $("#chat-container").append(data);
+                    // Scroll to the last message
+                    $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
+                }
+            })
 
             $("#send-message-button").click(function() {
                 let chat_text_content = $('#second-chat-part').find("#chat-text-input").val();
@@ -150,6 +160,9 @@ $(".friends-chat-item").click(function() {
                         $('#second-chat-part').find("#chat-text-input").val("");
                         
                         handle_message_elements_events($(".message-global-container").last());
+
+                        // Scroll to the last message
+                        $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
                     }
                 });
 
@@ -186,10 +199,13 @@ $(document).keypress(function(e) {
                 $('#second-chat-part').find("#chat-text-input").val("")
                 
                 handle_message_elements_events($(".message-global-container").last());
+
+                // Scroll to the last message
+                $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
             }
         });
     }
-})
+});
 
 function save_data_and_return_compoent(sender, receiver, message, handle_data) {
     /*

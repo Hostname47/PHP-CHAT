@@ -110,7 +110,7 @@ $(".contact-user").click(function() {
                     data: values,
                     success: function(response) {
                         if(response) {
-                            window.location.href = root + "chat.php?username=" + response["username"];
+                            window.location.href = root + "profile.php?username=" + response["username"];
                         }
                     }
                 });

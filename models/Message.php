@@ -30,9 +30,7 @@ class Message {
         $this->message_sender = $data["sender"];
         $this->message_receiver = $data["receiver"];
         $this->message = $data["message"];
-        //$this->message_date = !array_key_exists("message_date", $data) ? date("Y/m/d h:i:s") : $this->message_date;
         $this->message_date = $data["message_date"];
-
     }
 
     public function add() {
@@ -61,5 +59,24 @@ class Message {
         ));
 
         return $this->db->error() == false ? true : false;
+    }
+
+    public static function getMessages($sender, $receiver) {
+        //$this->db->query("SELECT * FROM `message_recipient` WHERE receiver_id = ? AND message.message_creator = ? ");
+        DB::getInstance()->query("SELECT * FROM `message_recipient`
+        INNER JOIN `message` 
+        ON message.id = message_recipient.message_id 
+        WHERE message_recipient.receiver_id = ? AND message.message_creator = ?", array(
+            $receiver,
+            $sender
+        ));
+
+        return DB::getInstance()->results();
+    }
+
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+        return $vars;
     }
 }

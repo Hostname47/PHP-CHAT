@@ -18,8 +18,6 @@ require_once "../../functions/sanitize_text.php";
 
 $sender = sanitize_id($_POST["sender"]);
 $receiver = sanitize_id($_POST["receiver"]);
-$message = sanitize_id($_POST["message"]);
-$message_date = date("Y/m/d h:i:s A");
 
 // Check if the follower id is set, and if it is numeric by calling sanitize_id, and exists in the database using user_exists
 if(($sender) && 
@@ -27,28 +25,34 @@ if(($sender) &&
         // Same check here with the followed user
         if($receiver && 
             User::user_exists("id", $receiver)) {
+                
                 $sender_user = new User();
-                $sender_user->fetchUser("id", (int)$sender);
-                
-                $message_model = new Message();
-                $message_model->set_data(array(
-                    "sender"=>$sender,
-                    "receiver"=>$receiver,
-                    "message"=>$message,
-                    "message_date"=>$message_date
-                ));
+                $sender_user->fetchUser("id", $sender);
+                $receiver_user = new User();
+                $receiver_user->fetchUser("id", $receiver);
 
-                $res = $message_model->add();
+                $chat_component = new ChatComponent();
 
-                $chat_wrapper = new ChatComponent();
-                $chat_component = $chat_wrapper->generate_current_user_message($sender_user, $message, $message_date);
+                $sender_to_receiver = Message::getMessages($sender, $receiver);
+                $receiver_to_sender = Message::getMessages($receiver, $sender);
+                $messages = array_merge($sender_to_receiver, $receiver_to_sender);
 
-                echo $chat_component;
-            /*if($user_relation->accept_request()) {
+                function sortFunction($a, $b) {
+                    return strtotime($a->create_date) - strtotime($b->create_date);
+                }
                 
-            } else {
-                
-            }*/
+                usort($messages, "sortFunction");
+                $content = '';
+
+                foreach($messages as $message) {
+                    if($message->message_creator == $sender) {
+                        $content .= $chat_component->generate_current_user_message($sender_user, $message->message, $message->create_date);
+                    } else {
+                        $content .= $chat_component->generate_friend_message($receiver_user, $message->message, $message->create_date);
+                    }
+                }
+
+                echo $content;
 
         } else {
             echo json_encode(
