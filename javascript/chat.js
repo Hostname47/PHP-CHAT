@@ -28,6 +28,8 @@ $(".friend-chat-discussion-item-wraper").click(function() {
 
 let discussion_chat_opened = false;
 
+
+
 $(".new-message-button").click(function() {
     $("#styled-border").css("display","block");
     $("#styled-border").animate({
@@ -74,6 +76,19 @@ if(urlParams.get('username')) {
                                 
                                 $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
                     
+                                // Here we bring every message between the sender and user
+                                $.ajax({
+                                    type: 'POST',
+                                    url: root + 'api/messages/get_friend_messages.php',
+                                    data: values,
+                                    success: function(data) {
+                                        $("#chat-container").append(data);
+                                        handle_message_elements_events($(".message-global-container"));
+                                        // Scroll to the last message
+                                        $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
+                                    }
+                                })
+
                                 // Here we also call the api to fill in messages to chat container
                                 $("#send-message-button").click(function() {
                                     let chat_text_content = $('#second-chat-part').find("#chat-text-input").val();
@@ -109,7 +124,6 @@ if(urlParams.get('username')) {
 }
 
 $(".friends-chat-item").click(function() {
-
     let captured_id = $(this).find(".receiver").val();
     let current_id = $(this).find(".sender").val();
     var values = {
@@ -140,10 +154,15 @@ $(".friends-chat-item").click(function() {
                 data: values,
                 success: function(data) {
                     $("#chat-container").append(data);
+                    handle_message_elements_events($(".message-global-container"));
                     // Scroll to the last message
                     $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
+
+                    // --------------- Update the receiver_user_id used for long-polling purpose ---------------------
+                    receiver_user_id = captured_id;
+                    waitForMessages();
                 }
-            })
+            });
 
             $("#send-message-button").click(function() {
                 let chat_text_content = $('#second-chat-part').find("#chat-text-input").val();
@@ -260,3 +279,27 @@ function handle_message_elements_events(element) {
     });
 }
 
+let receiver_user_id = null;
+
+// IMPLEMENTING LONG POLLING TO CREATE A REAL TIME MESSAGE FETCHING MECHANISM
+function waitForMessages() {
+    let url = root + "server/long-polling.php";
+    let values = {
+        "receiver": receiver_user_id
+    }
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: values,
+        success: function(response) {
+            console.log("ADDED !");
+            $("#chat-container").append(response);
+            handle_message_elements_events($(".message-global-container").last());
+            // Scroll to the last message
+            $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
+            waitForMessages();
+        }
+    });
+
+    //waitForMessages();
+}

@@ -33,6 +33,23 @@ class Message {
         $this->message_date = $data["message_date"];
     }
 
+    public function get_message($property, $value) {
+        $this->db->query("SELECT * FROM `message` WHERE `$property` = ?", array($value));
+
+        if($this->db->count() > 0) {
+            $fetched_message = $this->db->results()[0];
+
+            $this->id = $fetched_message->id;
+            $this->message_sender = $fetched_message->message_creator;
+            $this->message = $fetched_message->message;
+            $this->message_date = $fetched_message->create_date;
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function add() {
         /*
             When we add a message to message table we need also to insert a row to recipient table to specify the receiver
@@ -50,6 +67,16 @@ class Message {
         // GET LAST MESSAGE ID TO GIVE IT TO RECIPIENT TABLE
         $last_inserted_message_id = $this->db->pdo()->lastInsertId();
 
+        // Store the message in the channel to fetch it by long polling
+        $this->db->query("INSERT INTO `channel` 
+        (`sender`, `receiver`, `group_recipient_id`, `message_id`) 
+        VALUES (?, ?, ?, ?)", array(
+            $this->message_sender,
+            $this->message_receiver,
+            null,
+            $last_inserted_message_id
+        ));
+
         $this->db->query("INSERT INTO `message_recipient` 
         (`receiver_id`, `message_id`, `is_read`) 
         VALUES (?, ?, ?)", array(
@@ -59,6 +86,10 @@ class Message {
         ));
 
         return $this->db->error() == false ? true : false;
+    }
+
+    public static function dump_channel($sender, $receiver, $message_id) {
+        DB::getInstance()->query("DELETE FROM channel WHERE sender = ? AND receiver = ? AND message_id = ?", array($sender, $receiver, $message_id));
     }
 
     public static function getMessages($sender, $receiver) {
