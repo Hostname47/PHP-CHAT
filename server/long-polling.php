@@ -53,12 +53,19 @@ while(true) {
             $msg->get_message("id", $message->message_id);
             $content .= $chat_component->generate_friend_message($sender_user, $msg->get_property("message"), $msg->get_property("message_date"));
         }
+
         echo json_encode($content);
         Message::dump_channel($receiver, $current_user_id);
+        /*
+            The following break get me stuck for more than 3 hours a row :-(
+            when I was reviewing the code, I thought that this break is uneccessary but later, I realize that this script
+            need to be stopped in some place, and the case is when he found some new data, that script echo out the content
+            and exit and then when the code in javascript get that data it send the request again ! and so this break is
+            the foundation of this script
+        */
         break;
-    } else {
-        // wait for 1 sec (not very sexy as this blocks the PHP/Apache process, but that's how it goes)
-        sleep(1);
-        continue;
     }
+
+    // wait for 1 sec (not very sexy as this blocks the PHP/Apache process, but that's how it goes)
+    usleep(10000);
 }

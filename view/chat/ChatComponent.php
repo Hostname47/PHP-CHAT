@@ -89,7 +89,8 @@ CHAT_SECTION;
         public static function generate_current_user_message($user, $message, $message_date) {
             $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
             $user_profile_link = Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");
-            $message_date = date("F d \a\\t Y h:i A",strtotime($message_date));
+            $new = str_replace("/", "-", $message_date);
+            $message_date = date("F d \a\\t Y H:i A",strtotime($new));
             return <<<CUM
                 <div class="message-global-container">
                     <div class="current-user-message-container">
@@ -120,7 +121,7 @@ CUM;
         public static function generate_friend_message($user, $message, $message_date) {
             $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
             $user_profile_link = Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");
-            $message_date = date("F d \a\\t Y h:i A",strtotime($message_date));
+            $message_date = date("F d \a\\t Y H:i A",strtotime($message_date));
             return <<<FM
                 <div class="message-global-container">
                     <div class="friend-message-container">
