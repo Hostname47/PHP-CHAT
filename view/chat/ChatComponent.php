@@ -48,6 +48,7 @@ EOS;
                         <a href="" class="no-underline">
                             <div class="chat-disc-name-and-username">
                                 <p class="bold-text-style-1">$friend_fullname</p>
+                                <p class="message_writing_notifier_text">is writing ..</p>
                             </div>
                             <span>@$friend_username</span>
                         </a>

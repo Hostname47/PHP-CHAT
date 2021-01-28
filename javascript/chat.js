@@ -27,8 +27,7 @@ $(".friend-chat-discussion-item-wraper").click(function() {
 })
 
 let discussion_chat_opened = false;
-
-
+let message_writing_notifier = 0;
 
 $(".new-message-button").click(function() {
     $("#styled-border").css("display","block");
@@ -83,7 +82,7 @@ if(urlParams.get('username')) {
                                     data: values,
                                     success: function(data) {
                                         $("#chat-container").append(data);
-                                        handle_message_elements_events($(".message-global-container"));
+                                        //handle_message_elements_events($(".message-global-container"));
                                         // Scroll to the last message
                                         $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
                                     }
@@ -103,7 +102,7 @@ if(urlParams.get('username')) {
                                             */
                                             $('#second-chat-part').find("#chat-text-input").val("");
                                             
-                                            handle_message_elements_events($(".message-global-container").last());
+                                            //handle_message_elements_events($(".message-global-container").last());
                                         }
                                     });
                     
@@ -146,7 +145,6 @@ $(".friends-chat-item").click(function() {
             $("#chat-global-container").append(data);
             
             $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
-
             // Here we bring every message between the sender and user
             $.ajax({
                 type: 'POST',
@@ -159,8 +157,9 @@ $(".friends-chat-item").click(function() {
                     $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
 
                     // --------------- Update the receiver_user_id used for long-polling purpose ---------------------
-                    receiver_user_id = captured_id;
+                    receiver_user_id = $(this).find(".receiver").val();
                     waitForMessages();
+                    track_message_writing();
                 }
             });
 
@@ -177,6 +176,15 @@ $(".friends-chat-item").click(function() {
                         $("#chat-container").append(data);
 
                         $('#second-chat-part').find("#chat-text-input").val("");
+                        message_writing_notifier = 0;
+                        $.ajax({
+                            type: "POST",
+                            url: root + "api/messages/message_writing_notifier/delete.php",
+                            data: values,
+                            success: function(data) {
+                                console.log("Notification deleted !");
+                            }
+                        });
                         
                         handle_message_elements_events($(".message-global-container").last());
 
@@ -184,8 +192,41 @@ $(".friends-chat-item").click(function() {
                         $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
                     }
                 });
+            });
 
-                //$("#second-chat-part")
+            message_writing_notifier = 0;
+            // Display user's writing a message when a friend is writing a message
+            $('#second-chat-part').find("#chat-text-input").on({
+                input: function() {
+                    if(!message_writing_notifier) {
+                        $.ajax({
+                            type: "POST",
+                            url: root + "api/messages/message_writing_notifier/add.php",
+                            data: values,
+                            success: function(data) {
+                                console.log("Notification registered !");
+                            }
+                        });
+
+                        message_writing_notifier++;
+                    }
+                }
+            })
+
+            $('#second-chat-part').find("#chat-text-input").keyup(function() {
+                if(!this.value) {
+                    message_writing_notifier = 0;
+                    $.ajax({
+                        type: "POST",
+                        url: root + "api/messages/message_writing_notifier/delete.php",
+                        data: values,
+                        success: function(data) {
+                            message_writing_notifier = 0;
+                            console.log("Notification deleted !");
+                        }
+                    });
+                }
+            
             });
 
             discussion_chat_opened = true;
@@ -206,16 +247,26 @@ $(document).keypress(function(e) {
         let receiver = $("#second-chat-part").find(".chat-receiver").val();
         let text_data = message_input.val();
 
-        console.log("sender: " + sender + ", receiver: " + receiver + ", text: " + text_data);
-
         save_data_and_return_compoent(sender, receiver, text_data, function(result) {
             if(result) {
+                let values = {
+                    "sender": sender,
+                    "receiver": receiver
+                };
+
                 $("#chat-container").append(result);
     
                 /*
                     The following code handle the message when appear by adding some events to elements
                 */
-                $('#second-chat-part').find("#chat-text-input").val("")
+                $('#second-chat-part').find("#chat-text-input").val("");
+
+                message_writing_notifier = 0;
+                $.ajax({
+                    type: "POST",
+                    url: root + "api/messages/message_writing_notifier/delete.php",
+                    data: values
+                });
                 
                 handle_message_elements_events($(".message-global-container").last());
 
@@ -225,6 +276,8 @@ $(document).keypress(function(e) {
         });
     }
 });
+
+
 
 function save_data_and_return_compoent(sender, receiver, message, handle_data) {
     /*
@@ -266,7 +319,6 @@ function handle_message_elements_events(element) {
             event.preventDefault();
 
             let container = $(this).parent().parent().find(".sub-options-container");
-            console.log($(this));
             if(container.css("display") == "none") {
                 // Close any message suboption container in the chat section, then display the clickable button suboption
                 $("#chat-container").find(".sub-options-container").css("display", "none");
@@ -285,14 +337,15 @@ let receiver_user_id = null;
 function waitForMessages() {
     let url = root + "server/long-polling.php";
     let values = {
-        "receiver": receiver_user_id
+        "receiver": $("#second-chat-part").find(".chat-receiver").val()
     }
     $.ajax({
         url: url,
         type: "POST",
         data: values,
         success: function(response) {
-            console.log("ADDED !");
+            console.log("get a message !");
+            notification_sound_play();
             $("#chat-container").append(response);
             handle_message_elements_events($(".message-global-container").last());
             // Scroll to the last message
@@ -300,6 +353,30 @@ function waitForMessages() {
             waitForMessages();
         }
     });
+}
 
-    //waitForMessages();
+function track_message_writing() {
+    let url = root + "server/message_writing_notifier.php";
+    let values = {
+        "receiver": $("#second-chat-part").find(".chat-receiver").val()
+    }
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: values,
+        success: function(response) {
+            if(response["finished"]) {
+                $(".message_writing_notifier_text").css("display", "none");
+            } else {
+                $(".message_writing_notifier_text").css("display", "block");
+            }
+
+            track_message_writing();
+        }
+    });
+}
+
+function notification_sound_play() {
+    let audio = new Audio(root+'assets/audios/tone.mp3');
+    audio.play();
 }

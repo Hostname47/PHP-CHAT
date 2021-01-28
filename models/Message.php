@@ -64,10 +64,15 @@ class Message {
             $this->message_date
         ));
 
+        $message_row_inserted = $this->db->error();
+
         // GET LAST MESSAGE ID TO GIVE IT TO RECIPIENT TABLE
         $last_inserted_message_id = $this->db->pdo()->lastInsertId();
 
-        // Store the message in the channel to fetch it by long polling
+        /* 
+            Here notice that we need to check if the receiver user is subscribed to the channel, and If so then we pass the message
+            to the channel, otherwise we normally store it in the database.
+        */
         $this->db->query("INSERT INTO `channel` 
         (`sender`, `receiver`, `group_recipient_id`, `message_id`) 
         VALUES (?, ?, ?, ?)", array(
@@ -77,6 +82,8 @@ class Message {
             $last_inserted_message_id
         ));
 
+        $channel_row_inserted = $this->db->error();
+
         $this->db->query("INSERT INTO `message_recipient` 
         (`receiver_id`, `message_id`, `is_read`) 
         VALUES (?, ?, ?)", array(
@@ -85,11 +92,13 @@ class Message {
             $this->is_read
         ));
 
+        $message_recipient_row_inserted = $this->db->error();
+
         return $this->db->error() == false ? true : false;
     }
 
-    public static function dump_channel($sender, $receiver, $message_id) {
-        DB::getInstance()->query("DELETE FROM channel WHERE sender = ? AND receiver = ? AND message_id = ?", array($sender, $receiver, $message_id));
+    public static function dump_channel($sender, $receiver) {
+        DB::getInstance()->query("DELETE FROM channel WHERE sender = ? AND receiver = ?", array($sender, $receiver));
     }
 
     public static function getMessages($sender, $receiver) {
@@ -103,6 +112,26 @@ class Message {
         ));
 
         return DB::getInstance()->results();
+    }
+
+    public function add_writing_message_notifier() {
+        $this->db->query("INSERT INTO `writing_message_notifier` 
+        (`message_writer`, `message_waiter`) 
+        VALUES (?, ?)", array(
+            $this->message_sender,
+            $this->message_receiver,
+        ));
+
+        return $this->db->error() == false ? true : false;
+    }
+    public function delete_writing_message_notifier() {
+        $this->db->query("DELETE FROM `writing_message_notifier` WHERE `message_writer` = ? AND `message_waiter` = ?"
+        , array(
+            $this->message_sender,
+            $this->message_receiver,
+        ));
+
+        return $this->db->error() == false ? true : false;
     }
 
     public function jsonSerialize()

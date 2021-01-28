@@ -8,7 +8,7 @@ use view\chat\ChatComponent;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -20,8 +20,7 @@ $current_user_id = $user->getPropertyValue("id");
 $receiver = isset($_POST["receiver"]) ? $_POST["receiver"] : null;
 
 while(true) {
-    
-    $channel_buffer = DB::getInstance()->query("SELECT * FROM channel WHERE sender = ? AND receiver = ?", array($receiver, $current_user_id))->results();
+    $channel_buffer = DB::getInstance()->query("SELECT * FROM `channel` WHERE sender = ? AND receiver = ?", array($receiver, $current_user_id))->results();
     $isEmpty = empty($channel_buffer);
 
     /* 
@@ -44,6 +43,7 @@ while(true) {
             will not work
 
             NOTE: This code may be improved in the future
+            HINT: T think some of what I wrote above is wrong, let's see
         */
         foreach($channel_buffer as $message) {
             $sender_user = new User();
@@ -51,16 +51,14 @@ while(true) {
 
             $msg = new Message();
             $msg->get_message("id", $message->message_id);
-            $content = $chat_component->generate_friend_message($sender_user, $msg->get_property("message"), $msg->get_property("message_date"));
-            echo json_encode($content);
-
-            Message::dump_channel($receiver, $current_user_id, $msg->get_property("id"));
-            break 2;
+            $content .= $chat_component->generate_friend_message($sender_user, $msg->get_property("message"), $msg->get_property("message_date"));
         }
+        echo json_encode($content);
+        Message::dump_channel($receiver, $current_user_id);
+        break;
     } else {
         // wait for 1 sec (not very sexy as this blocks the PHP/Apache process, but that's how it goes)
         sleep(1);
         continue;
     }
-
 }

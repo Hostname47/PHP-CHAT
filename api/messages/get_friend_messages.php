@@ -51,7 +51,7 @@ if(($sender) &&
                         $content .= $chat_component->generate_friend_message($receiver_user, $message->message, $message->create_date);
                     }
                 }
-
+                Message::dump_channel($receiver, $sender);
                 echo $content;
 
         } else {

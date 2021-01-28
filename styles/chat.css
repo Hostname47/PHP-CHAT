@@ -281,3 +281,10 @@
     background-color: rgba(22,22,22,0.8);
     transition: all 0.4s ease;
 }
+
+.message_writing_notifier_text {
+    margin: 0 8px;
+    color: rgb(66, 219, 66);
+    font-weight: 600;
+    display: none;
+}
