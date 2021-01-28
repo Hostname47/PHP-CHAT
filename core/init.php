@@ -62,6 +62,10 @@ if(Cookie::exists(Config::get("remember/cookie_name")) && !Session::exists(Confi
     }
 }
 
+if($user->getPropertyValue("isLoggedIn")) {
+    $user->update_active();
+}
+
 /* 
 IMPORTANT : 
 1 - sanitize function file could not be included here because the path will be relative to the caller script

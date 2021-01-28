@@ -58,3 +58,12 @@ a new token and push it to $_SESSION by using Session::put() method.
 I change the the request type in the long polling file to POST because we get receiver id as post varaible and I thnk that was
 the reason why sometimes messages doesn't seem to be sent !
 NOTICE: that the ports in xampp change everytime I access chat page, I think that was the first reason behind this bugs
+
+[IMPORTANT#7] How do we now that a user is active or not !
+When a user logged in to the system, we update the last_active_update column in its user record denoting that the last time this user 
+logged in is the current date, and when we list the ontacts in right master pannel or chat friends, we compare that date
+with the last_active update if the difference is lessthan 5 minutes meaning it's online, otherwise it's offline.
+By the way the user constantly mark his presence by updating the last_active update each 2 minutes as long as he's logged
+in by sending a request to the server to update his presence date
+His friends then check it's last_active_update, If the difference between now and this time is less than 5 minutes, well
+that is a sign that he's online.

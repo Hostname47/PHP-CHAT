@@ -22,6 +22,7 @@ class User implements \JsonSerializable {
         $cover='',
         $picture='',
         $private=-1,
+        $last_active_update='',
 
         $isLoggedIn=false;
 
@@ -77,6 +78,7 @@ class User implements \JsonSerializable {
             $this->bio = $fetchedUser->bio;
             $this->cover = $fetchedUser->cover;
             $this->picture = $fetchedUser->picture;
+            $this->last_active_update = $fetchedUser->last_active_update;
 
             return true;
         }
@@ -255,6 +257,16 @@ class User implements \JsonSerializable {
         Session::delete($this->sessionName);
         Session::delete(Config::get("session/tokens/logout"));
         Cookie::delete($this->cookieName);
+    }
+
+    public function update_active() {
+        $this->db->query("UPDATE user_info SET last_active_update=? WHERE id=?",
+        array(
+            date("Y/m/d h:i:s A"),
+            $this->id
+        ));
+
+        return ($this->db->error()) ? false : true;
     }
 
     public function isLoggedIn() {

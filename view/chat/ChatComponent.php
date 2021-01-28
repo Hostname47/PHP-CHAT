@@ -14,13 +14,18 @@ use models\User;
                 $user_name = substr($user_name, 0, 25) . " ..";
             }
 
-            // Here we need to implement some code to see if the yuser is online or not
+            $now = strtotime(date("Y/m/d h:i:s"));
+            $last_active_date = strtotime($user->getPropertyValue("last_active_update"));
+            $interval  = abs($last_active_date - $now);
+            $minutes   = round($interval / 60);
+
+            $online_status = ($minutes < 5) ? "online.png" : "offline.png";
 
             echo <<<EOS
             <div class="friends-chat-item">
                 <img src="$user_picture" class="image-style-3 contact-user-picture" alt="">
                 <p class="regular-text" style="margin-left: 8px">$user_name</p>
-                <img src="assets/images/icons/online.png" class="image-style-4 right-pos-margin" alt="">
+                <img src="assets/images/icons/$online_status" class="image-style-4 right-pos-margin" alt="">
                 <input type="hidden" class="sender" value="$current_user_id">
                 <input type="hidden" class="receiver" value="$user_id">
             </div>

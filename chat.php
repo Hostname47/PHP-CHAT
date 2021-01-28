@@ -122,12 +122,6 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
                         <input type="text" class="chat-input-style friend-search-input" placeholder="Search for a friend to chat with">
                     </div>
                     <div id="friends-chat-container" class="relative">
-                        <div class="friends-chat-item">
-                            <img src="assets/images/logos/logo512.png" class="image-style-3 contact-user-picture" alt="">
-                            <p class="regular-text" style="margin-left: 8px">Loupgarou</p>
-                            <img src="assets/images/icons/online.png" class="image-style-4 right-pos-margin" alt="">
-                            <input type="hidden" value="">
-                        </div>
                         <?php
                             $user_relation = new UserRelation();
                             $friends = $user_relation->get_friends($current_user_id);

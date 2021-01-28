@@ -12,6 +12,13 @@ use classes\Config;
                 $user_name = substr($user_name, 0, 15) . " ..";
             }
 
+            $now = strtotime(date("Y/m/d h:i:s"));
+            $last_active_date = strtotime($user->getPropertyValue("last_active_update"));
+            $interval  = abs($last_active_date - $now);
+            $minutes   = round($interval / 60);
+
+            $online_status = ($minutes < 5) ? "online.png" : "offline.png";
+
             // Here we need to implement some code to see if the yuser is online or not
 
             echo <<<EOS
@@ -25,7 +32,7 @@ use classes\Config;
                         <input type="hidden" class="uid" value="$user_id">
                         <input type="hidden" class="current" value="$current_user_id">
                     </div>
-                    <img src="assets/images/icons/offline.png" class="image-style-4 contact-user-connection-icon" alt="">
+                    <img src="assets/images/icons/$online_status" class="image-style-4 contact-user-connection-icon" alt="">
                 </div>
             </div>
 EOS;

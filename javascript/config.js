@@ -16,3 +16,19 @@ function get_current(handle_return) {
     });
 };
 get_current(handle_return);
+
+// Update the presence active every 2 minutes as long as the user logging in.
+/*
+    IMPORTANT: This file(config.js) should by in every page of the app, If this file is missed to be included in one of the
+    files, then the activeness of the current user will not be updated and his friends will see him offline even if he's not
+*/
+
+var stillAlive = setInterval(function () {
+    update_active_presence();
+}, 120000);
+
+function update_active_presence() {
+    $.ajax({
+        url: root + 'server/update_active_presence.php'
+    });
+}
