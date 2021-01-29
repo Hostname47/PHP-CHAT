@@ -94,3 +94,14 @@ CREATE TABLE message_recipient
     is_read BOOLEAN NOT NULL DEFAULT 0
 )
 
+
+delimiter //
+CREATE PROCEDURE sp_get_discussion(IN user_id INT)
+BEGIN
+	SELECT MAX(M.id) AS mid FROM message AS M
+	INNER JOIN message_recipient AS MR
+	ON M.id = MR.message_id
+    WHERE M.message_creator = user_id OR MR.receiver_id = user_id
+	GROUP BY M.message_creator, MR.receiver_id
+	ORDER BY mid DESC;
+END //

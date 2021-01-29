@@ -3,7 +3,7 @@
 namespace view\chat;
 
 use classes\Config;
-use models\User;
+use models\{User, Message};
 
     class ChatComponent {
         public static function generate_chat_page_friend_contact($current_user_id, $user) {
@@ -150,6 +150,82 @@ CUM;
                     </div>
                 </div>
 FM;
+        }
+
+        public static function generate_discussion($current_user_id, $discussion) {
+
+            /*
+                First we need to determine who is the sender of message, because there's a special case where the sender
+                is the same user is currently logged in, we need in this case to display, the username and picture of the receiver
+                for that reason we need to compare the discussion message creator and receiver with the current user id
+                to fetch the friend taht the current user is talking with                
+            */
+
+            // First get the message by id stored in $discussion->mid
+            $message = new Message();
+            $message->get_message("id", $discussion->mid);
+
+            // Then we need to fetch the friend id by comparing current with the two sides to get the friend not the sender
+            $friend_id = ($discussion->message_creator == $current_user_id) ? $discussion->message_receiver : $discussion->message_creator;
+            $friend_user = new User();
+            $friend_user->fetchUser("id", $friend_id);
+
+            // When w get friend id we fetch the user with that id to place his data to discussion component
+            $friend_picture = Config::get("root/path") . (empty($friend_user->getPropertyValue("picture")) ? 'assets/images/logos/logo512.png' : $friend_user->getPropertyValue("picture"));
+            $friend_fullname = $friend_user->getPropertyValue("firstname") . " " . $friend_user->getPropertyValue("lastname");
+            $friend_username = $friend_user->getPropertyValue("username");
+            
+            // if the message is sent by the current user, we add You: to show the user that he is the creator of the last message
+            $msg = '';
+            if($current_user_id == $discussion->message_creator) {
+                $msg = "You: ";
+            }
+            $msg .= $message->get_property("message");
+            // Here we need the message to be MAX length of 
+            if(strlen($msg) > 28) {
+                $msg = substr($msg, 0, 27) . " ..";
+            }
+
+            $message_life = '';
+
+            // Get message date by substracting current date with the date of message
+            $now = strtotime("now");
+            $seconds = floor($now - strtotime($message->get_property("message_date")));
+            
+            if($seconds > 29030400) {
+                $message_life = floor($seconds / 29030400) . "y";
+            } else if($seconds > 2419200) {
+                $message_life = floor($seconds / 604800) . "w";
+            } else if($seconds < 604799 && $seconds > 86400) {
+                $message_life = floor($seconds / 86400) . "d";
+            } else if($seconds < 86400 && $seconds > 3600) {
+                $message_life = floor($seconds / 3600) . "h";
+            } else if($seconds < 3600 && $seconds > 60) {
+                $message_life = floor($seconds / 60) . "min";
+            } else {
+                $message_life = $seconds . "sec";
+            }
+
+            return <<<FRIEND_DISCUSSION
+                <div class="friend-chat-discussion-item-wraper relative">
+                    <div class="chat-disc-user-image">
+                        <img src="$friend_picture" class="image-style-7" alt="">
+                    </div>
+                    <div>
+                        <div class="chat-disc-name-and-username">
+                            <p class="bold-text-style-1">$friend_fullname</p><span class="chat-disc-item-username"> @$friend_username</span>
+                        </div>
+                        <p class="regular-text">$msg</p>
+                    </div>
+                    <div class="right-pos-margin">
+                        <p class="regular-text-style-2">$message_life</p>
+                    </div>
+                    <div class="selected-chat-discussion">
+
+                    </div>
+                    <input type="hidden" class="uid">
+                </div>
+FRIEND_DISCUSSION;
         }
     }
 ?>

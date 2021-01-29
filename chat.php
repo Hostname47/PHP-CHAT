@@ -20,6 +20,9 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
     $welcomeMessage = Session::flash("new_username") . ", " . Session::flash("register_success");
 }
 
+$current_user_id = $user->getPropertyValue("id");
+
+
 ?>
 
 <!DOCTYPE html>
@@ -63,60 +66,44 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
                         <input type="text" class="chat-input-style" placeholder="Search for conversations">
                     </div>
                     <div id="friend-chat-discussions-container">
-                        <div class="friend-chat-discussion-item-wraper relative">
-                            <div class="chat-disc-user-image">
-                                <img src="assets/images/read.png" class="image-style-7" alt="">
-                            </div>
-                            <div>
-                                <div class="chat-disc-name-and-username">
-                                    <p class="bold-text-style-1">Mouad Nassri</p><span class="chat-disc-item-username"> @grotto</span>
-                                </div>
-                                <p class="regular-text">Last message</p>
-                            </div>
-                            <div class="right-pos-margin">
-                                <p class="regular-text-style-2">34min</p>
-                            </div>
-                            <div class="selected-chat-discussion">
+                        <?php
 
-                            </div>
-                            <input type="hidden" class="uid">
-                        </div>
-                        <div class="friend-chat-discussion-item-wraper relative">
-                            <div class="chat-disc-user-image">
-                                <img src="assets/images/read.png" class="image-style-7" alt="">
-                            </div>
-                            <div>
-                                <div class="chat-disc-name-and-username">
-                                    <p class="bold-text-style-1">Mouad Nassri</p><span class="chat-disc-item-username"> @grotto</span>
-                                </div>
-                                <p class="regular-text">Last message</p>
-                            </div>
-                            <div class="right-pos-margin">
-                                <p class="regular-text-style-2">34min</p>
-                            </div>
-                            <input type="hidden" class="uid">
-                            <div class="selected-chat-discussion">
-                                
-                            </div>
-                        </div>
-                        <div class="friend-chat-discussion-item-wraper relative">
-                            <div class="chat-disc-user-image">
-                                <img src="assets/images/read.png" class="image-style-7" alt="">
-                            </div>
-                            <div>
-                                <div class="chat-disc-name-and-username">
-                                    <p class="bold-text-style-1">Mouad Nassri</p><span class="chat-disc-item-username"> @grotto</span>
-                                </div>
-                                <p class="regular-text">Last message</p>
-                            </div>
-                            <div class="right-pos-margin">
-                                <p class="regular-text-style-2">Jan 5</p>
-                            </div>
-                            <input type="hidden" class="uid">
-                            <div class="selected-chat-discussion">
-                                
-                            </div>
-                        </div>
+                            $discussions = Message::get_discussions($current_user_id);
+                            $temp = array();
+                            $result = array();
+                            
+                            /* 
+                                Now let's take the case when we have user with id: 5 send a message to user with id: 17
+                                AND ALSO user with id: 17 send a message to user with id: 5. What we need to do in this case is
+                                include only the last message for exemple if user: 17 send the last message we take this message
+                                only and exclude message sent by user with id: 5
+                                get_discussions function will return both sides but we need to adjust it to our needs
+                            */
+
+                            foreach($discussions as $discussion) {
+
+                                $current_disc = array(
+                                    "sender"=>$discussion->message_receiver,
+                                    "receiver"=>$discussion->message_creator
+                                );
+
+                                if(in_array($current_disc, $temp)) {
+                                    continue; 
+                                }
+
+                                $temp[] = array(
+                                    "sender"=>$discussion->message_creator,
+                                    "receiver"=>$discussion->message_receiver
+                                );
+                                $result[] = $discussion;
+                            }
+
+                            foreach($result as $discussion) {
+                                $chat_comp = new ChatComponent();
+
+                                echo $chat_comp->generate_discussion($current_user_id, $discussion);
+                            }
+                        ?>
                     </div>
                     <div class="friends-chat-search-container" style="border-right: none;">
                         <input type="text" class="chat-input-style friend-search-input" placeholder="Search for a friend to chat with">

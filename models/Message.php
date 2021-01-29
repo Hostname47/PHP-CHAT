@@ -124,6 +124,7 @@ class Message {
 
         return $this->db->error() == false ? true : false;
     }
+
     public function delete_writing_message_notifier() {
         $this->db->query("DELETE FROM `writing_message_notifier` WHERE `message_writer` = ? AND `message_waiter` = ?"
         , array(
@@ -132,6 +133,12 @@ class Message {
         ));
 
         return $this->db->error() == false ? true : false;
+    }
+
+    public static function get_discussions($user_id) {
+        DB::getInstance()->query("CALL sp_get_discussions(?)", array($user_id));
+
+        return DB::getInstance()->results();
     }
 
     public function jsonSerialize()
