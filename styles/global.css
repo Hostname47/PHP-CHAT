@@ -637,6 +637,7 @@ body {
     margin: 0 3px;
     width: 30px;
     height: 30px;
+    text-decoration: none;
 
     border-radius: 50%;
 
@@ -918,6 +919,11 @@ body {
 
 .messages-button {
     background-image: url("../assets/images/icons/messages.png");
+}
+
+.refresh-button {
+    display: flex;
+    background-image: url("../assets/images/icons/white-refresh.png"); 
 }
 
 .sub-option-style-2 {

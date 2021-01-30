@@ -288,3 +288,8 @@
     font-weight: 600;
     display: none;
 }
+
+.section-title {
+    width: 160px;
+    font-size: 16px;
+}

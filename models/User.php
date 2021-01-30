@@ -195,6 +195,19 @@ class User implements \JsonSerializable {
         return DB::getInstance()->results();
     }
 
+    public static function search_by_username($username) {
+        if(empty($username)) {
+            return array();
+        }
+
+        $keyword = strtolower($username);
+        $keyword = htmlspecialchars($username);
+        $keyword = trim($username);
+
+        DB::getInstance()->query("SELECT * FROM user_info WHERE username LIKE '$keyword%'");
+
+        return DB::getInstance()->results();
+    }
 
     /*
     This function basically accepts two arguments, first the username and then the password in plaintext. First we check if

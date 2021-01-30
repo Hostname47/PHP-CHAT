@@ -5,7 +5,7 @@ require_once "vendor/autoload.php";
 require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-use models\{Post, UserRelation, Follow, Message};
+use models\{Post, UserRelation, Follow, Message, User};
 use view\post\Post as Post_View;
 use view\chat\ChatComponent;
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
@@ -21,7 +21,6 @@ if(Session::exists("register_success") && $user->getPropertyValue("username") ==
 }
 
 $current_user_id = $user->getPropertyValue("id");
-
 
 ?>
 
@@ -63,7 +62,11 @@ $current_user_id = $user->getPropertyValue("id");
                     
                     </div>
                     <div class="friends-chat-search-container">
-                        <input type="text" class="chat-input-style" placeholder="Search for conversations">
+                        <div class="section-title">Discussions: </div>
+
+                        <div style="margin-left: auto">
+                            <a href="" class="menu-button-style-3 refresh-button refresh-discussion"></a>
+                        </div>
                     </div>
                     <div id="friend-chat-discussions-container">
                         <?php
@@ -106,7 +109,8 @@ $current_user_id = $user->getPropertyValue("id");
                         ?>
                     </div>
                     <div class="friends-chat-search-container" style="border-right: none;">
-                        <input type="text" class="chat-input-style friend-search-input" placeholder="Search for a friend to chat with">
+                        <div class="section-title">Friends: </div>
+                        <input type="text" class="chat-input-style friend-search-input" placeholder="Search for a friend (username) ..">
                     </div>
                     <div id="friends-chat-container" class="relative">
                         <?php

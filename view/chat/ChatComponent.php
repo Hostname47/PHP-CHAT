@@ -41,6 +41,7 @@ EOS;
             $friend_fullname = $rcv->getPropertyValue("firstname") . " " . $rcv->getPropertyValue("lastname");
             $friend_username = $rcv->getPropertyValue("username");
             $friend_picture = empty($rcv->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $rcv->getPropertyValue("picture");
+            $user_profile_link = Config::get("root/path") . "profile.php?username=" . $rcv->getPropertyValue("username");
 
             echo <<<CHAT_SECTION
                 <div id="second-chat-part" class="relative">
@@ -50,7 +51,7 @@ EOS;
                         <div class="chat-disc-user-image">
                             <img src="$friend_picture" class="image-style-7" alt="">
                         </div>
-                        <a href="" class="no-underline">
+                        <a href="$user_profile_link" class="no-underline">
                             <div class="chat-disc-name-and-username">
                                 <p class="bold-text-style-1">$friend_fullname</p>
                                 <p class="message_writing_notifier_text">is writing ..</p>
@@ -208,6 +209,8 @@ FM;
 
             return <<<FRIEND_DISCUSSION
                 <div class="friend-chat-discussion-item-wraper relative">
+                    <input type="hidden" class="sender" value="$current_user_id">
+                    <input type="hidden" class="receiver" value="$friend_id">
                     <div class="chat-disc-user-image">
                         <img src="$friend_picture" class="image-style-7" alt="">
                     </div>

@@ -43,7 +43,28 @@ $(".new-message-button").click(function() {
         }, 600);
     });
     return false;
-})
+});
+
+$(".friend-search-input").on("change paste keyup", function() {
+    let username = $(this).val();
+    $.ajax({
+        url: root + "view/chat/get_chat_friend_by_username.php",
+        type: 'POST',
+        data: {
+            username: username
+        },
+        success(data) {
+            $("#friends-chat-container").html("");
+            $("#friends-chat-container").append(data);
+            
+            $(".friends-chat-item").click(function() {
+                open_friend_chat_section($(this));
+                console.log("chat friend opened from search section !");
+                return false;
+            });
+        }
+    });
+ });
 
 if(urlParams.get('username')) {
     var values = {
@@ -51,18 +72,22 @@ if(urlParams.get('username')) {
         'receiver': null
     };
     
+    // First we get the current user and we set it to value["sender"] to use it later
     $.ajax({
         type: "GET",
         url: root + "security/get_current_user.php",
         success: function(current_user) {
             values["sender"] = current_user["id"];
-
+            /*
+                Then we fetch the user from username in the url query string using and past it to values["receiver"] to use it later
+            */
             $.ajax({
                 type: "GET",
                 url: root + "api/user/get_by_username.php?username=" + urlParams.get('username'),
                 success: function(response) {
                     if(response["success"]) {
                         values["receiver"] = response["user"]["id"];
+                        // If the user fetched successfully we generate a chat section based on the two values in values array(sender and receiver)
 
                         let url = root + "view/chat/generate_chat_container.php";
                         $.ajax({
@@ -82,7 +107,7 @@ if(urlParams.get('username')) {
                                     data: values,
                                     success: function(data) {
                                         $("#chat-container").append(data);
-                                        //handle_message_elements_events($(".message-global-container"));
+                                        handle_message_elements_events($(".message-global-container"));
                                         // Scroll to the last message
                                         $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
                                     }
@@ -91,22 +116,7 @@ if(urlParams.get('username')) {
                                 // Here we also call the api to fill in messages to chat container
                                 $("#send-message-button").click(function() {
                                     let chat_text_content = $('#second-chat-part').find("#chat-text-input").val();
-                                    // Append message content to values passed to the api
-                                    values.message = chat_text_content;
-                                    save_data_and_return_compoent(values["sender"], values["receiver"], chat_text_content, function(result) {
-                                        if(result) {
-                                            $("#chat-container").append(result);
-                                
-                                            /*
-                                                The following code handle the message when appear by adding some events to elements
-                                            */
-                                            $('#second-chat-part').find("#chat-text-input").val("");
-                                            
-                                            //handle_message_elements_events($(".message-global-container").last());
-                                        }
-                                    });
-                    
-                                    //$("#second-chat-part")
+                                    send_message(values["sender"], values["receiver"], chat_text_content);
                                 });
 
 
@@ -122,161 +132,54 @@ if(urlParams.get('username')) {
     });
 }
 
-$(".friends-chat-item").click(function() {
-    let captured_id = $(this).find(".receiver").val();
-    let current_id = $(this).find(".sender").val();
-    var values = {
-        'sender': current_id,
-        'receiver': captured_id
-    };
-
-    let url = root + "view/chat/generate_chat_container.php";
-
-    if(discussion_chat_opened) {
-        $("#second-chat-part").remove();
-    }
-
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: values,
-        success: function(data) {
-            $("#no-discussion-yet").remove();
-            $("#chat-global-container").append(data);
-            
-            $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
-            // Here we bring every message between the sender and user
-            $.ajax({
-                type: 'POST',
-                url: root + 'api/messages/get_friend_messages.php',
-                data: values,
-                success: function(data) {
-                    $("#chat-container").append(data);
-                    handle_message_elements_events($(".message-global-container"));
-                    // Scroll to the last message
-                    $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
-
-                    // --------------- Update the receiver_user_id used for long-polling purpose ---------------------
-                    receiver_user_id = $(this).find(".receiver").val();
-                    waitForMessages();
-                    track_message_writing();
-                }
-            });
-
-            $("#send-message-button").click(function() {
-                let chat_text_content = $('#second-chat-part').find("#chat-text-input").val();
-                let chat_values = values;
-                // Append message content to values passed to the api
-                chat_values.message = chat_text_content;
-                $.ajax({
-                    type: "POST",
-                    url: root + "api/messages/Send.php",
-                    data: values,
-                    success: function(data) {
-                        $("#chat-container").append(data);
-
-                        $('#second-chat-part').find("#chat-text-input").val("");
-                        message_writing_notifier = 0;
-                        $.ajax({
-                            type: "POST",
-                            url: root + "api/messages/message_writing_notifier/delete.php",
-                            data: values,
-                            success: function(data) {
-                                console.log("Notification deleted !");
-                            }
-                        });
-                        
-                        handle_message_elements_events($(".message-global-container").last());
-
-                        // Scroll to the last message
-                        $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
-                    }
-                });
-            });
-
-            message_writing_notifier = 0;
-            // Display user's writing a message when a friend is writing a message
-            $('#second-chat-part').find("#chat-text-input").on({
-                input: function() {
-                    if(!message_writing_notifier) {
-                        $.ajax({
-                            type: "POST",
-                            url: root + "api/messages/message_writing_notifier/add.php",
-                            data: values,
-                            success: function(data) {
-                                console.log("Notification registered !");
-                            }
-                        });
-
-                        message_writing_notifier++;
-                    }
-                }
-            })
-
-            $('#second-chat-part').find("#chat-text-input").keyup(function() {
-                if(!this.value) {
-                    message_writing_notifier = 0;
-                    $.ajax({
-                        type: "POST",
-                        url: root + "api/messages/message_writing_notifier/delete.php",
-                        data: values,
-                        success: function(data) {
-                            message_writing_notifier = 0;
-                            console.log("Notification deleted !");
-                        }
-                    });
-                }
-            
-            });
-
-            discussion_chat_opened = true;
-        }
-    });
-
-
+$(".friends-chat-item, .friend-chat-discussion-item-wraper").click(function() {
+    open_friend_chat_section($(this));
+    console.log("chat friend opened !");
     return false;
 });
 
 $(document).keypress(function(e) {
-
     let message_input = $('#second-chat-part').find("#chat-text-input");
     let isFocused = (document.activeElement === message_input[0]);
+    
+    let sender = $("#second-chat-part").find(".chat-sender").val();
+    let receiver = $("#second-chat-part").find(".chat-receiver").val();
+    let text_data = message_input.val();
 
     if(isFocused && e.keyCode == 13) {
-        let sender = $("#second-chat-part").find(".chat-sender").val();
-        let receiver = $("#second-chat-part").find(".chat-receiver").val();
-        let text_data = message_input.val();
-
-        save_data_and_return_compoent(sender, receiver, text_data, function(result) {
-            if(result) {
-                let values = {
-                    "sender": sender,
-                    "receiver": receiver
-                };
-
-                $("#chat-container").append(result);
-    
-                /*
-                    The following code handle the message when appear by adding some events to elements
-                */
-                $('#second-chat-part').find("#chat-text-input").val("");
-
-                message_writing_notifier = 0;
-                $.ajax({
-                    type: "POST",
-                    url: root + "api/messages/message_writing_notifier/delete.php",
-                    data: values
-                });
-                
-                handle_message_elements_events($(".message-global-container").last());
-
-                // Scroll to the last message
-                $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
-            }
-        });
+        send_message(sender, receiver, text_data);
     }
 });
 
+function send_message(sender, receiver, text_data) {
+    save_data_and_return_compoent(sender, receiver, text_data, function(result) {
+        if(result) {
+            let values = {
+                "sender": sender,
+                "receiver": receiver
+            };
+
+            $("#chat-container").append(result);
+
+            /*
+                The following code handle the message when appear by adding some events to elements
+            */
+            $('#second-chat-part').find("#chat-text-input").val("");
+
+            message_writing_notifier = 0;
+            $.ajax({
+                type: "POST",
+                url: root + "api/messages/message_writing_notifier/delete.php",
+                data: values
+            });
+            
+            handle_message_elements_events($(".message-global-container").last());
+
+            // Scroll to the last message
+            $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
+        }
+    });
+}
 
 
 function save_data_and_return_compoent(sender, receiver, message, handle_data) {
@@ -380,3 +283,142 @@ function notification_sound_play() {
     let audio = new Audio(root+'assets/audios/tone.mp3');
     audio.play();
 }
+
+function open_friend_chat_section($element) {
+    if($element.hasClass("friends-chat-item")) {
+        $(".friend-chat-discussion-item-wraper").find(".selected-chat-discussion").css("display", "none");
+    }
+    let captured_id = $element.find(".receiver").val();
+    let current_id = $element.find(".sender").val();
+    var values = {
+        'sender': current_id,
+        'receiver': captured_id
+    };
+
+    let url = root + "view/chat/generate_chat_container.php";
+
+    if(discussion_chat_opened) {
+        $("#second-chat-part").remove();
+    }
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: values,
+        success: function(data) {
+            $("#no-discussion-yet").remove();
+            $("#chat-global-container").append(data);
+            
+            $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
+            // Here we bring every message between the sender and user
+            $.ajax({
+                type: 'POST',
+                url: root + 'api/messages/get_friend_messages.php',
+                data: values,
+                success: function(data) {
+                    $("#chat-container").append(data);
+                    handle_message_elements_events($(".message-global-container"));
+                    // Scroll to the last message
+                    $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
+
+                    // --------------- Update the receiver_user_id used for long-polling purpose ---------------------
+                    receiver_user_id = $element.find(".receiver").val();
+                    waitForMessages();
+                    track_message_writing();
+                }
+            });
+
+            $("#send-message-button").click(function() {
+                let chat_text_content = $('#second-chat-part').find("#chat-text-input").val();
+                let chat_values = values;
+                // Append message content to values passed to the api
+                chat_values.message = chat_text_content;
+                $.ajax({
+                    type: "POST",
+                    url: root + "api/messages/Send.php",
+                    data: values,
+                    success: function(data) {
+                        $("#chat-container").append(data);
+
+                        $('#second-chat-part').find("#chat-text-input").val("");
+                        message_writing_notifier = 0;
+                        $.ajax({
+                            type: "POST",
+                            url: root + "api/messages/message_writing_notifier/delete.php",
+                            data: values,
+                            success: function(data) {
+                                console.log("Notification deleted !");
+                            }
+                        });
+                        
+                        handle_message_elements_events($(".message-global-container").last());
+
+                        // Scroll to the last message
+                        $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
+                    }
+                });
+            });
+
+            message_writing_notifier = 0;
+            // Display user's writing a message when a friend is writing a message
+            $('#second-chat-part').find("#chat-text-input").on({
+                input: function() {
+                    if(!message_writing_notifier) {
+                        $.ajax({
+                            type: "POST",
+                            url: root + "api/messages/message_writing_notifier/add.php",
+                            data: values,
+                            success: function(data) {
+                                console.log("Notification registered !");
+                            }
+                        });
+
+                        message_writing_notifier++;
+                    }
+                }
+            })
+
+            $('#second-chat-part').find("#chat-text-input").keyup(function() {
+                if(!this.value) {
+                    message_writing_notifier = 0;
+                    $.ajax({
+                        type: "POST",
+                        url: root + "api/messages/message_writing_notifier/delete.php",
+                        data: values,
+                        success: function(data) {
+                            message_writing_notifier = 0;
+                            console.log("Notification deleted !");
+                        }
+                    });
+                }
+            
+            });
+
+            discussion_chat_opened = true;
+        }
+    });
+}
+
+$(".refresh-discussion").click(function() {
+    
+    $.ajax({
+        url: root + "security/get_current_user.php",
+        success: function(data) {
+            let current_user_id = data["id"];
+
+            $.ajax({
+                url: root + "view/chat/discussions/get_user_discussions.php",
+                type: 'POST',
+                data: {
+                    'user_id': current_user_id
+                },
+                success: function(response) {
+                    $("#friend-chat-discussions-container").html("");
+                    $("#friend-chat-discussions-container").append(response);
+                }
+            })
+        }
+    })
+
+    return false;
+});
