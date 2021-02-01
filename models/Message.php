@@ -12,7 +12,9 @@ class Message {
     $message,
     $message_date = '',
     $recipient_id,
-    $is_read = false;
+    $is_read = false,
+    $is_reply='',
+    $replied_message_id;
     
     public function __construct() {
         $this->db = DB::getInstance();
@@ -112,6 +114,15 @@ class Message {
         $message_recipient_row_inserted = $this->db->error();
 
         return $this->db->error() == false ? $last_inserted_message_id : false;
+    }
+
+    public function add_reply($message_id) {
+        $this->db->query("INSERT INTO reply (`message_id`, `message_replied`) VALUES (?, ?)", array(
+            $message_id,
+            $this->replied_message_id
+        ));
+
+        return $this->db->error() == false ? true : false;
     }
 
     public function delete_sended_message() {

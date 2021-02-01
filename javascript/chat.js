@@ -193,6 +193,11 @@ function save_data_and_return_compoent(sender, receiver, message, handle_data) {
         'message': message
     };
 
+    if($(".reply-container").css("display") != "none") {
+        values['is_reply'] = 'yes',
+        values['replied_message_id'] = $(".reply-container").parent().parent().find(".message_id").val();
+    }
+
     $.ajax({
         type: "POST",
         url: root + "api/messages/Send.php",
@@ -277,7 +282,46 @@ function handle_message_elements_events(element) {
         console.log(message_container);
 
         return false;
+    });
+
+    element.find(".reply-button").click(function() {
+        let message_id = $(this).parent().parent().find(".message_id").val();
+        let message = $(this);
+
+        while(!message.hasClass("friend-message-container")) {
+            message = message.parent();
+        }
+
+        message = message.find(".message-text").text();
+
+        if(message.length > 12) {
+            message = message.substring(0, 11) + " ..";
+        }
+
+        console.log("message text: " + message);
+        
+        $(".reply-container").find(".message-text-rep").text(message);
+        $(".reply-container").find(".replied-message-id").val(message_id);
+        $(".reply-container").css("display", "flex");
+        $("#chat-text-input").attr("placeholder", "");
+
+        let padding_left = 2 + 30 + $(".reply-container").width();
+
+        $("#chat-text-input").css("paddingLeft", padding_left);
+        $("#chat-text-input").focus();
+
+        return false;
     })
+}
+
+function handle_chat_container_elements_events() {
+    $(".message-input-box").find("#close-reply-container").click(function() {
+        $(this).parent().css("display", "none");
+        $("#chat-text-input").attr("placeholder", "Type a new message");
+        $("#chat-text-input").css("paddingLeft", "40px");
+        $("#chat-text-input").focus();
+        return false;
+    });
 }
 
 let receiver_user_id = null;
@@ -355,6 +399,8 @@ function open_friend_chat_section($element) {
             $("#no-discussion-yet").remove();
             $("#chat-global-container").append(data);
             
+            handle_chat_container_elements_events();
+            
             $("#chat-container").height($(window).height() - 200); // 200 = 116 + 24(12 padding top and 12 padding bottom) + 60 (height of message text input)
             // Here we bring every message between the sender and user
             $.ajax({
@@ -370,7 +416,7 @@ function open_friend_chat_section($element) {
                     // --------------- Update the receiver_user_id used for long-polling purpose ---------------------
                     receiver_user_id = $element.find(".receiver").val();
                     waitForMessages();
-                    track_message_writing();
+                    //track_message_writing();
                 }
             });
 

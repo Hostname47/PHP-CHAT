@@ -68,21 +68,29 @@ EOS;
                             <p class="regular-text" style="text-align: center; margin: 14px 0 20px 0">Jan 19, 2021 9:50 PM</p>
                         </div>
                     </div>
-                    <div class="message-input-box">
-                        <div class="relative">
-                            <a href="" class="chat-message-settings-button white-dotted-more-back"></a>
-
-                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
+                    <div class="message-input-box relative">
+                        <div class="reply-container">
+                            <input type='hidden' class="replied-message-id">
+                            <div class="message-wrapper relative replied-message-container">
+                                <p class="regular-text message-text message-text-rep replied-back"></p>
+                            </div>
+                            <a href="" id="close-reply-container"></a>
+                        </div>
+                        <div class="more-message-container">
+                            <div>
+                                <a href="" class="message-more-button white-dotted-more-back"></a>
+                                <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
                                 <div class="options-container-style-1 black">
                                     <div class="sub-option-style-2">
                                         <a href="" class="black-link">Delete message (under construction)</a>
                                     </div>
                                 </div>
+                                </div>
                             </div>
                         </div>
-                        <input type="text" form="send-message-form" placeholder="Type a new message" id="chat-text-input" class="chat-input-style send-button">
+                        <input type="text" form="send-message-form" placeholder="Type a new message" id="chat-text-input" class="chat-input-style send-button" style="padding-left: 40px">
                         <input type="submit" value="send" form="send-message-form" id="send-message-button">
-                    </div>        
+                    </div>
                 <div>
 CHAT_SECTION;
         }
@@ -103,10 +111,10 @@ CHAT_SECTION;
                             <div class="chat-message-more-button-container">
                                 <a href="" class="chat-message-more-button white-dotted-more-back"></a>
                             </div>
-                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1;left: -150px">
+                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1; top: 35px; width: 126px; left: -4px; top: -54px">
                                 <div class="options-container-style-1 black">
                                     <div class="sub-option-style-2">
-                                        <a href="" class="black-link delete-current-user-message">Delete message (under construction)</a>
+                                        <a href="" class="black-link delete-current-user-message">Delete message</a>
                                         <input type="hidden" value="$message_id" class="message_id">
                                     </div>
                                 </div>
@@ -144,14 +152,14 @@ CUM;
                             <div class="chat-message-more-button-container">
                                 <a href="" class="chat-message-more-button white-dotted-more-back"></a>
                             </div>
-                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
+                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1; width: 129px; left: -95px; top: -100px">
                                 <div class="options-container-style-1 black">
                                     <div class="sub-option-style-2">
-                                        <a href="" class="black-link delete-received-message">Delete message (under construction)</a>
+                                        <a href="" class="black-link delete-received-message">Delete message</a>
                                         <input type="hidden" value="$message_id" class="message_id">
                                     </div>
                                     <div class="sub-option-style-2">
-                                        <a href="" class="black-link">Reply (under construction)</a>
+                                        <a href="" class="black-link reply-button">Reply (under construction)</a>
                                     </div>
                                 </div>
                             </div>
@@ -159,6 +167,11 @@ CUM;
                     </div>
                 </div>
 FM;
+        }
+
+        public static function generate_reply_message($original_message, $reply_message, $original_message_creator, $reply_creator) {
+            
+
         }
 
         public static function generate_discussion($current_user_id, $discussion) {

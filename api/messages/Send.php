@@ -16,10 +16,16 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 require_once "../../functions/sanitize_id.php";
 require_once "../../functions/sanitize_text.php";
 
+$is_reply = false;
 $sender = sanitize_id($_POST["sender"]);
 $receiver = sanitize_id($_POST["receiver"]);
 $message = sanitize_id($_POST["message"]);
 $message_date = date("Y/m/d H:i:s");
+
+if(isset($_POST["is_reply"])) {
+    $is_reply = true;
+    $replied_message_id = sanitize_id($_POST["replied_message_id"]);
+}
 
 if(($sender) && 
     User::user_exists("id", $sender)) {
@@ -36,12 +42,32 @@ if(($sender) &&
                     "message_date"=>$message_date
                 ));
 
-                $res = $message_model->add();
+                if($is_reply) {
+                    $message_model->set_property("is_reply", 1);
+                    //$res = $message_model->add();
+                    /*
+                        We pass the id of message inserted to add_reply in order for reply row to know which message this
+                        reply is connected to !
+                    */
+                    //$message_model->add_reply($res);
 
-                $message_obj = Message::get_message_obj("id", $res);
+                    // After that we fetch the message
+                    //$message_obj = Message::get_message_obj("id", $res);
+                    // This will get message with id 260 just for reply component build tests
+                    $message_obj = Message::get_message_obj("id", 260);
 
-                $chat_wrapper = new ChatComponent();
-                $chat_component = $chat_wrapper->generate_current_user_message($sender_user, $message_obj, $message_date);
+                    // Then we generate a replied message components
+                    $chat_wrapper = new ChatComponent();
+                    $chat_component = $chat_wrapper->generate_reply_message($sender_user, $message_obj, $message_date);
+                } else {
+                    $res = $message_model->add();
+    
+                    $message_obj = Message::get_message_obj("id", $res);
+    
+                    $chat_wrapper = new ChatComponent();
+                    // Here we need to pass the original message id, reply_message_id, original message creator and reply creator
+                    //$chat_component = $chat_wrapper->generate_current_user_message();
+                }
 
                 echo $chat_component;
 

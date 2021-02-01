@@ -110,7 +110,7 @@ $current_user_id = $user->getPropertyValue("id");
                     </div>
                     <div class="friends-chat-search-container" style="border-right: none;">
                         <div class="section-title">Friends: </div>
-                        <input type="text" class="chat-input-style friend-search-input" placeholder="Search for a friend (username) ..">
+                        <input type="text" class="chat-input-style friend-search-input search-back" placeholder="Search for a friend (username) ..">
                     </div>
                     <div id="friends-chat-container" class="relative">
                         <?php

@@ -105,3 +105,12 @@ BEGIN
 	GROUP BY M.message_creator, MR.receiver_id
 	ORDER BY mid DESC;
 END //
+
+
+CREATE TABLE reply
+(
+    id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    message_id int NOT NULL REFERENCES message(id),
+    message_replied int NOT NULL REFERENCES message(id)
+)
+
