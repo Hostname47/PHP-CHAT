@@ -184,15 +184,17 @@
     display: none;
     bottom: -18px;
     font-size: 13px;
-    width: 200px;
+    width: 220px;
     text-align: right;
 }
 
 .current-user-message-date {
+    text-align: right;
     right: 0;
 }
 
 .friend-message-date {
+    text-align: left;
     left: 0;
 }
 

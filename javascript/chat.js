@@ -232,6 +232,52 @@ function handle_message_elements_events(element) {
             return false;
         }
     });
+
+    element.find(".delete-current-user-message").click(function() {
+        let message_id = $(this).parent().find(".message_id").val();
+        let message_container = $(this);
+        while(!message_container.hasClass("message-global-container")) {
+            message_container = message_container.parent();
+        }
+        
+        $.ajax({
+            url: root + 'api/messages/DELETE.php',
+            type: 'POST',
+            data: {
+                'message_id': message_id,
+                'is_received': 'no'
+            },
+            success: function(response) {
+                message_container.remove();
+            }
+        });
+        console.log(message_container);
+
+        return false;
+    });
+
+    element.find(".delete-received-message").click(function() {
+        let message_id = $(this).parent().find(".message_id").val();
+        let message_container = $(this);
+        while(!message_container.hasClass("message-global-container")) {
+            message_container = message_container.parent();
+        }
+        
+        $.ajax({
+            url: root + 'api/messages/DELETE.php',
+            type: 'POST',
+            data: {
+                'message_id': message_id,
+                'is_received': 'yes'
+            },
+            success: function(response) {
+                message_container.remove();
+            }
+        });
+        console.log(message_container);
+
+        return false;
+    })
 }
 
 let receiver_user_id = null;

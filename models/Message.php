@@ -33,6 +33,12 @@ class Message {
         $this->message_date = $data["message_date"];
     }
 
+    public static function exists($message_id) {
+        DB::getInstance()->query("SELECT * FROM message WHERE id = ?", array($message_id));
+
+        return DB::getInstance()->count();
+    }
+
     public function get_message($property, $value) {
         $this->db->query("SELECT * FROM `message` WHERE `$property` = ?", array($value));
 
@@ -45,6 +51,17 @@ class Message {
             $this->message_date = $fetched_message->create_date;
 
             return true;
+        }
+
+        return false;
+    }
+
+    public static function get_message_obj($property, $value) {
+        DB::getInstance()->query("SELECT * FROM `message` WHERE `$property` = ?", array($value));
+
+        if(DB::getInstance()->count() > 0) {
+            $fetched_message = DB::getInstance()->results()[0];
+            return $fetched_message;
         }
 
         return false;
@@ -94,7 +111,35 @@ class Message {
 
         $message_recipient_row_inserted = $this->db->error();
 
-        return $this->db->error() == false ? true : false;
+        return $this->db->error() == false ? $last_inserted_message_id : false;
+    }
+
+    public function delete_sended_message() {
+        /*
+            For now this function delete the message for every one, later try to add the posibility to only deleted the
+            message for the sender
+        */
+        // First we delete the message from recipient table
+        $this->delete_received_message();
+        // Then we detach or actually delete the whole message from message table
+        $this->db->query("DELETE FROM `message` WHERE id = ?", array(
+            $this->id
+        ));
+
+        return ($this->db->error()) ? false : true;
+    }
+
+    public function delete_received_message() {
+        /*
+            In this case we just need to delete the message from recipient table because we want to be there in message
+            for the sender to see it. The message will be deleted just from the reeiver of the message
+        */
+
+        $this->db->query("DELETE FROM message_recipient WHERE message_id = ?", array(
+            $this->id
+        ));
+
+        return ($this->db->error()) ? false : true;
     }
 
     public static function dump_channel($sender, $receiver) {

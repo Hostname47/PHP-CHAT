@@ -121,7 +121,7 @@
                 <script defer>
                     $(document).ready(function () {
                         const params = new URLSearchParams(window.location.search)
-                        if(params.get('q') == '') {
+                        if(!params.has("q") || params.get('q') == '') {
                             $(".empty-search").css("display", "flex");
                         } else {
                             let containers = $(".search-result-type-container");
@@ -139,10 +139,8 @@
     
                             if(!dataExists) {
                                 $(".no-search-container").css("display", "flex");
-                                console.log("display error !");
                             } else {
                                 $(".no-search-container").css("display", "none");
-                                console.log("none");
                             }
                         }
                     });

@@ -9,6 +9,10 @@ body {
     font-size: 15px;
 }
 
+input, textarea {
+    outline: none;
+}
+
 #global-container {
     display: flex;
     position: relative;
@@ -536,6 +540,10 @@ body {
     box-sizing: border-box;
     border: none;
     font-size: 12px;
+}
+
+.input-text-style-1:focus {
+    outline: none;
 }
 
 .input-style-1 {

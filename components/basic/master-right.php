@@ -1,7 +1,10 @@
 <?php
 
+use classes\Config;
 use models\UserRelation;
 use view\master_right\Right as MasterRightComponents;
+
+$search_url = Config::get("root/path") . "search.php";
 
 ?>
 
@@ -21,10 +24,22 @@ use view\master_right\Right as MasterRightComponents;
             $user_relation = new UserRelation();
             $friends = $user_relation->get_friends($current_user_id);
 
-            $master_right = new MasterRightComponents();
-            foreach($friends as $friend) {
-                $master_right->generateFriendContact($current_user_id, $friend);
+            if(empty($friends)) {
+                echo <<<EMPTY
+                    <div class="flex-column" style="margin-top: 40px">
+                        <img src="assets/images/icons/white-search.png" alt="" style="height: 40px; width: 40px; margin: 0 auto;">
+                        <p style="text-align: center">Try to add your friends, follow celebrities ..</p>
+                        <p style="text-align: center">click <a href="$search_url" class="link" style="color: rgb(66, 219, 66)">here</a> to go to the search page</p>
+                    </div>
+EMPTY;      
+            } else {
+                $master_right = new MasterRightComponents();
+                foreach($friends as $friend) {
+                    $master_right->generateFriendContact($current_user_id, $friend);
+                }
             }
+
         ?>
+
     </div>
 </div>

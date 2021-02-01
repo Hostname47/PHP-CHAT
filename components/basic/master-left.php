@@ -5,6 +5,7 @@
 
     $current_user_id = $user->getPropertyValue("id");
 
+    $user_profile = Config::get("root/path") . (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
     $posts_number = Post::get_posts_number($current_user_id);
     $followers_number = Follow::get_user_followers_number($current_user_id);
     $followed_number = Follow::get_followed_users_number($current_user_id);
@@ -67,8 +68,8 @@
                     <div class="cover-container">
                         <img src="<?php echo $user->getPropertyValue("cover"); ?>" class="cover-photo" alt="">
                     </div>
-                    <a href="<?php echo Config::get("root/path") . "profile.php?user=" . $user->getPropertyValue("username"); ?>" class="picture-container absolute">
-                        <img src="<?php echo $user->getPropertyValue("picture"); ?>" class="picture-photo" alt="">
+                    <a href="<?php echo Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username"); ?>" class="picture-container absolute">
+                        <img src="<?php echo $user_profile; ?>" class="picture-photo" alt="">
                     </a>
                     <div class="header-profile-name-container">
                         <a href="" class="no-underline"><h1 class="header-profile-fullname"><?php echo $user->getPropertyValue("firstname") . " " . $user->getPropertyValue("lastname"); ?></h1></a>

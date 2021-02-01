@@ -46,9 +46,9 @@ if(($sender) &&
 
                 foreach($messages as $message) {
                     if($message->message_creator == $sender) {
-                        $content .= $chat_component->generate_current_user_message($sender_user, $message->message, $message->create_date);
+                        $content .= $chat_component->generate_current_user_message($sender_user, $message, $message->create_date);
                     } else {
-                        $content .= $chat_component->generate_friend_message($receiver_user, $message->message, $message->create_date);
+                        $content .= $chat_component->generate_friend_message($receiver_user, $message, $message->create_date);
                     }
                 }
                 Message::dump_channel($receiver, $sender);

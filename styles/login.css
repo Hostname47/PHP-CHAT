@@ -22,6 +22,11 @@
 #login-image-preview {
     display: flex;
     margin: 0 auto;
-    width: 427px;
-    height: 212px;
+    max-width: 800px;
+}
+
+#login-left-text {
+    font-size: 19px;
+    text-align: center;
+    margin: 0 0 18px 0;
 }

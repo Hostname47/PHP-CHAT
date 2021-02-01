@@ -148,7 +148,7 @@
     <main>
         <div class="login-img-reg-container">
             <div id="left-asset-wrapper">
-                <h2 style="text-align: center; margin: 0 0 6px 0">“The government doesn't want any system of transmitting information to remain unbroken, unless it's under its own control.” ― Isaac Asimov, Tales of the Black Widowers</h2>
+                <h2 id="login-left-text">“The government doesn't want any system of transmitting information to remain unbroken, unless it's under its own control.” ― Isaac Asimov, Tales of the Black Widowers</h2>
                 <img src="../assets/images/preview.png" id="login-image-preview" alt="">
             </div>
             <div id="registration-section">
@@ -164,32 +164,32 @@
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post" class="flex-column">
                     <div class="classic-form-input-wrapper">
                         <label for="firstname" class="classic-label">Firstname</label>
-                        <input type="text" name="firstname" value="<?php echo htmlspecialchars(Common::getInput($_POST, "firstname")); ?>" id="firstname" placeholder="Firstname" autocomplete="off" class="classic-input">
+                        <input type="text" name="firstname" value="<?php echo htmlspecialchars(Common::getInput($_POST, "firstname")); ?>" id="firstname" placeholder="Firstname" autocomplete="off" class="input-text-style-1">
                     </div>
                     <div class="classic-form-input-wrapper">
                         <label for="lastname" class="classic-label">Lastname</label>
-                        <input type="text" name="lastname" value="<?php echo htmlspecialchars(Common::getInput($_POST, "lastname")); ?>" id="lastname" placeholder="Lastname" autocomplete="off" class="classic-input">
+                        <input type="text" name="lastname" value="<?php echo htmlspecialchars(Common::getInput($_POST, "lastname")); ?>" id="lastname" placeholder="Lastname" autocomplete="off" class="input-text-style-1">
                     </div>
                     <div class="classic-form-input-wrapper">
                         <label for="username" class="classic-label">Username</label>
-                        <input type="text" name="username" value="<?php echo htmlspecialchars(Common::getInput($_POST, "username")); ?>" id="username" placeholder="Username" autocomplete="off" class="classic-input">
+                        <input type="text" name="username" value="<?php echo htmlspecialchars(Common::getInput($_POST, "username")); ?>" id="username" placeholder="Username" autocomplete="off" class="input-text-style-1">
                     </div>
                     <div class="classic-form-input-wrapper">
                         <label for="email" class="classic-label">Email</label>
-                        <input type="text" name="email" value="<?php echo htmlspecialchars(Common::getInput($_POST, "email")); ?>" id="email" placeholder="Email address" autocomplete="off" class="classic-input">
+                        <input type="text" name="email" value="<?php echo htmlspecialchars(Common::getInput($_POST, "email")); ?>" id="email" placeholder="Email address" autocomplete="off" class="input-text-style-1">
                     </div>
                     <div class="classic-form-input-wrapper">
                         <label for="password" class="classic-label">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Password" autocomplete="off" class="classic-input">
+                        <input type="password" name="password" id="password" placeholder="Password" autocomplete="off" class="input-text-style-1">
                     </div>
                     <div class="classic-form-input-wrapper">
                         <label for="password_again" class="classic-label">Re-enter you password</label>
-                        <input type="password" name="password_again" id="password_again" placeholder="Re-enter password" autocomplete="off" class="classic-input">
+                        <input type="password" name="password_again" id="password_again" placeholder="Re-enter password" autocomplete="off" class="input-text-style-1">
                     </div>
                 
                     <div class="classic-form-input-wrapper">
                         <input type="hidden" name="token_reg" value="<?php echo Token::generate("register"); ?>">
-                        <input type="submit" value="register" name="register" class="button-style-1" style="width: 70px;">
+                        <input type="submit" value="Register" name="register" class="button-style-1" style="width: 70px;">
                     </div>
                 </form>
             </div>

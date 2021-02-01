@@ -92,6 +92,10 @@ CHAT_SECTION;
             $user_profile_link = Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");
             $new = str_replace("/", "-", $message_date);
             $message_date = date("F d \a\\t Y H:i A",strtotime($new));
+
+            $message_id = $message->id;
+            $message_text = $message->message;
+
             return <<<CUM
                 <div class="message-global-container">
                     <div class="current-user-message-container">
@@ -102,13 +106,14 @@ CHAT_SECTION;
                             <div class="sub-options-container sub-options-container-style-2" style="z-index: 1;left: -150px">
                                 <div class="options-container-style-1 black">
                                     <div class="sub-option-style-2">
-                                        <a href="" class="black-link">Delete message (under construction)</a>
+                                        <a href="" class="black-link delete-current-user-message">Delete message (under construction)</a>
+                                        <input type="hidden" value="$message_id" class="message_id">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="message-wrapper relative">
-                            <p class="regular-text message-text">$message</p>
+                            <p class="regular-text message-text">$message_text</p>
                             <div class="absolute current-user-message-date message-date">
                                 <p class="regular-text-style-2">$message_date</p>
                             </div>
@@ -123,12 +128,14 @@ CUM;
             $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
             $user_profile_link = Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");
             $message_date = date("F d \a\\t Y H:i A",strtotime($message_date));
+            $message_id = $message->id;
+            $message_text = $message->message;
             return <<<FM
                 <div class="message-global-container">
                     <div class="friend-message-container">
                         <a href="$user_profile_link"><img src="$user_profile" class="image-style-10" alt=""></a>
                         <div class="message-wrapper relative">
-                            <p class="regular-text message-text">$message</p>
+                            <p class="regular-text message-text">$message_text</p>
                             <div class="absolute message-date friend-message-date">
                                 <p class="regular-text-style-2">$message_date</p>
                             </div>
@@ -140,7 +147,8 @@ CUM;
                             <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
                                 <div class="options-container-style-1 black">
                                     <div class="sub-option-style-2">
-                                        <a href="" class="black-link">Delete message (under construction)</a>
+                                        <a href="" class="black-link delete-received-message">Delete message (under construction)</a>
+                                        <input type="hidden" value="$message_id" class="message_id">
                                     </div>
                                     <div class="sub-option-style-2">
                                         <a href="" class="black-link">Reply (under construction)</a>

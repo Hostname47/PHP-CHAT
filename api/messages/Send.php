@@ -21,10 +21,8 @@ $receiver = sanitize_id($_POST["receiver"]);
 $message = sanitize_id($_POST["message"]);
 $message_date = date("Y/m/d H:i:s");
 
-// Check if the follower id is set, and if it is numeric by calling sanitize_id, and exists in the database using user_exists
 if(($sender) && 
     User::user_exists("id", $sender)) {
-        // Same check here with the followed user
         if($receiver && 
             User::user_exists("id", $receiver)) {
                 $sender_user = new User();
@@ -40,8 +38,10 @@ if(($sender) &&
 
                 $res = $message_model->add();
 
+                $message_obj = Message::get_message_obj("id", $res);
+
                 $chat_wrapper = new ChatComponent();
-                $chat_component = $chat_wrapper->generate_current_user_message($sender_user, $message, $message_date);
+                $chat_component = $chat_wrapper->generate_current_user_message($sender_user, $message_obj, $message_date);
 
                 echo $chat_component;
 

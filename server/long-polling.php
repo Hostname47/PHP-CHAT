@@ -51,7 +51,9 @@ while(true) {
 
             $msg = new Message();
             $msg->get_message("id", $message->message_id);
-            $content .= $chat_component->generate_friend_message($sender_user, $msg->get_property("message"), $msg->get_property("message_date"));
+
+            $msg_obj = Message::get_message_obj("id", $message->message_id);
+            $content .= $chat_component->generate_friend_message($sender_user, $msg_obj, $msg->get_property("message_date"));
         }
 
         echo json_encode($content);
