@@ -338,9 +338,48 @@ function handle_message_elements_events(element) {
         return false;
     });
 
-    $(".original-message-replied-container").click(function() {
+    $(".original-message-replied-container, .received-original-message-replied-container").click(function() {
 
-        return false;
+
+        let original_message_id = $(this).find(".original_mid").val();
+        
+        let message_container = $(this).parent();
+
+        let height_from_bottom_to_original = 0;
+        
+        /*
+            We start from bottom to the original message and get heights of messages appended to height_from_bottom_to_original
+            Then WE TAKE the height from bottom to the reply FROM the global height of chat container
+        */
+
+        message_container = $(".message-global-container").last();
+
+        console.log(message_container)
+
+        while(message_container.find(".message_id").val() != original_message_id) {
+            height_from_bottom_to_original += message_container.height();
+            message_container = message_container.prev();
+        }
+
+        let scroll_target = document.getElementById("chat-container").scrollHeight - height_from_bottom_to_original;
+        let pr = message_container.prev();
+        if(pr != null) {
+            scroll_target -= pr.height() + 8;
+        }
+
+        console.log(message_container);
+        $("#chat-container").animate({
+            scrollTop: scroll_target
+        }, 2000, function() {
+            message_container.animate({
+                opacity: 0.6
+            }, 300, function() {
+                message_container.animate({
+                    opacity: 1
+                }, 300);
+            })
+        });
+        console.log("hey this is done !");
     });
 }
 
