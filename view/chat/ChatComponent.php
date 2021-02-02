@@ -160,6 +160,7 @@ CUM;
                                     </div>
                                     <div class="sub-option-style-2">
                                         <a href="" class="black-link reply-button">Reply (under construction)</a>
+                                        <input type="hidden" value="$message_id" class="message_id">
                                     </div>
                                 </div>
                             </div>
@@ -237,7 +238,7 @@ FM;
             $reply_message_picture = Config::get("root/path") . (empty($reply_message_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $reply_message_owner->getPropertyValue("picture"));
 
             return <<<FM
-                <div class="message-global-container relative">
+                <div class="message-global-container romrc relative">
                     <div class="received-original-message-replied-container">
                         <div class="message-wrapper relative">
                             <input type='hidden' class="original_mid" value="$original_message_id">
@@ -247,7 +248,7 @@ FM;
                     <div class="received-replied-container">
                         <a href="$replier_profile"><img src="$reply_message_picture" class="image-style-10" alt=""></a>
                         <div class="message-wrapper relative">
-                            <p class="regular-text message-text">$reply_message_text</p>
+                            <p class="regular-text message-text received_replied_message_text">$reply_message_text</p>
                             <div class="absolute message-date friend-message-date">
                                 <p class="regular-text-style-2">$message_date</p>
                             </div>
@@ -260,10 +261,11 @@ FM;
                                 <div class="options-container-style-1 black">
                                     <div class="sub-option-style-2">
                                         <a href="" class="black-link delete-received-message">Delete message</a>
-                                        <input type="hidden" value="" class="$reply_message_id">
+                                        <input type="hidden" class="message_id" value="$reply_message_id">
                                     </div>
                                     <div class="sub-option-style-2">
                                         <a href="" class="black-link reply-button">Reply (under construction)</a>
+                                        <input type="hidden" class="message_id" value="$reply_message_id">
                                     </div>
                                 </div>
                             </div>

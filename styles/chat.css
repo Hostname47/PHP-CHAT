@@ -47,10 +47,6 @@
     border-right: 1px solid gray;
 }
 
-.search-back {
-    background-image: url(../assets/images/icons/white-search.png);
-}
-
 .chat-input-style {
     display: flex;
     border-radius: 20px;

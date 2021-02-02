@@ -584,12 +584,17 @@ input, textarea {
 }
 
 .search-back {
-    background-image: url("../assets/images/icons/black-search.png");
     background-size: 18px 18px;
     background-position: 8px center;
     background-repeat: no-repeat;
 
     padding-left: 32px;
+}
+.black-search-back {
+    background-image: url("../assets/images/icons/black-search.png");
+}
+.white-search {
+    background-image: url("../assets/images/icons/white-search.png");
 }
 
 .search-button-style-1 {

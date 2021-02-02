@@ -18,7 +18,7 @@
         <div class="inline-logo-separator">〡</div>
         <div class="row-v-flex">
             <form action="<?php echo Config::get("root/path") . htmlspecialchars('search.php'); ?>" method="GET" id="header-search-form">
-                <input type="text" name="q" value="<?php echo isset($_GET["q"]) ? trim(htmlspecialchars($_GET["q"])) : '' ?>" class="input-text-style-1 search-back" placeholder="Search for friends, posts, events ..">
+                <input type="text" name="q" value="<?php echo isset($_GET["q"]) ? trim(htmlspecialchars($_GET["q"])) : '' ?>" class="input-text-style-1 search-back black-search-back" placeholder="Search for friends, posts, events ..">
                 <input type="submit" value="search" class="search-button-style-1">
             </form>
         </div>

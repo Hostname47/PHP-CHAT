@@ -177,6 +177,11 @@ function send_message(sender, receiver, text_data) {
 
             // Scroll to the last message
             $("#chat-container").scrollTop($("#chat-container").prop("scrollHeight"));
+
+            $(".reply-container").css("display", "none");
+            $("#chat-text-input").attr("placeholder", "Type a new message");
+            $("#chat-text-input").css("paddingLeft", "40px");
+            $("#chat-text-input").focus();
         }
     });
 }
@@ -239,6 +244,7 @@ function handle_message_elements_events(element) {
     });
 
     element.find(".delete-current-user-message").click(function() {
+        console.log("delete");
         let message_id = $(this).parent().find(".message_id").val();
         let message_container = $(this);
         while(!message_container.hasClass("message-global-container")) {
@@ -256,16 +262,22 @@ function handle_message_elements_events(element) {
                 message_container.remove();
             }
         });
-        console.log(message_container);
 
         return false;
     });
 
     element.find(".delete-received-message").click(function() {
-        let message_id = $(this).parent().find(".message_id").val();
+        
         let message_container = $(this);
         while(!message_container.hasClass("message-global-container")) {
             message_container = message_container.parent();
+        }
+        
+        let message_id = null;
+        if(message_container.hasClass("romrc")) {
+            message_id = message_container.find(".message_id").val();
+        } else {
+            message_id = $(this).parent().find(".message_id").val();
         }
         
         $.ajax({
@@ -285,21 +297,34 @@ function handle_message_elements_events(element) {
     });
 
     element.find(".reply-button").click(function() {
-        let message_id = $(this).parent().parent().find(".message_id").val();
-        let message = $(this);
-
-        while(!message.hasClass("friend-message-container")) {
-            message = message.parent();
-        }
-
-        message = message.find(".message-text").text();
-
-        if(message.length > 12) {
-            message = message.substring(0, 11) + " ..";
-        }
-
-        console.log("message text: " + message);
         
+        let message = '';
+        let message_id = '';
+        let global_container = $(this);
+        while(!global_container.hasClass("message-global-container")) {
+            global_container = global_container.parent();
+        }
+        
+        if(global_container.hasClass("romrc")) {
+            message_id = $(this).parent().find(".message_id").val();
+            message = global_container.find(".received_replied_message_text").text();
+            if(message.length > 12) {
+                message = message.substring(0, 11) + " ..";
+            }
+    
+            console.log("reply message text: " + ", id: " + message_id);
+        } else {
+            message_id = $(this).parent().find(".message_id").val();
+            message = global_container.find(".message-text").text();
+
+            if(message.length > 12) {
+                message = message.substring(0, 11) + " ..";
+            }
+
+            console.log("normal message text: " + message + ", id: " + message_id);
+
+        }
+
         $(".reply-container").find(".message-text-rep").text(message);
         $(".reply-container").find(".replied-message-id").val(message_id);
         $(".reply-container").css("display", "flex");
@@ -314,8 +339,9 @@ function handle_message_elements_events(element) {
     });
 
     $(".original-message-replied-container").click(function() {
-        console.log("go to this message !");
-    })
+
+        return false;
+    });
 }
 
 function handle_chat_container_elements_events() {
