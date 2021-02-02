@@ -195,7 +195,7 @@ function save_data_and_return_compoent(sender, receiver, message, handle_data) {
 
     if($(".reply-container").css("display") != "none") {
         values['is_reply'] = 'yes',
-        values['replied_message_id'] = $(".reply-container").parent().parent().find(".message_id").val();
+        values['replied_message_id'] = $(".reply-container").parent().parent().find(".replied-message-id").val();
     }
 
     $.ajax({
@@ -303,7 +303,7 @@ function handle_message_elements_events(element) {
         $(".reply-container").find(".message-text-rep").text(message);
         $(".reply-container").find(".replied-message-id").val(message_id);
         $(".reply-container").css("display", "flex");
-        $("#chat-text-input").attr("placeholder", "");
+        $("#chat-text-input").attr("placeholder", "Reply ..");
 
         let padding_left = 2 + 30 + $(".reply-container").width();
 
@@ -311,6 +311,10 @@ function handle_message_elements_events(element) {
         $("#chat-text-input").focus();
 
         return false;
+    });
+
+    $(".original-message-replied-container").click(function() {
+        console.log("go to this message !");
     })
 }
 

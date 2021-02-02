@@ -51,9 +51,24 @@ while(true) {
 
             $msg = new Message();
             $msg->get_message("id", $message->message_id);
-
             $msg_obj = Message::get_message_obj("id", $message->message_id);
-            $content .= $chat_component->generate_friend_message($sender_user, $msg_obj, $msg->get_property("message_date"));
+
+            $is_reply = $msg->get_property("reply_to");
+
+            if($is_reply) {
+                $original_message_id = $msg->get_property("reply_to");
+                $reply_message_id = $msg->get_property("id");
+                $reply_creator = $msg->get_property("message_sender");
+
+                $original_message = new Message();
+                $msg->get_message("id", $original_message_id);
+                $original_creator = $original_message->get_property("message_sender");
+                
+                $content .= $chat_component->generate_received_reply_message($original_message_id, $reply_message_id, $original_creator, $reply_creator);
+            } else {
+                $content .= $chat_component->generate_friend_message($sender_user, $msg_obj, $msg->get_property("message_date"));
+            }
+            //$content .= $chat_component->generate_friend_message($sender_user, $msg_obj, $msg->get_property("message_date"));
         }
 
         echo json_encode($content);

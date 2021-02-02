@@ -169,9 +169,108 @@ CUM;
 FM;
         }
 
-        public static function generate_reply_message($original_message, $reply_message, $original_message_creator, $reply_creator) {
+        public static function generate_sender_reply_message($original_message_id, $reply_message_id, $original_message_creator_id, $reply_creator_id) {
             
+            $original_message = Message::get_message_obj("id", $original_message_id);
+            $original_message_owner = new User();
+            $original_message_owner->fetchUser("id", $original_message_id);
 
+            $original_message_text = $original_message->message;
+            
+            $reply_message = Message::get_message_obj("id", $reply_message_id);
+            $reply_message_owner = new User();
+            $reply_message_owner->fetchUser("id", $reply_creator_id);
+            $replier_profile = Config::get("root/path") . "profile.php?username=" . $reply_message_owner->getPropertyValue("username");
+            
+            $reply_message_text = $reply_message->message;
+            $message_date = date("F d \a\\t Y H:i",strtotime($reply_message->create_date));
+            $reply_message_picture = Config::get("root/path") . (empty($reply_message_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $reply_message_owner->getPropertyValue("picture"));
+
+            return <<<FM
+                <div class="message-global-container relative">
+                    <div class="original-message-replied-container">
+                        <div class="message-wrapper relative">
+                            <input type='hidden' class="original_mid" value="$original_message_id">
+                            <p class="regular-text message-text">$original_message_text</p>
+                        </div>
+                    </div>
+                    <div class="reply-message-container">
+                        <div class="relative">
+                            <div class="chat-message-more-button-container">
+                                <a href="" class="chat-message-more-button white-dotted-more-back"></a>
+                            </div>
+                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1; top: 35px; width: 126px; left: -4px; top: -54px">
+                                <div class="options-container-style-1 black">
+                                    <div class="sub-option-style-2">
+                                        <a href="" class="black-link delete-current-user-message">Delete message</a>
+                                        <input type="hidden" value="$reply_message_id" class="message_id">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-wrapper relative">
+                            <p class="regular-text message-text">$reply_message_text</p>
+                            <div class="absolute current-user-message-date message-date">
+                                <p class="regular-text-style-2">$message_date</p>
+                            </div>
+                        </div>
+                        <a href="$replier_profile"><img src="$reply_message_picture" class="image-style-10" alt=""></a>
+                    </div>
+                </div>
+FM;
+        }
+        public static function generate_received_reply_message($original_message_id, $reply_message_id, $original_message_creator_id, $reply_creator_id) {
+            
+            $original_message = Message::get_message_obj("id", $original_message_id);
+            $original_message_owner = new User();
+            $original_message_owner->fetchUser("id", $original_message_id);
+
+            $original_message_text = $original_message->message;
+            
+            $reply_message = Message::get_message_obj("id", $reply_message_id);
+            $reply_message_owner = new User();
+            $reply_message_owner->fetchUser("id", $reply_creator_id);
+            $replier_profile = Config::get("root/path") . "profile.php?username=" . $reply_message_owner->getPropertyValue("username");
+            
+            $reply_message_text = $reply_message->message;
+            $message_date = date("F d \a\\t Y H:i",strtotime($reply_message->create_date));
+            $reply_message_picture = Config::get("root/path") . (empty($reply_message_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $reply_message_owner->getPropertyValue("picture"));
+
+            return <<<FM
+                <div class="message-global-container relative">
+                    <div class="received-original-message-replied-container">
+                        <div class="message-wrapper relative">
+                            <input type='hidden' class="original_mid" value="$original_message_id">
+                            <p class="regular-text message-text">$original_message_text</p>
+                        </div>
+                    </div>
+                    <div class="received-replied-container">
+                        <a href="$replier_profile"><img src="$reply_message_picture" class="image-style-10" alt=""></a>
+                        <div class="message-wrapper relative">
+                            <p class="regular-text message-text">$reply_message_text</p>
+                            <div class="absolute message-date friend-message-date">
+                                <p class="regular-text-style-2">$message_date</p>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="chat-message-more-button-container">
+                                <a href="" class="chat-message-more-button white-dotted-more-back"></a>
+                            </div>
+                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1; width: 129px; left: -95px; top: -100px">
+                                <div class="options-container-style-1 black">
+                                    <div class="sub-option-style-2">
+                                        <a href="" class="black-link delete-received-message">Delete message</a>
+                                        <input type="hidden" value="" class="$reply_message_id">
+                                    </div>
+                                    <div class="sub-option-style-2">
+                                        <a href="" class="black-link reply-button">Reply (under construction)</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+FM;
         }
 
         public static function generate_discussion($current_user_id, $discussion) {

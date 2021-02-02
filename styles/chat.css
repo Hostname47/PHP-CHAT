@@ -137,14 +137,39 @@
     display: flex;
 }
 
-.current-user-message-container {
+.current-user-message-container, .reply-message-container, .original-message-replied-container{
     display: flex;
     align-items: center;
     margin-bottom: 22px;
     margin-left: auto;
 }
 
-.friend-message-container {
+.reply-message-container, .received-replied-container {
+    margin-top: 30px;
+}
+
+.received-original-message-replied-container {
+    cursor: pointer;
+    position: absolute;
+    left: 50px;
+}
+
+.original-message-replied-container {
+    cursor: pointer;
+    position: absolute;
+    right: 50px;
+}
+
+.original-message-replied-container .message-wrapper {
+    padding: 7px 12px;
+    background-color: rgb(138, 202, 102);
+}
+.received-original-message-replied-container .message-wrapper {
+    padding: 7px 12px;
+    background-color: rgb(138, 202, 102);
+}
+
+.friend-message-container, .received-replied-container {
     display: flex;
     align-items: center;
     margin-bottom: 22px;

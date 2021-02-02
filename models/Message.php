@@ -13,8 +13,8 @@ class Message {
     $message_date = '',
     $recipient_id,
     $is_read = false,
-    $is_reply='',
-    $replied_message_id;
+    $is_reply=null,
+    $reply_to=null;
     
     public function __construct() {
         $this->db = DB::getInstance();
@@ -51,8 +51,21 @@ class Message {
             $this->message_sender = $fetched_message->message_creator;
             $this->message = $fetched_message->message;
             $this->message_date = $fetched_message->create_date;
+            $this->is_reply = $fetched_message->is_reply;
+            $this->reply_to = $fetched_message->reply_to;
 
             return true;
+        }
+
+        return false;
+    }
+
+    public static function get_creator_by_id($message_id) {
+        DB::getInstance()->query("SELECT message_creator FROM `message` WHERE `id` = ?", array($message_id));
+
+        if(DB::getInstance()->count() > 0) {
+            $fetched_message = DB::getInstance()->results()[0];
+            return $fetched_message;
         }
 
         return false;
@@ -76,11 +89,13 @@ class Message {
         */
 
         $this->db->query("INSERT INTO `message` 
-        (`message_creator`, `message`, `create_date`) 
-        VALUES (?, ?, ?)", array(
+        (`message_creator`, `message`, `create_date`, `is_reply`, `reply_to`) 
+        VALUES (?, ?, ?, ?, ?)", array(
             $this->message_sender,
             $this->message,
-            $this->message_date
+            $this->message_date,
+            $this->is_reply,
+            $this->reply_to,
         ));
 
         $message_row_inserted = $this->db->error();
@@ -116,13 +131,14 @@ class Message {
         return $this->db->error() == false ? $last_inserted_message_id : false;
     }
 
-    public function add_reply($message_id) {
-        $this->db->query("INSERT INTO reply (`message_id`, `message_replied`) VALUES (?, ?)", array(
-            $message_id,
-            $this->replied_message_id
+    public function update_property($property) {
+        $this->db->query("UPDATE `message` SET $property=? WHERE id=?",
+        array(
+            $this->$property,
+            $this->id
         ));
 
-        return $this->db->error() == false ? true : false;
+        return ($this->db->error()) ? false : true;
     }
 
     public function delete_sended_message() {
