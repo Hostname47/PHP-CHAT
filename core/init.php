@@ -50,6 +50,12 @@ go to login function's comment
 
 */
 
+/*
+    Notice that getting the root path is a common case for almost every page, so it's a good idea to put it in $root
+    variable and only use root variable to reference it because init file also included in every page deal with config
+*/
+$root = Config::get("root/path");
+
 $user = new User();
 
 if(Cookie::exists(Config::get("remember/cookie_name")) && !Session::exists(Config::get("session/session_name"))) {

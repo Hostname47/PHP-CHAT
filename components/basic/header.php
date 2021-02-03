@@ -8,6 +8,8 @@
             Redirect::to("login/login.php");
         }
     }
+
+    $setting_path = Config::get("root/path") . "settings.php";
 ?>
 <header>
     <div id="top-header">
@@ -139,7 +141,7 @@
                                 </div>
                             </a>
                             <div class="options-separator-style-1"></div>
-                            <a href="" class="sub-option">
+                            <a href="<?php echo $setting_path; ?>" class="sub-option">
                                 <div class="row-v-flex">
                                     <div>
                                         <img src="<?php echo Config::get("root/path") . "assets/images/icons/settings.png" ?>" class="image-style-2" alt="user's profile picture">
