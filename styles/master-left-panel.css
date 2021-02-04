@@ -54,7 +54,7 @@
 
 .cover-container {
     max-height: 120px;
-    height: 120px;
+    min-height: 120px;
     background-color: gray;
     display: flex;
     align-items: center;

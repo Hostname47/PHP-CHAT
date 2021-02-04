@@ -77,6 +77,7 @@ class User implements \JsonSerializable {
             $this->user_type = $fetchedUser->user_type;
             $this->bio = $fetchedUser->bio;
             $this->cover = $fetchedUser->cover;
+            $this->private = $fetchedUser->private;
             $this->picture = $fetchedUser->picture;
             $this->last_active_update = $fetchedUser->last_active_update;
 
