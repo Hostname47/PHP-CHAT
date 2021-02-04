@@ -27,10 +27,8 @@ $(".button-with-suboption").click(function() {
             $(this).find(".has-suboption").css("backgroundImage","url('"+back+"')");
             $(this).find(".button-subotions-container").css("display", "none");
         }
-
+        return false;
     }
-
-    return false;
 });
 
 $("#assets-wrapper").on({

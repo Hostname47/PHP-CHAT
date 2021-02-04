@@ -12,6 +12,7 @@
     }
 
     $reg_success_message = '';
+    $login_failure_message = '';
 
     if(isset($_POST["login"])) {
         if(Token::check(Common::getInput($_POST, "token_log"), "login")) {
@@ -41,13 +42,11 @@
                     Redirect::to("../index.php");
                 } else {
                     // Here define a variable with value and display it in error div in case credentials are wrong
-                    echo "<p>Bad credentials</p>";
+                    $login_failure_message = "Either email or password is invalide !";
                 }
             } else {
                 // Here instead of printing out errors we can put them in an array and use them in proper html labels
-                foreach($validate->errors() as $error) {
-                    echo $error . "<br>";
-                }
+                $login_failure_message = $validate->errors()[0];
             }
         }
     }
@@ -157,6 +156,14 @@
                     <script>
                         if($(".green-message-text").text() !== "") {
                             $(".green-message").css("display", "block");
+                        }
+                    </script>
+                </div>
+                <div class="red-message">
+                    <p class="red-message-text"><?php echo $login_failure_message; ?></p>
+                    <script>
+                        if($(".red-message-text").text() !== "") {
+                            $(".red-message").css("display", "block");
                         }
                     </script>
                 </div>

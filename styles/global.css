@@ -1057,6 +1057,7 @@ input, textarea {
     box-sizing: border-box;
     padding: 8px 14px;
     margin: 4px 0;
+    margin-bottom: 20px;
     overflow: hidden;
 }
 
@@ -1065,6 +1066,26 @@ input, textarea {
     padding: 0;
     font-size: 13px;
     color: rgb(17, 54, 17);
+    font-weight: 600;
+}
+
+.red-message
+{
+    display: none;
+    background-color: rgb(202, 148, 148);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 14px;
+    margin: 4px 0;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.red-message-text {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    color: rgb(74, 14, 14);
     font-weight: 600;
 }
 

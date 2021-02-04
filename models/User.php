@@ -76,13 +76,13 @@ class User implements \JsonSerializable {
     }
 
     public function metadata_exists($label) {
-        $this->db->query("SELECT COUNT(*) FROM user_metadata WHERE `label`=?  AND `user_id`=?", array(
+        $this->db->query("SELECT COUNT(*) as number_of_labels FROM user_metadata WHERE `label`=?  AND `user_id`=?", array(
             $label,
             $this->id
         ));
 
-        // If there's a row found, then we return the count alias (number_of_labels)
-        if(count($this->db->results()) > 0) {
+        // If there's a row found, then we return true
+        if($this->db->results()[0]->number_of_labels != 0) {
             return true;
         }
         return false;
@@ -154,7 +154,7 @@ class User implements \JsonSerializable {
             $this->private = $fetchedUser->private;
             $this->last_active_update = $fetchedUser->last_active_update;
 
-            return true;
+            return $this;
         }
 
         return false;
@@ -218,6 +218,16 @@ class User implements \JsonSerializable {
             $this->cover,
             $this->picture,
             $this->private,
+            $this->id
+        ));
+
+        return ($this->db->error()) ? false : true;
+    }
+
+    public function update_property($property, $new_value) {
+        $this->db->query("UPDATE user_info SET $property=? WHERE id=?",
+        array(
+            $new_value,
             $this->id
         ));
 

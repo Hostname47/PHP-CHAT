@@ -3,12 +3,10 @@
 require_once "vendor/autoload.php";
 require_once "core/init.php";
 
-use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-use models\{Post, UserRelation, Follow};
-use view\post\Post as Post_View;
+use classes\{DB, Validation, Common, Session, Token, Redirect};
+
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
-
 if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
 }
@@ -17,12 +15,6 @@ $welcomeMessage = '';
 if(Session::exists("register_success") && $user->getPropertyValue("username") == Session::get("new_username")) {
     $welcomeMessage = Session::flash("new_username") . ", " . Session::flash("register_success");
 }
-
-$current_user_id = $user->getPropertyValue("id");
-
-$logo_path = $root . "assets/images/logos/large.png";
-$index_page_path = $root . "index.php";
-$left_panel_path = $root . "settings/components/left-panel.php";
 
 $profile_selected = 'selected-button';
 
@@ -307,7 +299,7 @@ function recurse_copy($src,$dst) {
 </head>
 <body>
 <main>
-    <?php //require_once "components/settings/left-panel.php" ?>
+    <?php require_once "components/settings/left-panel.php" ?>
     <div id="global-container">
         <div id="setting-master-container">
             <h1 class="no-margin">Edit profile</h1>
@@ -322,8 +314,8 @@ function recurse_copy($src,$dst) {
                     <input type="text" form="save-form" class="setting-input-text-style" value="<?php echo $fullname; ?>" name="full-name" id="fullname">
                 </div>
                 <div class="flex-column">
-                    <label for="fullname" class="setting-label1">Bio</label>
-                    <textarea form="save-form" name="bio" id="bio" class="setting-input-text-style textarea-style"><?php echo $bio; ?></textarea>
+                    <label for="bio" class="setting-label1">Bio</label>
+                    <textarea form="save-form" spellcheck="false" name="bio" id="bio" class="setting-input-text-style textarea-style"><?php echo $bio; ?></textarea>
                 </div>
                 <div id="profile-asset-wrapper" class="flex">
                     <a href="<?php echo $profile; ?>" id="assets-wrapper">

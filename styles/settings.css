@@ -46,6 +46,12 @@ a {
 
 .selected-button {
     background-color: rgb(41, 41, 41);
+    border-radius: 6px;
+}
+
+.red-label {
+    color: rgb(255, 119, 119);
+    margin-left: 2px;
 }
 
 .menu-button {
