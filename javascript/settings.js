@@ -1,13 +1,16 @@
 
-if($("#private-account-state").val() == "1") {
-    console.log("on");
-    $("#private-account-button").css("backgroundImage", "url('"+root+"assets/images/icons/on.png')");
-    $("#private-account-status").text("(ON)");
-} else {
-    console.log("off");
-    $("#private-account-button").css("backgroundImage", "url('" + root+"assets/images/icons/off-white.png')");
-    $("#private-account-status").text("(OFF)");
-}
+$(document).ready(function() {
+    if($("#private-account-state").val() == "1") {
+        console.log("on");
+        $("#private-account-button").css("backgroundImage", "url('"+root+"assets/images/icons/on.png')");
+        $("#private-account-status").text("(ON)");
+    } else {
+        console.log("off");
+        $("#private-account-button").css("backgroundImage", "url('" + root+"assets/images/icons/off-white.png')");
+        $("#private-account-status").text("(OFF)");
+    }
+});
+
 
 $(".button-with-suboption").click(function() {
     let contains = $(this).find(".button-subotions-container").length > 0;

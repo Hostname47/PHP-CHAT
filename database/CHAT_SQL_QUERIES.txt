@@ -114,3 +114,11 @@ CREATE TABLE reply
     message_replied int NOT NULL REFERENCES message(id)
 )
 
+CREATE TABLE user_metadata
+(
+    id int PRIMARY KEY,
+    label varchar(200),
+    content varchar(200),
+    user_id int REFERENCES user_info(id),
+    UNIQUE KEY `user_label_UK` (`label`,`user_id`)
+)

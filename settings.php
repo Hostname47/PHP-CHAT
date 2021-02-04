@@ -34,6 +34,42 @@ $cover = $root . $user->getPropertyValue("cover");
 $profile = $root . "profile.php?username=" . $user->getPropertyValue("username");
 $private = $user->getPropertyValue("private");
 
+$user_metadata = array(
+    array(
+        "label"=>"",
+        "content"=>""
+    ),
+    array(
+        "label"=>"",
+        "content"=>""
+    ),
+    array(
+        "label"=>"",
+        "content"=>""
+    ),
+    array(
+        "label"=>"",
+        "content"=>""
+    ),
+    array(
+        "label"=>"",
+        "content"=>""
+    ),
+    array(
+        "label"=>"",
+        "content"=>""
+    ),
+);
+
+$metadata = $user->get_metadata();
+$count = 0;
+foreach($metadata as $mdata) {
+    $user_metadata[$count]["label"] = $mdata->label;
+    $user_metadata[$count]["content"] = $mdata->content;
+
+    $count++;
+}
+
 include_once 'functions/sanitize_text.php';
 if(isset($_POST["save-changes"])) {
     if(Token::check(Common::getInput($_POST, "token_save_changes"), "saveEdits")) {
@@ -167,15 +203,74 @@ if(isset($_POST["save-changes"])) {
                 $old_user_data_dir = __DIR__ . '/data/users/' . $username;
                 $new_user_data_dir = __DIR__ . '/data/users/' . $new_username;
                 recurse_copy($old_user_data_dir, $new_user_data_dir);
+                deleteDir($old_user_data_dir);
                 $user->setPropertyValue("username", $new_username);
             }
+
+            // Get the new version labels along with their contents
+            $new_user_metadata = array(
+                array(
+                    "label"=>sanitize_text($_POST["label1"]),
+                    "content"=>sanitize_text($_POST["content1"])
+                ),
+                array(
+                    "label"=>sanitize_text($_POST["label2"]),
+                    "content"=>sanitize_text($_POST["content2"])
+                ),
+                array(
+                    "label"=>sanitize_text($_POST["label3"]),
+                    "content"=>sanitize_text($_POST["content3"])
+                ),
+                array(
+                    "label"=>sanitize_text($_POST["label4"]),
+                    "content"=>sanitize_text($_POST["content4"])
+                ),
+                array(
+                    "label"=>sanitize_text($_POST["label5"]),
+                    "content"=>sanitize_text($_POST["content5"])
+                ),
+                array(
+                    "label"=>sanitize_text($_POST["label6"]),
+                    "content"=>sanitize_text($_POST["content6"])
+                ),
+            );
+
+            $user->set_metadata($new_user_metadata);
+
             $user->update();
+
+            $fullname = $new_firstname . (empty($new_lastname) ? "" : " " . $new_lastname);
+            $username = $new_username;
+            $bio = $new_bio;
+            $picture = $root . $user->getPropertyValue("picture");
+            $cover = $root . $user->getPropertyValue("cover");
+            $profile = $root . "profile.php?username=" . $new_username;
+            $private = $new_private;
+            $user_metadata = $new_user_metadata;
         } else {
             foreach($validator->errors() as $error) {
                 echo $error . "<br>";
             }
         }
     }
+}
+
+function deleteDir($dirPath) {
+    if (! is_dir($dirPath)) {
+        throw new InvalidArgumentException("$dirPath must be a directory");
+    }
+    if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+        $dirPath .= '/';
+    }
+    $files = glob($dirPath . '*', GLOB_MARK);
+    foreach ($files as $file) {
+        if (is_dir($file)) {
+            deleteDir($file);
+        } else {
+            unlink($file);
+        }
+    }
+    rmdir($dirPath);
 }
 
 function recurse_copy($src,$dst) {
@@ -212,7 +307,7 @@ function recurse_copy($src,$dst) {
 </head>
 <body>
 <main>
-    <?php //require_once "settings/components/left-panel.php" ?>
+    <?php //require_once "components/settings/left-panel.php" ?>
     <div id="global-container">
         <div id="setting-master-container">
             <h1 class="no-margin">Edit profile</h1>
@@ -270,28 +365,28 @@ function recurse_copy($src,$dst) {
                     <label for="fullname" class="setting-label1">Profile metadata</label>
                     <p class="input-hint">You can have up to 6 items displayed as a table on your profile</p>
                     <div class="flex">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Label" name="label1" id="label1">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Content" name="full-name" id="label1">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[0]["label"] ?>" placeholder="Label" name="label1" id="label1">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[0]["content"] ?>" placeholder="Content" name="content1" id="content1">
                     </div>
                     <div class="flex">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Label" name="label2" id="label2">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Content" name="label2" id="label2">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[1]["label"] ?>" placeholder="Label" name="label2" id="label2">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[1]["content"] ?>" placeholder="Content" name="content2" id="content2">
                     </div>
                     <div class="flex">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Label" name="label3" id="label3">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Content" name="label3" id="label3">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[2]["label"] ?>" placeholder="Label" name="label3" id="label3">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[2]["content"] ?>" placeholder="Content" name="content3" id="content3">
                     </div>
                     <div class="flex">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Label" name="label4" id="label4">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Content" name="label4" id="label4">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[3]["label"] ?>" placeholder="Label" name="label4" id="label4">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[3]["content"] ?>" placeholder="Content" name="content4" id="content4">
                     </div>
                     <div class="flex">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Label" name="label5" id="label5">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Content" name="label5" id="label5">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[4]["label"] ?>" placeholder="Label" name="label5" id="label5">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[4]["content"] ?>" placeholder="Content" name="content5" id="content5">
                     </div>
                     <div class="flex">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Label" name="label6" id="label6">
-                        <input type="text" class="setting-input-text-style meta-data-input" placeholder="Content" name="label6" id="label6">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[5]["label"] ?>" placeholder="Label" name="label6" id="label6">
+                        <input type="text" form="save-form" class="setting-input-text-style meta-data-input" value="<?php echo $user_metadata[5]["content"] ?>" placeholder="Content" name="content6" id="content6">
                     </div>
                 </div>
 

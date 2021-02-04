@@ -49,6 +49,79 @@ class User implements \JsonSerializable {
         $this->$propertyName = $propertyValue;
     }
 
+    public function get_metadata($label="") {
+        $metadata = array();
+        $values = array($this->id);
+        $query = "SELECT * FROM user_metadata WHERE `user_id` = ?";
+
+        // If the user qpecify label then we need to fetch the specific metadata with that label provided
+        if(!empty($label)) {
+            $query .= " AND `label` = ?";
+            $values[] = $label;
+        }
+
+        $this->db->query($query, $values);
+
+        return $this->db->results();
+    }
+
+    public function get_metadata_items_number() {
+        $this->db->query("SELECT COUNT(*) as number_of_labels FROM user_metadata WHERE `user_id` = ?", array($this->id));
+
+        // If there's a row found, then we return the count alias (number_of_labels)
+        if(count($this->db->results()) > 0) {
+            return $this->db->results()[0]->number_of_labels;
+        }
+        return array();
+    }
+
+    public function metadata_exists($label) {
+        $this->db->query("SELECT COUNT(*) FROM user_metadata WHERE `label`=?  AND `user_id`=?", array(
+            $label,
+            $this->id
+        ));
+
+        // If there's a row found, then we return the count alias (number_of_labels)
+        if(count($this->db->results()) > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public function add_metadata($label, $content) {
+        if($this->get_metadata_items_number() < 6) {
+            $this->db->query("INSERT INTO user_metadata (`label`, `content`, `user_id`) values(?, ?, ?);", array(
+                $label,
+                $content,
+                $this->id
+            ));
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function update_metadata($label, $content) {
+        $this->db->query("UPDATE user_metadata SET `content`=? WHERE `label`=? AND `user_id`=?", array(
+            $content,
+            $label,
+            $this->id
+        ));
+
+        return $this->db->error() == false ? true : false;
+    }
+
+    public function set_metadata($metadata) {
+        foreach($metadata as $mdata) {
+            if($this->metadata_exists($mdata["label"])) {
+                $this->update_metadata($mdata["label"], $mdata["content"]);
+            } else {
+                $this->add_metadata($mdata["label"], $mdata["content"]);
+            }
+        }
+    }
+
     public static function user_exists($field, $value) {
         DB::getInstance()->query("SELECT * FROM user_info WHERE $field = ?", array($value));
 
@@ -77,8 +150,8 @@ class User implements \JsonSerializable {
             $this->user_type = $fetchedUser->user_type;
             $this->bio = $fetchedUser->bio;
             $this->cover = $fetchedUser->cover;
-            $this->private = $fetchedUser->private;
             $this->picture = $fetchedUser->picture;
+            $this->private = $fetchedUser->private;
             $this->last_active_update = $fetchedUser->last_active_update;
 
             return true;
