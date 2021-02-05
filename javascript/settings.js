@@ -1,11 +1,9 @@
 
 $(document).ready(function() {
     if($("#private-account-state").val() == "1") {
-        console.log("on");
         $("#private-account-button").css("backgroundImage", "url('"+root+"assets/images/icons/on.png')");
         $("#private-account-status").text("(ON)");
     } else {
-        console.log("off");
         $("#private-account-button").css("backgroundImage", "url('" + root+"assets/images/icons/off-white.png')");
         $("#private-account-status").text("(OFF)");
     }
@@ -20,7 +18,6 @@ $(".button-with-suboption").click(function() {
             $(this).find(".button-subotions-container").css("display", "block");
             let back = root+"assets/images/icons/down-arrow.png";
             $(this).find(".has-suboption").css("backgroundImage","url('"+back+"')");
-            console.log("error in this back: " + back);
         }
         else {
             let back = root+"assets/images/icons/right-arrow.png";
@@ -82,3 +79,7 @@ function imageIsLoaded(e) {
     $('#myImg').attr('src', e.target.result);
     $('#yourImage').attr('src', e.target.result);
 };
+
+$(".logout-button").click(function() {
+    $("#logout-form").submit();
+});

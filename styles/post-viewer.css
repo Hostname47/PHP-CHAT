@@ -1,0 +1,215 @@
+a, input {
+    outline: none
+}
+
+header {
+    /* We don't want header to be fixed, static is good here */
+    position: static;
+}
+
+main {
+    margin: 0;
+}
+
+body, html {
+    color: black;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#post-viewer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    box-sizing: border-box;
+}
+
+#post-assets-container {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+}
+
+#post-info {
+    overflow-y: scroll;
+    width: 360px;
+    min-width: 360px;
+    box-sizing: border-box;
+
+    padding: 14px;
+
+    background-color: white;
+}
+
+#asset-wrapper {
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.asset-move-button {
+    height: 100%;
+    width: 60px;
+    display: none;
+    opacity: 0;
+
+    position: absolute;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.05);
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    cursor: pointer;
+}
+
+.asset-next {
+    right: 0;
+    background-image: url(../assets/images/icons/right-arrow.png);
+}
+
+.asset-back {
+    left: 0;
+    background-image: url(../assets/images/icons/left-arrow.png);
+}
+
+.poster-image {
+    height: 42px;
+    width: 42px;
+
+    border-radius: 50%;
+}
+
+.post-owner-name {
+    color: black;
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+.post-owner-name:hover {
+    text-decoration: underline;
+}
+
+.post-date {
+    color: rgb(78, 78, 78);
+}
+
+.more-button {
+
+}
+
+.post-text {
+    margin-top: 8px;
+    padding: 0;
+}
+
+.collapse-text {
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.collapse-text:hover {
+    text-decoration: underline;
+}
+
+.sub-options-container-style-2 {
+    z-index: 1;
+    right: 4px;
+    left: auto;
+
+    box-shadow: 1px 3px 7px 0.1px rgba(0, 0, 0, 0.4);
+}
+
+.like-button-image {
+    display: block;
+    height: 20px;
+    width: 20px;
+    margin-right: 4px
+}
+
+.num-of-comments, .num-of-shares {
+    margin-right: 2px;
+}
+
+.separator {
+    height: 1px;
+    width: 100%;
+    margin: 10px 0;
+    background-color: rgb(189, 189, 189);
+}
+
+.reaction-box {
+    display: flex;
+    justify-content: center;
+    margin: 12px 0;
+    padding: 6px 0;
+    border-top: 1px solid rgb(189, 189, 189);
+    border-bottom: 1px solid rgb(189, 189, 189);
+}
+
+.reaction-button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reaction-button:hover {
+    background-color: rgb(230, 230, 230);
+}
+
+.comment-wrapper {
+    background-color: rgb(220, 220, 220);
+}
+
+.comment-owner {
+    color: black;
+    margin: 5px 0;
+}
+
+.comment-text {
+    margin: 2px 0;
+}
+
+.link-style-3 {
+    color: black
+}
+
+.comment-style {
+    background-color: rgb(220, 220, 220);
+    border: none;
+    color: black;
+    border-radius: 6px;
+    margin-left: 8px;
+}
+
+.exit-button {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+
+    height: 40px;
+    width: 40px;
+
+    background-image: url(../assets/images/icons/white-close.png);
+    background-size: 16px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgb(44, 44, 44);
+
+    border-radius: 50%;
+    z-index: 2;
+
+    cursor: pointer;
+}
+
+.exit-button:hover {
+    background-color: rgb(60, 60, 60);
+}

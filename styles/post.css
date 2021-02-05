@@ -58,12 +58,12 @@
     overflow: hidden;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .post-media-image {
     cursor: pointer;
     display: block;
-    width: 100%;
 }
 
 .react-on-opost-buttons-container {

@@ -53,11 +53,12 @@
     <script src="javascript/index.js" defer></script>
     <script src="javascript/global.js" defer></script>
     <script src="javascript/master-right.js" defer></script>
+    <script src="javascript/post.js" defer></script>
 </head>
 <body>
     <?php include_once "components/basic/header.php"; ?>
     <main>
-        <div id="global-container">
+        <div id="global-container" class="relative">
             <?php include_once "components/basic/master-left.php"; ?>
             <div id="master-middle">
                 <div class="green-message">
@@ -69,14 +70,10 @@
                     </script>
                 </div>
                 <?php include_once "components/basic/create-post.php"; ?>
+                <?php //include_once "components/post/post_viewer.php"; ?>
+
                 <div id="posts-container">
                     <?php
-                        /*
-                        foreach($journal_posts as $post) {
-                            $post_view = new Post_view();
-
-                            echo $post_view->generate_timeline_post($post);
-                        }*/
                         foreach($journal_posts as $post) {
                             $post_view = new Post_View();
 

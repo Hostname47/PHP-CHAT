@@ -89,7 +89,7 @@ class User implements \JsonSerializable {
     }
 
     public function add_metadata($label, $content) {
-        if($this->get_metadata_items_number() < 6) {
+        if($this->get_metadata_items_number() < 6 && $content != "") {
             $this->db->query("INSERT INTO user_metadata (`label`, `content`, `user_id`) values(?, ?, ?);", array(
                 $label,
                 $content,

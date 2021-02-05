@@ -41,7 +41,9 @@
 
                 <div class="horizontal-menu-item-wrapper">
                     <a href="<?php echo Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");?>" id="user-profile-button" class="flex-row-column">
-                        <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-2" style="margin-right: 6px">
+                        <div id="header-picture-container">
+                            <img id="header-picture" src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>">
+                        </div>
                         <?php echo $user->getPropertyValue("username");?>
                     </a>
                     <div class="sub-label">

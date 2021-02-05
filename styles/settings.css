@@ -75,7 +75,16 @@ a {
 }
 
 .profile-button-icon {
-    background-image: url(../assets/images/icons/user.png);
+    background-image: url(../assets/images/icons/settings-w.png);
+}
+.logout-button-icon {
+    background-image: url(../assets/images/icons/white-logout.png);
+}
+.account-button-icon {
+    background-image: url(../assets/images/icons/profile-white.png);
+}
+.not-yet {
+    background-image: url(../assets/images/icons/public-white.png);
 }
 
 #left-panel-menu {
@@ -234,4 +243,15 @@ a {
 
 #save-button:hover {
     background-color: rgb(42, 211, 92);
+}
+
+.logout-btn {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    z-index: 1;
+    border: none;
+    background: none;
+    cursor: pointer;
 }

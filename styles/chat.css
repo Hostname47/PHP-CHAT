@@ -7,6 +7,7 @@
 }
 
 #chat-global-container {
+    margin-top: 55px;
     display: flex;
     width: 100%;
     box-sizing: border-box;

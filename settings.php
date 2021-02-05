@@ -3,7 +3,7 @@
 require_once "vendor/autoload.php";
 require_once "core/init.php";
 
-use classes\{DB, Validation, Common, Session, Token, Redirect};
+use classes\{DB, Validation, Common, Session, Token, Redirect, Hash};
 
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
