@@ -279,7 +279,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
                         foreach($posts as $post) {
                             $post_view = new Post_view();
 
-                            echo $post_view->generate_timeline_post($post);
+                            echo $post_view->generate_post($post);
                         }
                     ?>
                 </div>

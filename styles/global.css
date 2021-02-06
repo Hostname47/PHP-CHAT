@@ -800,6 +800,10 @@ input, textarea {
     border: 1px solid rgb(190, 190, 190);
 }
 
+.reply-back {
+    background-image: url(../assets/images/icons/reply.png);
+}
+
 .save-back {
     background-image: url(../assets/images/icons/save.png);
 }

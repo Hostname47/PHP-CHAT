@@ -71,7 +71,7 @@
                 </div>
                 <?php include_once "components/basic/create-post.php"; ?>
                 <?php //include_once "components/post/post_viewer.php"; ?>
-                <div class="post-item">
+                <div style="display: none" class="post-item">
                     <div class="timeline-post image-post">
                         <div class="post-header flex-space">
                             <div class="post-header-without-more-button">
@@ -89,30 +89,9 @@
                             </div>
                         </div>
                         <p class="post-text">
-                            This is text
+                            This post could contains 0, 1 or more than one images (now it contains one image)
                         </p>
                         <div class="media-container">
-                            <div class="post-media-item-container">
-                                <img src="assets/images/read.png" class="post-media-image" alt="">
-                            </div>
-                            <div class="post-media-item-container">
-                                <img src="assets/images/read.png" class="post-media-image" alt="">
-                            </div>
-                            <div class="post-media-item-container">
-                                <img src="assets/images/read.png" class="post-media-image" alt="">
-                            </div>
-                            <div class="post-media-item-container">
-                                <img src="assets/images/read.png" class="post-media-image" alt="">
-                            </div>
-                            <div class="post-media-item-container">
-                                <img src="assets/images/read.png" class="post-media-image" alt="">
-                            </div>
-                            <div class="post-media-item-container">
-                                <img src="assets/images/read.png" class="post-media-image" alt="">
-                            </div>
-                            <div class="post-media-item-container">
-                                <img src="assets/images/read.png" class="post-media-image" alt="">
-                            </div>
                             <div class="post-media-item-container">
                                 <img src="assets/images/read.png" class="post-media-image" alt="">
                             </div>
@@ -160,7 +139,7 @@
                         foreach($journal_posts as $post) {
                             $post_view = new Post_View();
 
-                            echo $post_view->generate_timeline_post($post);
+                            echo $post_view->generate_post($post);
                         }
                     ?>
                 </div>
