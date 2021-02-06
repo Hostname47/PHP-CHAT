@@ -1,15 +1,22 @@
 
+
 const urlParams = new URLSearchParams(window.location.search);
 
 $("#edit-profile-button").parent().find(".viewer").css("maxHeight", 700);
 
 if(urlParams.get('edit') !== null) {
     $("#edit-profile-button").parent().find(".viewer").css("display", "block");
-} else {
-    console.log("don4t shoz edit");
 }
 
-$(".profile-picture").css("borderColor", $("#first-section").css("backgroundColor"));
+if($("#private-account-state").val() == "1") {
+    $("#private-account-state").val("1");
+    $("#private-account-button").css("backgroundImage", "url(assets/images/icons/on.png)");
+} else {
+    $("#private-account-state").val("-1");
+    $("#private-account-button").css("backgroundImage", "url(assets/images/icons/off.png)");
+}
+
+$(".picture-back-color").css("color", $("#first-section").css("backgroundColor"));
 
 let p_p_max_height = 150;
 let profile_p_height = $(".profile-picture").height();
@@ -36,10 +43,15 @@ $(".close-viewer").click(function() {
     return false;
 })
 
+$("body").click(function() {
+    $("body").css("overflow-y", "scroll");
+})
+
 $("#edit-profile-button").on({
     click: function() {
         let viewer = $(this).parent().find(".viewer");
         viewer.css("display", "block");
+        $("body").css("overflow-y", "hidden");
         return false;
     }
 });
@@ -89,25 +101,28 @@ $(".profile-picture").on({
         viewer.css("display", "block");
         viewer.find(".profile-picture-preview").attr("src", $(".profile-picture").attr("src"));
 
-        let max_height = 500;
-
         let height = $(".profile-picture-preview").height();
         let width = $(".profile-picture-preview").width();
-
-        let one_hundred_perc = height + width;
-
-        let height_perc = height * 100 / one_hundred_perc;
-        let width_perc = width * 100 / one_hundred_perc;
         
         if(height > width) {
-            $(".profile-picture-preview").height($(".profile-picture-preview-container").height());
-        } else {
             $(".profile-picture-preview").width($(".profile-picture-preview-container").width());
+        } else {
+            $(".profile-picture-preview").height($(".profile-picture-preview-container").height());
         }
 
         return false;
     }
 });
+
+let former_changer_dim = $(".former-picture-dim");
+let former_changer_height = former_changer_dim.height();
+let former_changer_width = former_changer_dim.width();
+
+if(former_changer_height > former_changer_width) {
+    former_changer_dim.width("100%");
+} else {
+    former_changer_dim.height("100%");
+}
 
 $("#cover-changer-container").on({
     mouseenter: function() {

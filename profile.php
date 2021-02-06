@@ -147,9 +147,9 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
     <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/create-post-style.css">
     <link rel="stylesheet" href="styles/profile.css">
     <link rel="stylesheet" href="styles/post.css">
+    <link rel="stylesheet" href="styles/create-post-style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
     <script src="javascript/config.js" defer></script>
@@ -174,7 +174,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
                     </div>
                 </div>
                 <div id="profile-picture-container">
-                    <div class="relative" style="border-radius: 50%; overflow: hidden">
+                    <div class="relative picture-back-color" style="border-radius: 50%; overflow: hidden">
                         <div class="profile-picture-cnt">
                             <img src="<?php echo $profile_user_picture; ?>" class="profile-picture" alt="">
                         </div>
@@ -203,7 +203,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
             ?>
         </section>
         <section id="second-section">
-            <div>
+            <div id="second-part-left-panel">
                 <div class="user-info-section row-v-flex">
                     <a href="" class="user-info-section-link">
                         <div>

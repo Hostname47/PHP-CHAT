@@ -5,9 +5,8 @@ require_once "../vendor/autoload.php";
 require_once "../core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-use models\{Post, UserRelation, Follow};
+use models\{Post, User, Follow};
 use view\post\Post as Post_View;
-use view\master_right\Right as MasterRightComponents;
 
 if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
@@ -19,6 +18,49 @@ $pid = null;
 if(isset($_GET["pid"])) {
     $pid = sanitize_id($_GET["pid"]);
 }
+
+$post = new Post();
+$post->fetchPost($pid);
+$post_owner_id = $post->get_property("post_owner");
+
+$post_owner = new User();
+$post_owner->fetchUser("id", $post_owner_id);
+$post_owner_picture = $root . (empty($post_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $post_owner->getPropertyValue("picture"));
+$post_owner_fullname = $post_owner->getPropertyValue("firstname") . " " . $post_owner->getPropertyValue("lastname");
+$post_owner_username = $post_owner->getPropertyValue("username");
+$post_date = $post->get_property("post_date");
+$post_visibility_image_path = "";
+if($post->get_property("post_visibility") == 1) {
+    $post_visibility_image_path = "public";
+} else if($post->get_property("post_visibility") == 2) {
+    $post_visibility_image_path = "friends";
+} else {
+    $post_visibility_image_path = "lock";
+}
+$post_text_data = $post->get_property("text_content");
+
+// Get images
+$images = array();
+$poster_image_directory = $post->get_property("picture_media");
+
+function str_replace_first($search, $replace, $subject) {
+    $pos = strpos($subject, $search);
+    if ($pos !== false) {
+        return substr_replace($subject, $replace, $pos, strlen($search));
+    }
+    return $subject;
+}
+
+/*if(!is_dir($poster_image_directory)) {
+    exit('Invalid diretory path');
+}
+
+/*$files = array();
+foreach (scandir($directory) as $file) {
+    if ($file !== '.' && $file !== '..') {
+        $files[] = $file;
+    }
+}*/
 
 ?>
 
@@ -65,12 +107,14 @@ if(isset($_GET["pid"])) {
             <!-- post owner header -->
             <div class="flex">
                 <div class="flex">
-                    <a href=""><img src="../assets/images/read.png" class="poster-image" alt=""></a>
+                    <div class="poster-image-container">
+                        <a href=""><img src="<?php echo $post_owner_picture ?>" class="poster-image" alt=""></a>
+                    </div>
                     <div style="margin-left: 6px;">
-                        <a href="http://127.0.0.1/CHAT/profile.php?username=shreda" class="post-owner-name">Master Shreda -@shreda</a>
+                        <a href="http://127.0.0.1/CHAT/profile.php?username=<?php echo $post_owner_username; ?>" class="post-owner-name"><?php echo $post_owner_fullname; ?> -@<?php echo $post_owner_username ?></a>
                         <div class="row-v-flex">
-                            <p class="regular-text"><a href="" class="post-date">March 21, 2013</a> <span style="font-size: 14px; color: rgb(78, 78, 78);">.</span></p>
-                            <img src="../assets/images/icons/public.png" class="image-style-8" alt="" style="margin-left: 8px">
+                            <p class="regular-text"><a href="" class="post-date"><?php echo $post_date; ?></a> <span style="font-size: 14px; color: rgb(78, 78, 78);">.</span></p>
+                            <img src="../assets/images/icons/<?php echo $post_visibility_image_path; ?>.png" class="image-style-8" alt="" style="margin-left: 8px">
                         </div>
                     </div>
                 </div>
@@ -94,8 +138,8 @@ if(isset($_GET["pid"])) {
             <!-- post text -->
             <div>
                 <div style="margin-top: 8px">
-                    <span class="hidden-post-text no-display">It works for me locally under Chrome, FF, IE 7+, Safari, and Opera. The example shows three sections: Head, Sidebar, and Content. Both Sidebar and Content fill the page horizontally (minus a 25px bottom margin).</span>
-                    <span class="post-text">It works for me locally under Chrome, FF, IE 7+, Safari, and Opera. The example shows three sections: Head, Sidebar, and Content. Both Sidebar and Content fill the page horizontally (minus a 25px bottom margin).</span>
+                    <span class="hidden-post-text no-display"><?php echo $post_text_data; ?></span>
+                    <span class="post-text"><?php echo $post_text_data; ?></span>
                     <div class="collapse-text">See more</div>
                 </div>
             </div>

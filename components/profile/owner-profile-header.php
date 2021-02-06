@@ -1,5 +1,7 @@
 <?php
     use classes\{Token};
+
+    $private = $user->getPropertyValue("private");
 ?>
 
 <div class="flex-space" id="owner-profile-menu-and-profile-edit">
@@ -61,7 +63,7 @@
                         <div class="field-style-2" style="margin-bottom: 12px">
                             <label for="private" class="label-style-1">Private account</label>
                             <div class="toggle-button-style-1" id="private-account-button"></div>
-                            <input type="hidden" form="save-profile-edits-form" name="private" value="-1" id="private-account-state">
+                            <input type="hidden" form="save-profile-edits-form" name="private" value="<?php echo $private ?>" id="private-account-state">
                         </div>
                     </div>
                 </div>

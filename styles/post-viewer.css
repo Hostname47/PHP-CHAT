@@ -77,11 +77,19 @@ body, html {
     background-image: url(../assets/images/icons/left-arrow.png);
 }
 
-.poster-image {
+.poster-image-container {
     height: 42px;
     width: 42px;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
+    overflow: hidden;
+}
+
+.poster-image {
+    height: 42px;
+    display: flex;
 }
 
 .post-owner-name {

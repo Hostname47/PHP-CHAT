@@ -1,13 +1,12 @@
 
 main {
-    margin-top: 55px;
-    max-width: 1600px;
     margin: 0 auto;
+    margin-top: 55px;
 }
 
 .viewer {
     display: none;
-    z-index: 1;
+    z-index: 12;
     position: fixed;
     top: 0;
     left: 0;
@@ -91,7 +90,6 @@ main {
     display: flex;
     margin: 0 auto;
     margin-top: 20px;
-    max-width: 1200px;
     background-color: rgb(177, 177, 177);
 }
 
@@ -122,6 +120,9 @@ main {
 
 .shadow-profile-picture {
     top: 0;
+    left: -6px;
+    width: 110px;
+    padding: 4px;
     background-color: black;
     opacity: 0;
 }
@@ -238,13 +239,12 @@ main {
     width: 120px;
     border-radius: 50%;
     background-color: gray;
+    overflow: hidden;
 }
 
 .former-picture-dim {
     display: flex;
     border-radius: 50%;
-    height: 120px;
-    width: 120px;
 }
 
 .former-picture-shadow {
@@ -266,7 +266,7 @@ main {
 #second-section {
     display: flex;
     width: 76%;
-    margin: 0 auto
+    margin: 0 auto;
 }
 
 .user-info-section {
@@ -274,10 +274,18 @@ main {
     border-radius: 3px;
     padding: 10px;
     width: 400px;
+    box-sizing: border-box;
     margin-bottom: 12px;
     /*box-shadow: 2px 2px 3px 0.1px rgba(255, 255, 255, 0.5);*/
 }
 
+#second-part-left-panel {
+    width: 400px;
+    height: 100%;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 65px; /* 55 for the header and 10 for giving a space between the nav bar and the left panel */
+}
 
 .user-info-section-link {
     display: flex;
@@ -325,4 +333,5 @@ main {
     margin-left: 12px;
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
 }

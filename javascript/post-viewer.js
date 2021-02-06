@@ -41,7 +41,11 @@ window.onresize = function() {
 
 if($(".post-text").text().length > 200) {
     $(".post-text").text($(".post-text").text().substr(0, 199) + "..");
+} else {
+    $(".collapse-text").css("display", "none");
 }
+
+
 $(".collapse-text").click(function() {
     if($(this).text() == "See more") {
         $(this).text("See less");

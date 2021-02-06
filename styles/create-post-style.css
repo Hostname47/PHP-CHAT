@@ -23,9 +23,6 @@
 
 .image-post-uploaded {
     display: block;
-    margin: 0 4px;
-    width: 80px;
-    height: 80px;
     background-color: gray;
 }
 
@@ -64,4 +61,15 @@
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: 10px center;
+}
+
+.post-creation-item {
+    display: flex;
+    align-items: flex-start;
+    height: 80px;
+    width: 80px;
+
+    margin: 0 4px;
+
+    overflow: hidden;
 }
