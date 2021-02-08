@@ -53,69 +53,118 @@ $("#create-post-textual-content").on({
         if($(this).val() != "") {
             $("#post-create-button").css("display", "block");
         } else {
-            if($("#create-post-photo-or-video").val() == "") {
+            if($("#post-assets").val() == "") {
                 $("#post-create-button").css("display", "none");
             }
         }
     }
 });
 
+function adjust_post_uploaded_assets_indexes() {
+    let counter = 0;
+    $(".post-creation-item").each(function() {
+        $(this).find(".pciid").val(counter);
+        counter++;
+    });
+}
+
+let uploaded_post_assets = [];
+let upa_counter = 0;
+let cp_index = 0;
 // This will track image uploads --- [Now it is possible to share more than one image] ---
-$("#create-post-photo-or-video").change(function(event) {
+$("#post-assets").change(function(event) {
     /* 
+        IMPORTANT: Because this is input file, if it gets clicked two times a row, then it will remove all the first files and
+        replace them with the new files so we will handle the situation where we upload more than one file; then we put them in an array;
+        then later if the user want to add more image or video; we'll take that addition and append it to the array(uploaded_post_assets)
         First we get the container and store it in a variable, then we loop through files and assign each one to the container and append
         it to the post container to show it to the user
     */
-    let files = event.target.files;
-    
+
+    // First get the new uploaded files and append them to our new array uploaded_post_assets
+    let files = event.originalEvent.target.files;
+    uploaded_post_assets.push(...files);
+
+    // Then get the component skeleton
     $.ajax({
         type: 'GET',
         url: root + "api/general/createpost/create_post_data_item.php",
         success: function(response) {
+
             let container = response;
-            if(files.length == 0) {
-                $("#post-create-button").css("display", "block");
-            } else {
+
+            // We check if there's no file and text area is empty we hide the share button
+            if(files.length == 0 && $("#create-post-textual-content").val() == "") {
                 $("#post-create-button").css("display", "none");
+            } else {
+                $("#post-create-button").css("display", "block");
             }
 
+            // Now we loop through the new files and append components to post component as small images to show them to user
             for (let i = 0; i < files.length; i++) {
-                /* Here first you need to check the incoming data and based on it, you can either decide to show the image or keep it none displayed
-                in case it is a malicious file or not an appropriate image */
+                /*
+                    Here first you need to check the incoming data and based on it, you can either decide to show the image or keep it none displayed
+                    in case it is a malicious file or not an appropriate image
+                */
                 $(".image-post-uploaded-container").append(container);
                 // We search for the last div added and go deep to the image to get the element
                 let imgtag = $(".image-post-uploaded-container .post-creation-item").last().find(".image-post-uploaded");
-                // FOR NOW LET'S FOCUS ON ONLY ONE IMAGE
+
                 var selectedFile = event.target.files[i];
                 var reader = new FileReader();
             
                 reader.onload = function(e) {
                     imgtag.attr("src", e.target.result);
-                    let im = $(".image-post-uploaded");
                     // Here we adjust the image in center and choose height if width is greather and width if height is greather
-                    if(im.height() > im.width()) {
+                    if(imgtag.height() >= imgtag.width()) {
                         imgtag.width("100%");
                     } else {
                         imgtag.height("100%");
                     }
+                    
+                    // Here we call this function to adjust indexes
+                    adjust_post_uploaded_assets_indexes();
+                    if(upa_counter == 0) {
 
-                    $(".delete-uploaded-item").click(function() {
-                        // FileList in javascript is readonly So: for now let's botter our heads with only posting one image
-                        //Here we need only to remove this image and not all the images in the queue
-                        $("#create-post-photo-or-video").val("");
-                        $(this).parent().remove();
-                        // Also here use the following to remove only the deleted image: $(this).parent().remove();
-                        
-                        if($("#create-post-textual-content").val() != "") {
-                            $("#post-create-button").css("display", "block");
-                        } else {
-                            $("#post-create-button").css("display", "none");
-                        }
-                    });
+                        $(".delete-uploaded-item").click(function() {
+                            // FileList in javascript is readonly So: for now let's botter our heads with only posting one image
+                            // It's time to botter your fuckin' head with multiple images HHH Lol
+                            //Here we need only to remove this image and not all the images in the queue
+
+                            adjust_post_uploaded_assets_indexes();
+                            // Here we want to get the index of item the user want to delete and loop through the array and
+                            // Delete the item which has pciid input value with that index and
+                            let delete_index = $(this).parent().find(".pciid").val();
+                            console.log("delete : " + delete_index);
+                            let new_arr = [];
+                            let cn = 0;
+                            for(let k=0; k<uploaded_post_assets.length; k++) {
+                                if(k != delete_index) {
+                                    new_arr[cn] = uploaded_post_assets[k];
+                                    cn++;
+                                }
+                            }
+
+                            // We remove it's component
+                            $(this).parent().remove();
+
+                            // If we remove all the items, then the length will be 0 and we have to hide the share post button
+                            if($(".post-creation-item").length == 0 && $("#create-post-textual-content").val() == '') {
+                                $("#post-create-button").css("display", "none");
+                            }
+
+                            //we assign the new array which has deleted item removed to uploaded_post_assets array
+                            uploaded_post_assets = new_arr;
+                        });
+
+                        upa_counter++;
+                    }
                 };
             
                 reader.readAsDataURL(selectedFile);
             }
+
+            upa_counter = 0;
         }
     });
 })
@@ -144,9 +193,13 @@ $(".share-post").click(function(event) {
     console.log($("#create-post-textual-content").html());
 
     let formData = new FormData($("#create-post-form").get(0));
+    
+    for(let i = 0;i<uploaded_post_assets.length;i++) {
+        formData.append(uploaded_post_assets[i].name, uploaded_post_assets[i]);
+    }
 
     $.ajax({
-        url: $("#create-post-form").attr('action'),
+        url: root + "api/post/post.php",
         method: 'POST',
         enctype: 'multipart/form-data',
         contentType: false,
@@ -161,7 +214,7 @@ $(".share-post").click(function(event) {
             // Remove image template components
             $(".image-post-uploaded-container").find(".post-creation-item").remove();
             // Clear file
-            $("#create-post-photo-or-video").val("");
+            $("#post-assets").val("");
 
             /*
             IMPORTANT: WHEN token is generated along with the form, we push it to the session server superglobal, But when we

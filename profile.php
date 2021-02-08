@@ -128,7 +128,7 @@ if(isset($_POST["logout"])) {
 usort($posts, 'post_date_latest_sort');
 
 function post_date_latest_sort($post1, $post2) {
-    return $post1->get_property('post_date') == $post2->get_property('post_date') ? 0 : ($post1->get_property('post_date') > $post2->get_property('post_date')) ? -1 : 1;
+    return $post1->get_property('post_date') < $post2->get_property('post_date') ? 0 : ($post1->get_property('post_date') > $post2->get_property('post_date')) ? -1 : 1;
 }
 
 $posts_number = Post::get_posts_number($profile_user_id);
@@ -155,6 +155,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
     <script src="javascript/config.js" defer></script>
     <script src="javascript/header.js" defer></script>
     <script src="javascript/profile.js" defer></script>
+    <script src="javascript/post.js" defer></script>
     <script src="javascript/global.js" defer></script>
 </head>
 <body>

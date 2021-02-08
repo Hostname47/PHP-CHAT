@@ -111,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <input type="hidden" class="pid" value="">
+                <input type="hidden" class="pid" value="$post_id">
             </div>
 
 EOS;

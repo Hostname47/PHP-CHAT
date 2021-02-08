@@ -72,7 +72,7 @@
     </div>
     <div class="row-v-flex horizontal-frame-style-1">
         <div class="relative" style="overflow: hidden; width: 40px">
-            <input type="file" name="photo-or-video" multiple size="5" form="create-post-form" id="create-post-photo-or-video" class="absolute no-opacity-element">
+            <input type="file" multiple form="create-post-form" id="post-assets" class="absolute no-opacity-element">
             <div class="photo-or-video-background button-style-6"></div>
         </div>
         <div class="relative" style="overflow: hidden; width: 40px">
@@ -81,7 +81,7 @@
         </div>
     </div>
     <div class="button-style-7-container" id="post-create-button">
-        <form action="api/post/post.php" method="POST" id="create-post-form" name="create-post-form" enctype="multipart/form-data">
+        <form action="" method="POST" id="create-post-form" name="create-post-form" enctype="multipart/form-data">
             <input type="hidden" name="post_owner" value="<?php echo $user->getPropertyValue("id"); ?>">
             <input type="hidden" name="token_post" value="<?php 
                     if(Session::exists("share-post")) 

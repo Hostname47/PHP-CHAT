@@ -46,12 +46,16 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
 
         $text_content = sanitize_text($_POST["post-textual-content"]);
 
-        $validator->check($_FILES, array(
-            "photo-or-video"=>array(
-                "name"=>"Picture",
-                "image"=>"image"
-            )
-        ));
+        if(!empty($_FILES)) {
+            foreach($_FILES as $file) {
+                $validator->check($_FILES, array(
+                    $file["name"]=>array(
+                        "name"=>"Picture",
+                        "image"=>"image"
+                    )
+                ));
+            }
+        }
 
         if($validator->passed()) {
             $user_id_exists = User::user_exists("id", $id);
@@ -63,36 +67,45 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
                 // Create unique id for post
                 $post_id = uniqid('', true);
 
-                $user_posts_path = "../../data/users/" . $user->getPropertyValue("username") . "/posts";
-                createPostFolders($user_posts_path, $post_id);
-                
-                $post_images_dir = $user_posts_path . "/" . $post_id . "/media/pictures/";
-
-                $file = $_FILES["photo-or-video"]["name"];
-                $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
-                // Generate post name
-                $generatedName = Hash::unique();
-                $generatedName = htmlspecialchars($generatedName);
-                $targetFile = $post_images_dir . $generatedName . $original_extension;
-
                 $post = new Post();
                 $post->setData(array(
                     "post_owner"=> $id,
                     "post_visibility"=> $post_visibility,
                     "post_place"=> $post_place,
-                    "post_date"=> date("Y/m/d h:i:s"),
+                    "post_date"=> date("Y/m/d H:i:s"),
                     "text_content"=> $text_content,
-                    "picture_media"=> Config::get("root/path") . "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/media/pictures/",
-                    "video_media"=> Config::get("root/path") . "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/media/videos/",
+                    "picture_media"=>"data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/media/pictures/",
+                    "video_media"=>"data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/media/videos/",
                 ));
 
-                if(!empty($_FILES["photo-or-video"]["name"])) {
-                    if(move_uploaded_file($_FILES["photo-or-video"]["tmp_name"], $targetFile)) {
-                        // Here if you implement multiple files loop through them and try to fetch picture_media dir and append image files with extensions one by one
-                        $image_path = Config::get("root/path") . "data/users/" . $user->getPropertyValue("username") . "/posts/$post_id/media/pictures/" . $generatedName . $original_extension;
-                        $post->set_property("picture_media", $image_path);
-                    } else {
-                        $validator->addError("Sorry, there was an error uploading your post picture.");
+                $user_posts_path = "../../data/users/" . $user->getPropertyValue("username") . "/posts";
+                createPostFolders($user_posts_path, $post_id);
+                
+                if(isset($_FILES)) {
+
+                } else {
+
+                }
+                $post_images_dir = $user_posts_path . "/" . $post_id . "/media/pictures/";
+
+                foreach($_FILES as $asset) {
+                    $file = $asset["name"];
+                    $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
+                    // Generate post name
+                    $generatedName = Hash::unique();
+                    $generatedName = htmlspecialchars($generatedName);
+                    $targetFile = $post_images_dir . $generatedName . $original_extension;
+
+                    // Here we need to loop through the uploaded files if there are many and store them in trheir directories
+                    if(!empty($asset["name"])) {
+                        if(move_uploaded_file($asset["tmp_name"], $targetFile)) {
+                            /*
+                                We don't have to save image path to picture media because it could be more than one image
+                                per post so we just save the picture directory so that we can fetch all images
+                            */
+                        } else {
+                            $validator->addError("Sorry, there was an error uploading your post picture.");
+                        }
                     }
                 }
                 
@@ -123,4 +136,3 @@ function createPostFolders($user_posts_path, $post_id) {
     mkdir($user_posts_path . "/$post_id/media/pictures", 0777, true);
     mkdir($user_posts_path . "/$post_id/media/videos", 0777, true);
 }
-

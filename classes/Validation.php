@@ -3,7 +3,7 @@
 namespace classes;
 
 class Validation {
-    private $_passed = false,
+    private $_passed = true,
             $_errors = array(),
             $_db = null;
 
@@ -41,8 +41,8 @@ class Validation {
         if($source === $_FILES) {
             foreach($items as $item=>$rules) {
                 foreach($rules as $rule => $rule_value) {
-                    $item = htmlspecialchars($item);
-                    $name = $_FILES[$item]["name"];
+                    //$item = htmlspecialchars($item);
+                    $name = $item;
                     if($rule === "required" && $rule_value == true && empty($name)) {
                         $this->addError("{$rules['name']} field is required");
                     } else if(!empty($name)) {
@@ -64,7 +64,13 @@ class Validation {
                                 */
                                 // ----------------------      CHCK IMAGE TYPE      ----------------------
 
-                                $file = $_FILES[$item]["name"];
+                                $img = $_FILES;
+                                foreach($img as $t) {
+                                    $img = $t;
+                                    break;
+                                }
+
+                                $file = $item;
                                 $allowedImageExtensions = array(".png", ".jpeg", ".gif", ".jpg", ".jfif");
 
                                 $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
@@ -78,7 +84,7 @@ class Validation {
                                     $this->addError("Only PNG, JPG, JPEG, and GIF image types are allowed to be used in {$rules['name']} image!");
                                 }
 
-                                if ($source[$item]["size"] > 5500000) {
+                                if ($img["size"] > 5500000) {
                                     $this->addError("Sorry, your file is too large.");
                                 }
 
