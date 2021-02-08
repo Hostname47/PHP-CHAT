@@ -56,6 +56,7 @@ go to login function's comment
     variable and only use root variable to reference it because init file also included in every page deal with config
 */
 $root = Config::get("root/path");
+$proj_name = Config::get("root/project_name");
 
 $user = new User();
 

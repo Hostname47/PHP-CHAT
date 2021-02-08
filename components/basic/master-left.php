@@ -19,13 +19,15 @@
         <div class="flex">
             <a href="<?php echo Config::get("root/path") . "settings.php"; ?>" class="menu-button-style-3 settings-back" id="go-to-settings"></a>
             <a href="<?php echo Config::get("root/path") . "chat.php"; ?>" class="menu-button-style-3 messages-button"></a>
-            <a href="<?php echo Config::get("root/path") . "search.php?q="; ?>" class="menu-button-style-3 search-background go-to-search"></a>
+            <a href="<?php echo Config::get("root/path") . "search.php"; ?>" class="menu-button-style-3 search-background go-to-search"></a>
         </div>
     </div>
     <div>
         <div>
             <a href="<?php echo Config::get("root/path") . "profile.php?user=" . $user->getPropertyValue("username"); ?>" class="no-underline menu-item-style-1 row-v-flex">
-                <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-2" alt="">
+                <div class="profile-owner-picture-left-panel-container">
+                    <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="profile-owner-picture-left-panel" alt="">
+                </div>
                 <p class="label-style-3"><?php echo $user->getPropertyValue("username"); ?></p>
             </a>
             <div id="master-left-container">

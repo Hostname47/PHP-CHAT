@@ -56,7 +56,9 @@
                 <div class="timeline-post image-post">
                     <div class="post-header flex-space">
                         <div class="post-header-without-more-button">
-                            <img src="$post_owner_picture" class="image-style-7 post-owner-picture" alt="">
+                            <div class="post-owner-picture-container">
+                                <img src="$post_owner_picture" class="post-owner-picture" alt="">
+                            </div>
                             <div class="post-header-textual-section">
                                 <a href="$post_owner_profile" class="post-owner-name">$post_owner_name</a>
                                 <div class="row-v-flex">

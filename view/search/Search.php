@@ -35,7 +35,9 @@ class Search {
         return <<<QQ
         <div class="search-result-item flex-space search-result-person">
             <div class="flex">
-                <img src="{$picture}" class="image-style-1" alt="">
+                <div class="search-result-item-picture-container">
+                    <img src="{$picture}" class="search-result-item-picture" alt="">
+                </div>
                 <div style="margin-left: 8px">
                     <h1 class="title-style-6">{$fullname}</h1>
                     <p class="label-style-2">@{$username}</p>

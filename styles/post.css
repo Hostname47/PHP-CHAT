@@ -29,6 +29,33 @@
     margin-bottom: 4px
 }
 
+.post-owner-picture {
+    height: 44px;
+    display: flex;
+}
+
+.post-owner-picture-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 44px;
+    width: 44px;
+    overflow: hidden;
+
+    border-radius: 50%;
+}
+
+.profile-owner-picture-left-panel-container {
+    height: 40px;
+    width: 40px;
+}
+
+.profile-owner-picture-left-panel {
+    height: 40px;
+    display: flex;
+}
+
 .post-header-textual-section {
     margin-left: 6px;
 }

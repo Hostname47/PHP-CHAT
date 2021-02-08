@@ -1,6 +1,7 @@
 #master-left {
     position: fixed;
     left: 0;
+    top: 55px;
     padding: 6px 6px 0 6px;
     box-sizing: border-box;
     overflow: hidden;
@@ -48,8 +49,10 @@
 #menu-profile-container {
     margin: 0 3px 8px 3px;
     background: rgb(70,70,70);
-    box-shadow: 0px 0px 4px 1px rgb(0, 0, 0);
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.699);
     padding: 4px;
+
+    border-radius: 6px;
 }
 
 .cover-container {
@@ -60,6 +63,8 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+
+    border-radius: 6px 6px 0 0;
 }
 
 .cover-photo {
@@ -100,4 +105,26 @@
 .header-profile-username {
     margin:0;
     font-size: 13px;
+}
+
+.profile-owner-picture-left-panel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 44px;
+    width: 44px;
+    overflow: hidden;
+
+    border-radius: 50%;
+}
+
+.profile-owner-picture-left-panel-container {
+    height: 40px;
+    width: 40px;
+}
+
+.profile-owner-picture-left-panel {
+    height: 40px;
+    display: flex;
 }

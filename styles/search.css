@@ -54,3 +54,20 @@
     padding: 12px;
     background-color: rgb(78, 78, 78);
 }
+
+.search-result-item-picture-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 55px;
+    width: 55px;
+    overflow: hidden;
+
+    border-radius: 50%;
+}
+
+.search-result-item-picture {
+    height: 55px;
+    display: flex;
+}

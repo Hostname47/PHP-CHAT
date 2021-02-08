@@ -4,10 +4,25 @@ $(".header-profile-edit-button").click(function() {
     return false;
 })
 
+$("#addd").click(function() {
+    $.ajax({
+        type: 'post',
+        url: root + "view/post/generate_post.php",
+        data: {
+            "post_id": 40
+        },
+        success: function(component) {
+            $("#posts-container").prepend(component);
+        }
+    })
+
+    return false;
+});
+
 let headerHeight = 55;
 
 $("#master-right").height($(window).height() - headerHeight - 4);
-$("#master-left").height($(window).height() - headerHeight - 4);
+$("#master-left").height($(window).height() - headerHeight - 12);
 $("#master-left-container").height($("#master-left").height() - 78);
 $("#contacts-container").height($("#master-right").height() - 40);
 
@@ -148,6 +163,8 @@ $("#post-assets").change(function(event) {
                             // We remove it's component
                             $(this).parent().remove();
 
+
+
                             // If we remove all the items, then the length will be 0 and we have to hide the share post button
                             if($(".post-creation-item").length == 0 && $("#create-post-textual-content").val() == '') {
                                 $("#post-create-button").css("display", "none");
@@ -215,6 +232,14 @@ $(".share-post").click(function(event) {
             $(".image-post-uploaded-container").find(".post-creation-item").remove();
             // Clear file
             $("#post-assets").val("");
+
+            $.ajax({
+                type: 'post',
+                url: root + "view/post/generate_last_post.php",
+                success: function(component) {
+                    $("#posts-container").prepend(component);
+                }
+            })
 
             /*
             IMPORTANT: WHEN token is generated along with the form, we push it to the session server superglobal, But when we

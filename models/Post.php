@@ -77,6 +77,12 @@ class Post {
         return false;
     }
 
+    public static function get_last_post() {
+        DB::getInstance()->query("SELECT * FROM post ORDER BY id DESC LIMIT 1");
+
+        return DB::getInstance()->results()[0];
+    }
+
     public static function fetch_journal_posts($user_id) {
         // Algorithm to fetch jounral posts of a specific user
 

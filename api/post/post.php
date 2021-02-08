@@ -7,7 +7,7 @@ use classes\{Config, Validation, Hash, Token, Common, DB};
 use models\{User, Post};
 
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: form-data;");
+header("Content-Type: text/html;");
 header("Access-Control-Allow-Methods: POST, FILES");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
