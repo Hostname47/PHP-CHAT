@@ -35,7 +35,6 @@
 
             $image_components = "";
             $video_components = "";
-
             if(is_dir($post_images_dir)) {
                 if($this->is_dir_empty($post_images_dir) == false) {
                     $fileSystemIterator = new \FilesystemIterator($post_images_dir);
@@ -45,11 +44,22 @@
                 }
             }
 
-            /*if(is_dir($post_videos_dir)) {
-                if($this->is_dir_empty($post_videos_dir)) {
-                    
+            if(is_dir($post_videos_dir)) {
+                if($this->is_dir_empty($post_videos_dir) == false) {
+
+                    $fileSystemIterator = new \FilesystemIterator($post_videos_dir);
+                    foreach ($fileSystemIterator as $fileInfo){
+                        $src = $root . $post_videos_location . $fileInfo->getFilename();
+                        $video_components = <<<VIDEO
+                        <video class="post-video" controls>
+                            <source src="$src" type="video/mp4">
+                            <source src="movie.ogg" type="video/ogg">
+                            Your browser does not support the video tag.
+                        </video>
+VIDEO;
+                    }
                 }
-            }*/
+            }
 
             return <<<EOS
             <div class="post-item">
@@ -75,6 +85,7 @@
                         $post_text_content
                     </p>
                     <div class="media-container">
+                        $video_components
                         $image_components
                     </div>
                     <div class="react-on-opost-buttons-container">

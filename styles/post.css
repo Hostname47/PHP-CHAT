@@ -212,3 +212,7 @@
 .post-item, .timeline-post {
     width: 100%;
 }
+
+.post-video {
+    width: 100%;
+}
