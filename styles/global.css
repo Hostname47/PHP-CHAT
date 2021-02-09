@@ -812,6 +812,10 @@ input, textarea {
     background-image: url(../assets/images/icons/download.png);
 }
 
+.multimedia-background {
+    background-image: url(../assets/images/icons/video.png);
+}
+
 .search-background {
     background-image: url(../assets/images/icons/white-search.png);
 }
@@ -1162,6 +1166,7 @@ border-bottom-color: #ffffff;
 
 .red-message
 {
+    position: relative;
     display: none;
     background-color: rgb(202, 148, 148);
     width: 100%;
@@ -1180,5 +1185,22 @@ border-bottom-color: #ffffff;
     font-weight: 600;
 }
 
+.delete-message-hint {
+    position: absolute;
+    right: 8px;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    cursor: pointer;
 
+    background-color: rgba(0, 0, 0, 0.438);
 
+    background-image: url(../assets/images/icons/white-close.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 8px;
+}
+
+.delete-message-hint:hover {
+    background-color: black;
+}

@@ -14,6 +14,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 require_once "../../functions/sanitize_id.php";
 require_once "../../functions/sanitize_text.php";
+require_once "../../functions/get_extension.php";
 
 /* First we check if the tokens matches, then we check if owner of the post exists, if so we sanitize
    All the necessary data comming to us and we check the image uploaded (IN THIS CASE WE WORK ON ONLY ONE IMAGE)
@@ -46,14 +47,29 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
 
         $text_content = sanitize_text($_POST["post-textual-content"]);
 
+        $supported_video_extensions = array(".mp4", ".mov", ".wmv", ".flv", ".avi", ".avchd", ".webm", "mkv");
+        $supported_image_extensions = array(".png", ".jpg", ".jpeg", ".gif");
+
         if(!empty($_FILES)) {
             foreach($_FILES as $file) {
-                $validator->check($_FILES, array(
-                    $file["name"]=>array(
-                        "name"=>"Picture",
-                        "image"=>"image"
-                    )
-                ));
+                $fileName = $file["name"];
+                $ext = get_extension($fileName);
+
+                if(in_array($ext, $supported_video_extensions)) {
+                    $validator->check($_FILES, array(
+                        $file["name"]=>array(
+                            "name"=>"Video",
+                            "video"=>"video"
+                        )
+                    ));
+                } else if(in_array($ext, $supported_image_extensions)) {
+                    $validator->check($_FILES, array(
+                        $file["name"]=>array(
+                            "name"=>"Picture",
+                            "image"=>"image"
+                        )
+                    ));
+                }
             }
         }
 
@@ -86,15 +102,31 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
                 } else {
 
                 }
+
                 $post_images_dir = $user_posts_path . "/" . $post_id . "/media/pictures/";
+                $post_videos_dir = $user_posts_path . "/" . $post_id . "/media/videos/";
 
                 foreach($_FILES as $asset) {
+                    $fileName = $asset["name"];
+                    $ext = get_extension($fileName);
+    
+                    if(in_array($ext, $supported_video_extensions)) {
+                        
+                    } else if(in_array($ext, $supported_image_extensions)) {
+                        
+                    }
+
+
                     $file = $asset["name"];
                     $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
                     // Generate post name
                     $generatedName = Hash::unique();
+                    if(in_array($ext, $supported_video_extensions)) {
+                        $targetFile = $post_videos_dir . $generatedName . $original_extension;
+                    } else if(in_array($ext, $supported_image_extensions)) {
+                        $targetFile = $post_images_dir . $generatedName . $original_extension;
+                    }
                     $generatedName = htmlspecialchars($generatedName);
-                    $targetFile = $post_images_dir . $generatedName . $original_extension;
 
                     // Here we need to loop through the uploaded files if there are many and store them in trheir directories
                     if(!empty($asset["name"])) {

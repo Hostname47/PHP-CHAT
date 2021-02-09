@@ -4,6 +4,10 @@ $(".header-profile-edit-button").click(function() {
     return false;
 })
 
+$(".delete-message-hint").click(function() {
+    $(this).parent().css("display", "none")
+})
+
 $("#addd").click(function() {
     $.ajax({
         type: 'post',
@@ -21,10 +25,18 @@ $("#addd").click(function() {
 
 let headerHeight = 55;
 
-$("#master-right").height($(window).height() - headerHeight - 4);
-$("#master-left").height($(window).height() - headerHeight - 12);
-$("#master-left-container").height($("#master-left").height() - 78);
-$("#contacts-container").height($("#master-right").height() - 40);
+function adjust_left_right_containers() {
+    $("#master-right").height($(window).height() - headerHeight - 4);
+    $("#master-left").height($(window).height() - headerHeight - 12);
+    $("#master-left-container").height($("#master-left").height() - 78);
+    $("#contacts-container").height($("#master-right").height() - 40);
+}
+
+adjust_left_right_containers();
+
+$(window).resize(function() {
+    adjust_left_right_containers();
+})
 
 $(".button-with-suboption").click(function() {
     let container = $(this).parent().find(".sub-options-container");
@@ -83,6 +95,37 @@ function adjust_post_uploaded_assets_indexes() {
     });
 }
 
+function validate_image_file_Type(files){
+    let result = [];
+    for(let i = 0; i<files.length;i++) {
+        fileName = files[i].name;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png" || extFile=="gif"){
+            result.push(files[i]);
+        }
+    }
+
+    return result;
+}
+
+function validate_video_file_Type(files) {
+    let result = [];
+    for(let i = 0; i<files.length;i++) {
+        fileName = files[i].name;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="mp3" || extFile=="webm" || extFile=="mpg" 
+        || extFile=="mp2"|| extFile=="mpeg"|| extFile=="mpe" 
+        || extFile=="mpv"|| extFile=="ogg"|| extFile=="mp4" 
+        || extFile=="m4p"|| extFile=="m4v"|| extFile=="avi"){
+            result.push(files[i]);
+        }
+    }
+
+    return result;
+}
+
 let uploaded_post_assets = [];
 let upa_counter = 0;
 let cp_index = 0;
@@ -98,12 +141,16 @@ $("#post-assets").change(function(event) {
 
     // First get the new uploaded files and append them to our new array uploaded_post_assets
     let files = event.originalEvent.target.files;
+    if(files.length != validate_image_file_Type(files).length) {
+        $(".red-message").css("display", "flex");
+        $(".red-message-text").text("Some files have invalid format: Only JPG/PNG/JPEG and GIF files formats are supported.");
+    }
+    files = validate_image_file_Type(files);
     uploaded_post_assets.push(...files);
-
     // Then get the component skeleton
     $.ajax({
         type: 'GET',
-        url: root + "api/general/createpost/create_post_data_item.php",
+        url: root + "view/post/generate_post_creation_image.php",
         success: function(response) {
 
             let container = response;
@@ -121,11 +168,11 @@ $("#post-assets").change(function(event) {
                     Here first you need to check the incoming data and based on it, you can either decide to show the image or keep it none displayed
                     in case it is a malicious file or not an appropriate image
                 */
-                $(".image-post-uploaded-container").append(container);
+                $(".post-assets-uploaded-container").append(container);
                 // We search for the last div added and go deep to the image to get the element
-                let imgtag = $(".image-post-uploaded-container .post-creation-item").last().find(".image-post-uploaded");
+                let imgtag = $(".post-assets-uploaded-container .post-creation-item").last().find(".image-post-uploaded");
 
-                var selectedFile = event.target.files[i];
+                var selectedFile = files[i];
                 var reader = new FileReader();
             
                 reader.onload = function(e) {
@@ -186,6 +233,108 @@ $("#post-assets").change(function(event) {
     });
 })
 
+let uploaded_post_assets_videos = [];
+$("#post-video").change(function(event) {
+    console.log("upload a videos !");
+    let files = event.originalEvent.target.files;
+    if(files.length != validate_video_file_Type(files).length) {
+        $(".red-message").css("display", "flex");
+        $(".red-message-text").text("Some files have invalid format: Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi file formats are supported.");
+        return false;
+    }
+    files = validate_video_file_Type(files);
+    uploaded_post_assets_videos.push(...files);
+    // Then get the component skeleton
+
+    if(uploaded_post_assets_videos.length == 0) {
+        document.getElementById("post-video").value = "";
+        return false;
+    }
+    
+    console.log("I passed !");
+
+    $.ajax({
+        type: 'GET',
+        url: root + "view/post/generate_post_creation_video.php",
+        success: function(response) {
+
+            let container = response;
+
+            // We check if there's no file and text area is empty we hide the share button
+            if(files.length == 0 && $("#create-post-textual-content").val() == "") {
+                $("#post-create-button").css("display", "none");
+            } else {
+                $("#post-create-button").css("display", "block");
+            }
+
+            $(".post-assets-uploaded-container").append(container);
+
+            let component = $(".post-assets-uploaded-container .post-creation-item").last();
+            let vidtag = component.find(".video-post-thumbnail");
+
+            var selectedFile = files[0];
+            var reader = new FileReader();
+            vidtag.parent().find(".assets-pending").css("display", "flex");
+
+            reader.readAsDataURL(selectedFile);
+            reader.onload = function(e) {
+                vidtag.parent().find(".assets-pending").css("display", "none");
+                vidtag.parent().find(".post-creation-video-image-container").css("display", "flex");
+                
+                let thumbnail = "";
+                try {
+                    // get the frame at 1.5 seconds of the video file
+                    thumbnail = get_thumbnail(selectedFile, 1.5, component);
+                } catch (ex) {
+                    console.log("ERROR: ", ex);
+                }
+
+                // Here we adjust the image in center and choose height if width is greather and width if height is greather
+                if(vidtag.height() >= vidtag.width()) {
+                    vidtag.width("100%");
+                } else {
+                    vidtag.height("100%");
+                }
+                
+                // Here we call this function to adjust indexes
+                adjust_post_uploaded_assets_indexes();
+                $(".delete-uploaded-item").click(function() {
+                    // FileList in javascript is readonly So: for now let's botter our heads with only posting one image
+                    // It's time to botter your fuckin' head with multiple images HHH Lol
+                    //Here we need only to remove this image and not all the images in the queue
+
+                    adjust_post_uploaded_assets_indexes();
+                    // Here we want to get the index of item the user want to delete and loop through the array and
+                    // Delete the item which has pciid input value with that index and
+                    let delete_index = $(this).parent().find(".pciid").val();
+                    console.log("delete : " + delete_index);
+                    let new_arr = [];
+                    let cn = 0;
+                    for(let k=0; k<uploaded_post_assets.length; k++) {
+                        if(k != delete_index) {
+                            new_arr[cn] = uploaded_post_assets[k];
+                            cn++;
+                        }
+                    }
+
+                    // We remove it's component
+                    $(this).parent().remove();
+
+
+
+                    // If we remove all the items, then the length will be 0 and we have to hide the share post button
+                    if($(".post-creation-item").length == 0 && $("#create-post-textual-content").val() == '') {
+                        $("#post-create-button").css("display", "none");
+                    }
+
+                    //we assign the new array which has deleted item removed to uploaded_post_assets array
+                    uploaded_post_assets = new_arr;
+                });
+            };
+        }
+    });
+})
+
 $(".share-post").click(function(event) {
     /*
     I SPENT WITH THAT FEATURE More than 2 Hours in a row and I got a headache so please read the following statement:
@@ -211,9 +360,17 @@ $(".share-post").click(function(event) {
 
     let formData = new FormData($("#create-post-form").get(0));
     
+    // Append image files
     for(let i = 0;i<uploaded_post_assets.length;i++) {
         formData.append(uploaded_post_assets[i].name, uploaded_post_assets[i]);
     }
+
+    // Append video files
+    for(let i = 0;i<uploaded_post_assets_videos.length;i++) {
+        formData.append(uploaded_post_assets_videos[i].name, uploaded_post_assets_videos[i]);
+    }
+
+
 
     $.ajax({
         url: root + "api/post/post.php",
@@ -229,7 +386,7 @@ $(".share-post").click(function(event) {
             // Clear text
             $("#create-post-textual-content").val("");
             // Remove image template components
-            $(".image-post-uploaded-container").find(".post-creation-item").remove();
+            $(".post-assets-uploaded-container").find(".post-creation-item").remove();
             // Clear file
             $("#post-assets").val("");
 
@@ -259,6 +416,7 @@ $(".share-post").click(function(event) {
                     opacity: 0
                 }, 300);
             }, 3000, function() {$(".post-created-message").css("display", "none");});
+            $(".share-post").css('display', "none");
         },
         error: function(){
             console.log('error');
@@ -559,3 +717,63 @@ $(".decline-user").click(function(event) {
         }
     });
 });
+
+const get_thumbnail = async function(file, seekTo, component) {
+    let response = await getVideoCover(file, seekTo);
+
+    component.find(".video-post-thumbnail").attr("src", response);
+    console.log("what we get: ");
+    console.log(response);
+}
+
+function createPoster($video) {
+    var canvas = document.createElement("canvas");
+    canvas.width = 350;
+    canvas.height = 350;
+    canvas.getContext("2d").drawImage($video, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/jpeg");;
+}
+
+function getVideoCover(file, seekTo = 0.0) {
+    console.log("getting video cover for file: ", file);
+    return new Promise((resolve, reject) => {
+        // load the file to a video player
+        const videoPlayer = document.createElement('video');
+        videoPlayer.setAttribute('src', URL.createObjectURL(file));
+        videoPlayer.load();
+        videoPlayer.addEventListener('error', (ex) => {
+            reject("error when loading video file", ex);
+        });
+        // load metadata of the video to get video duration and dimensions
+        videoPlayer.addEventListener('loadedmetadata', () => {
+            // seek to user defined timestamp (in seconds) if possible
+            if (videoPlayer.duration < seekTo) {
+                reject("video is too short.");
+                return;
+            }
+            // delay seeking or else 'seeked' event won't fire on Safari
+            setTimeout(() => {
+              videoPlayer.currentTime = seekTo;
+            }, 200);
+            // extract video thumbnail once seeking is complete
+            videoPlayer.addEventListener('seeked', () => {
+                console.log('video is now paused at %ss.', seekTo);
+                // define a canvas to have the same dimension as the video
+                const canvas = document.createElement("canvas");
+                canvas.width = videoPlayer.videoWidth;
+                canvas.height = videoPlayer.videoHeight;
+                // draw the video frame to canvas
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+                // return the canvas image as a blob
+                ctx.canvas.toBlob(
+                    blob => {
+                        resolve(createPoster(videoPlayer));
+                    },
+                    "image/jpeg",
+                    0.75 /* quality */
+                );
+            });
+        });
+    });
+}

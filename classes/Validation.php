@@ -62,7 +62,7 @@ class Validation {
                                 Do not use getimagesize() to check that a given file is a valid image. Use a purpose-built solution such as the Fileinfo 
                                 extension instead. 
                                 */
-                                // ----------------------      CHCK IMAGE TYPE      ----------------------
+                                // ----------------------      CHECK IMAGE TYPE      ----------------------
 
                                 $img = $_FILES;
                                 foreach($img as $t) {
@@ -90,6 +90,26 @@ class Validation {
 
                                 // Add some layer of image upload security later
                             break;
+                            case 'video': 
+                                $file = $item;
+                                $allowedVideoExtensions = array(".mp4", ".mov", ".wmv", ".flv", ".avi", ".avchd", ".webm", ".mkv");
+
+                                $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);
+                                $original_extension = strtolower($original_extension);
+
+                                // This is more secure (IMPOSTANT: change name to tmp_name ine $file variable if you want to use finfo to check images)
+                                /*$finfo = new \finfo(FILEINFO_MIME_TYPE);
+                                $type = $finfo->file($file);*/
+                                if (!in_array($original_extension, $allowedVideoExtensions))
+                                {
+                                    $this->addError("Only The following video formats are supported to be used.");
+                                }
+
+                                // Video should not exceed 1GB
+                                if ($img["size"] > 1073741824) {
+                                    $this->addError("Sorry, your file is too large.");
+                                }
+
                         }
                     }
                 }

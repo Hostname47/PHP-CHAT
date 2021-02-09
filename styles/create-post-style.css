@@ -16,7 +16,7 @@
     background-color: rgb(24, 24, 24);
 }
 
-.image-post-uploaded-container {
+.post-assets-uploaded-container {
     display: flex;
     margin: 4px 8px;
 }
@@ -31,8 +31,9 @@
     cursor: pointer;
     border-radius: 50%;
     top: 6px;
-    right: 12px;
+    right: 6px;
 
+    z-index: 1;
     width: 20px;
     height: 20px;
     background-color: rgb(90, 90, 90);
@@ -72,4 +73,129 @@
     margin: 0 4px;
 
     overflow: hidden;
+}
+
+.live-button-style {
+    background-size: 22px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(../assets/images/icons/black-live.png);
+
+    height: 40px;
+    width: 40px;
+
+    cursor: pointer;
+}
+
+.create-post-profile-owner-picture-container {
+    height: 30px;
+    width: 30px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-post-profile-owner-picture {
+    height: 30px;
+    display: flex;
+}
+
+.assets-pending {
+    z-index: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgb(185, 185, 185);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.pending-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    width: 80%;
+
+    border-radius: 50%;
+
+    background-color: rgb(185, 185, 185);
+}
+
+.pending-inner {
+    position: relative;
+    height: 95%;
+    width: 95%;
+
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pendulum {
+    top: 40%;
+    height: 68%;
+    position: absolute;
+    width: 8px;
+    
+    background-color: rgba(0, 0, 0, 0.4);
+
+    transform-origin: 50% 6px;
+    transform: translate(50%, 50%);
+    animation: orbita 2s linear infinite;
+    -webkit-animation: orbita 2s linear infinite;
+    -moz-animation: orbita 2s cubic-bezier(.86,-0.51,.47,.99) infinite;
+    -o-animation: orbita 2s linear infinite;
+}
+
+.pendulum-wrapper {
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    border-radius: 50%;
+    background-color: rgb(185, 185, 185);
+}
+
+@keyframes orbita {
+    0% {
+      transform:translate(0%, 0%) rotate(0deg);
+    }
+    100% {
+      transform:translate(0%, 0%) rotate(360deg);
+    }
+}
+
+.post-creation-video-image-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-creations-video-image {
+    height: 40px;
+    width: 40px;
+    display: flex;
 }

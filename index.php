@@ -69,6 +69,11 @@
                         }
                     </script>
                 </div>
+                <div class="red-message">
+                    <p class="red-message-text"></p>
+                    <div class="delete-message-hint">
+                    </div>
+                </div>
                 <?php include_once "components/basic/create-post.php"; ?>
                 <?php //include_once "components/post/post_viewer.php"; ?>
                 <div style="display: none" class="post-item">

@@ -10,7 +10,9 @@
     </div>
     <div class="flex-space create-post-header">
         <div class="row-v-flex">
-            <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-2" alt="">
+            <div class="create-post-profile-owner-picture-container">
+                <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="create-post-profile-owner-picture" alt="">
+            </div>    
             <div class="horizontal-menu-item-wrapper" style="margin-left: 8px">
                 <a href="" class="button-style-4 button-with-suboption more-button">Post to timeline</a>
                 <div class="sub-options-container sub-options-container-style-2" style="z-index: 1">
@@ -67,18 +69,19 @@
     <div>
         <textarea name="post-textual-content" form="create-post-form" id="create-post-textual-content" class="textarea-style-2" placeholder="What's on your mind .."></textarea>
     </div>
-    <div class="image-post-uploaded-container">
+    <div class="post-assets-uploaded-container">
         
     </div>
     <div class="row-v-flex horizontal-frame-style-1">
         <div class="relative" style="overflow: hidden; width: 40px">
-            <input type="file" multiple form="create-post-form" id="post-assets" class="absolute no-opacity-element">
+            <input type="file" multiple form="create-post-form" accept=".jpg,.jpeg,.png, .gif" id="post-assets" class="absolute no-opacity-element" style="cursor: pointer">
             <div class="photo-or-video-background button-style-6"></div>
         </div>
         <div class="relative" style="overflow: hidden; width: 40px">
-            <a type="file" class="no-opacity-element"></a>
-            <div class="black-live button-style-6"></div>
+            <input type="file" form="create-post-form" accept=".mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi" id="post-video" class="absolute no-opacity-element" style="cursor: pointer">
+            <div class="multimedia-background button-style-6"></div>
         </div>
+        <div class="live-btn live-button-style"></div>
     </div>
     <div class="button-style-7-container" id="post-create-button">
         <form action="" method="POST" id="create-post-form" name="create-post-form" enctype="multipart/form-data">
