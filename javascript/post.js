@@ -21,7 +21,6 @@ for(let i = 0;i<posts.length;i++) {
     // Here the appearance of images in post will be different depends on the number of images
     if(num_of_medias == 2) {
         for(let k = 0;k<num_of_medias; k++) {
-            console.log("has 2 container");
             let ctn = media_containers[k];
     
             $(ctn).css("width", half_width_marg + 3);
@@ -29,13 +28,10 @@ for(let i = 0;i<posts.length;i++) {
             $(ctn).find(".post-media-image").height("100%");
         }
 
-        console.log($(media_containers[0]));
-
         $(media_containers[0]).css("margin-right", "3px");
         $(media_containers[1]).css("margin-left", "3px");
 
     } else if(num_of_medias == 3) {
-        console.log("has 3");
         for(let k = 0;k<2; k++) {
             let ctn = media_containers[k];
 
@@ -101,13 +97,11 @@ for(let i = 0;i<posts.length;i++) {
         $(".more-posts-items").click(function() {
             go_to_post($(this));
         });
-        console.log(media_containers[3]);
     }
 }
 
 $('.media-container').each(function(i, obj) {
     if($(this).find(".post-media-item-container").length == "1") {
-        console.log("test");
 
         let image_height = $(obj).find(".post-media-image").height();
         let image_width = $(obj).find(".post-media-image").width();
@@ -164,7 +158,52 @@ function go_to_post(post) {
 
     // Check if the post is image(s) only post
     if(post_container.find(".image-post")) {
-        console.log("Yeah it's image post !");
         window.location.href = root + "post/post-skeleton.php?pid=" + post_id;
     }
 }
+
+$(".comment-input").on({
+    keydown: function(event) {
+        let comment = $(this);
+        if($(this).is(":focus") && (event.keyCode == 13)) {
+            if($(this).val() != "") {
+                let post_container = $(this);
+                while(!post_container.hasClass("post-item")) {
+                    post_container = post_container.parent();
+                }
+                let post_id = post_container.find(".pid").val();
+                $.ajax({
+                    url: root + "security/get_current_user.php",
+                    success(response) {
+                        let comment_owner = response.id;
+                        let comment_text = comment.val();
+
+                        $.ajax({
+                            url: root+"api/comment/post.php",
+                            data: {
+                                "comment_owner": comment_owner,
+                                "post_id": post_id,
+                                "comment_text": comment_text
+                            },
+                            type: 'POST',
+                            success: function(response) {
+                                comment.val("");
+
+                                // Get post comments container
+                                let comment_container = comment;
+                                while(!comment_container.hasClass("comment-section")) {
+                                    comment_container = comment_container.parent();
+                                }
+                                
+                                comment_container.prepend(response);
+                            }
+                        })
+                    }
+                });
+            } else {
+                console.log("empty comment !");
+            }
+            return false;
+        }
+    }
+});

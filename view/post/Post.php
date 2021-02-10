@@ -114,14 +114,16 @@ VIDEO;
                                 </div>
                             </div>
                         </div>
-                        <div class="comment-block">
-                            <div>
-                                <img src="$" class="image-style-9" alt="">
-                            </div>
-                            <div class="comment-input-form-wrapper">
-                                <form action="" method="POST" class="comment-form relative">
-                                    <input type="text" name="comment" placeholder="Write a comment .." class="comment-style">
-                                </form>
+                        <div class="class="owner-comment"">
+                            <div class="comment-block">
+                                <div>
+                                    <img src="$current_user_picture" class="image-style-9" alt="">
+                                </div>
+                                <div class="comment-input-form-wrapper">
+                                    <form action="" method="POST" class="comment-form relative">
+                                        <input type="text" name="comment" autocomplete="off" placeholder="Write a comment .." class="comment-style comment-input">
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -130,6 +132,54 @@ VIDEO;
             </div>
 
 EOS;
+        }
+
+        public static function generate_comment($comment) {
+
+            $comment_owner = new User();
+            $comment_owner_picture = Config::get("root/path") . 
+                (empty($comment_owner->getPropertyValue("picture")) 
+                ? "assets/images/logos/logo512.png" : $comment_owner->getPropertyValue("picture"));
+            $comment_owner_username = $comment_owner->getPropertyValue("username");
+            $comment_text = $comment->get_property("comment_text");
+
+            $now = strtotime("now");
+            $seconds = floor($now - strtotime($comment->get_property("comment_date")));
+            
+            if($seconds > 29030400) {
+                $comment_life = floor($seconds / 29030400) . "y";
+            } else if($seconds > 2419200) {
+                $comment_life = floor($seconds / 604800) . "w";
+            } else if($seconds < 604799 && $seconds > 86400) {
+                $comment_life = floor($seconds / 86400) . "d";
+            } else if($seconds < 86400 && $seconds > 3600) {
+                $comment_life = floor($seconds / 3600) . "h";
+            } else if($seconds < 3600 && $seconds > 60) {
+                $comment_life = floor($seconds / 60) . "min";
+            } else {
+                $comment_life = $seconds . "sec";
+            }
+
+            return <<<COM
+                <div class="comment-block">
+                    <div>
+                        <img src="$comment_owner_picture" class="image-style-9" alt="">
+                    </div>
+                    <div>
+                        <div class="comment-wrapper">
+                            <a href="" class="comment-owner">$comment_owner_username</a>
+                            <p class="comment-text">$comment_text</p>
+                        </div>
+                        <div class="row-v-flex underneath-comment-buttons-container">
+                            <a href="" class="link-style-3">like</a>
+                            <a href="" class="link-style-3">reply</a>
+                            <div style="margin-left: 6px">
+                                <p class="regular-text-style-2"> . <span class="time-of-comment">$comment_life</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+COM;
         }
 
         public function generate_post_image($url) {
