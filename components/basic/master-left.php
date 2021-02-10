@@ -10,6 +10,7 @@
     $followers_number = Follow::get_user_followers_number($current_user_id);
     $followed_number = Follow::get_followed_users_number($current_user_id);
     $friends_number = UserRelation::get_friends_number($current_user_id);
+    $user_profile_path = Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");
 
 ?>
 
@@ -70,11 +71,11 @@
                     <div class="cover-container">
                         <img src="<?php echo $user->getPropertyValue("cover"); ?>" class="cover-photo" alt="">
                     </div>
-                    <a href="<?php echo Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username"); ?>" class="picture-container absolute">
+                    <a href="<?php echo $user_profile_path; ?>" class="picture-container absolute">
                         <img src="<?php echo $user_profile; ?>" class="picture-photo" alt="">
                     </a>
                     <div class="header-profile-name-container">
-                        <a href="" class="no-underline"><h1 class="header-profile-fullname"><?php echo $user->getPropertyValue("firstname") . " " . $user->getPropertyValue("lastname"); ?></h1></a>
+                        <a href="<?php echo $user_profile_path; ?>" class="no-underline"><h1 class="header-profile-fullname"><?php echo $user->getPropertyValue("firstname") . " " . $user->getPropertyValue("lastname"); ?></h1></a>
                         <p class="header-profile-username">@<?php echo $user->getPropertyValue("username"); ?></p>
                     </div>
                     <div class="user-info-section row-v-flex">

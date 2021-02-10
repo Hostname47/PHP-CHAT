@@ -115,3 +115,18 @@
     align-items: center;
     margin-right: 6px;
 }
+
+.contact-user-picture-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    height: 26px;
+    width: 26px;
+}
+
+.contact-user-picture {
+    display: flex;
+    height: 100%;
+}

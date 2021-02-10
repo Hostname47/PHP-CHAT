@@ -23,7 +23,9 @@ use classes\Config;
 
             echo <<<EOS
             <div class="contact-user">
-                <img src="$user_picture" class="image-style-3 contact-user-picture" alt="">
+                <div class="contact-user-picture-container">
+                    <img src="$user_picture" class="contact-user-picture" alt="">
+                </div>
                 <p class="contact-user-name">$user_name</p>
                 <div class="row-v-flex right-pos-margin">
                     <div class="contact-item-buttons-container">

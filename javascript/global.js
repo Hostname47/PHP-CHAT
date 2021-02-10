@@ -27,8 +27,8 @@ let headerHeight = 55;
 
 function adjust_left_right_containers() {
     $("#master-right").height($(window).height() - headerHeight - 4);
-    $("#master-left").height($(window).height() - headerHeight - 12);
-    $("#master-left-container").height($("#master-left").height() - 78);
+    $("#master-left").height($(window).height() - headerHeight - 7);
+    $("#master-left-container").height($("#master-left").height() - 84);
     $("#contacts-container").height($("#master-right").height() - 40);
 }
 

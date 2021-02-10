@@ -122,9 +122,7 @@
                 Session::flash("register_success", "welcome to VOID47 chat application");
                 Session::flash("new_username", Common::getInput($_POST, "username"));
             } else {
-                foreach($validate->errors() as $key =>$error) {
-                    echo "error: " . $error . "<br>";
-                }
+                $login_failure_message = $validate->errors()[0];
             }
         }
     }

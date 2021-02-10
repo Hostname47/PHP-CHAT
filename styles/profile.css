@@ -306,16 +306,12 @@ main {
     padding-left: 18px;
 }
 
-.user-info-square-shapes-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-top: 6px;
-}
-
 .user-info-square-shape {
     display: flex;
-    width: 24%;
+    width: 32.2%;
+    padding: 2px;
+    margin: 2px;
+    flex-wrap: wrap;
     box-sizing: border-box;
     background-color: rgb(190, 190, 190);
 }
@@ -334,4 +330,13 @@ main {
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+}
+
+.metadata-box:first-child {
+    border-top: 1px solid rgb(132, 132, 132);
+}
+
+.metadata-box {
+    padding: 6px 0;
+    border-bottom: 1px solid rgb(132, 132, 132);
 }

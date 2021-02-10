@@ -13,16 +13,33 @@ if(image_height > image_width) {
 
 $("#post-assets-container").on({
     mouseenter: function() {
-        $(".asset-move-button").css("display", "block");
-        $(".asset-move-button").animate({
-            opacity: 1
-        }, 200);
+        if(current_index == 0) {
+            $(".asset-back").css("display", "none");
+            $(".asset-next").css("display", "flex");
+            $(".asset-move-button").animate({
+                opacity: 1
+            }, 200);
+        } else if(current_index != 0 && current_index != images_length-2) {
+            $(".asset-back").css("display", "flex");
+            $(".asset-next").css("display", "flex");
+            $(".asset-move-button").animate({
+                opacity: 1
+            }, 200);
+        } else {
+            $(".asset-back").css("display", "flex");
+            $(".asset-next").css("display", "none");
+            $(".asset-move-button").animate({
+                opacity: 1
+            }, 200);
+        }
     },
     mouseleave: function() {
-        $(".asset-move-button").css("display", "none");
-        $(".asset-move-button").animate({
-            opacity: 0
-        }, 200);
+        if(current_index != 0) {
+            $(".asset-move-button").css("display", "none");
+            $(".asset-move-button").animate({
+                opacity: 0
+            }, 200);
+        }
     }
 })
 
@@ -56,9 +73,7 @@ $(".collapse-text").click(function() {
     }
 });
 
-
-
-$(".exit-button").hover(function(event) {
+$(".exit-button").click(function(event) {
     /*
         We need some way to go back to the ame page without refreshing, because posts are arraged randomly if the page reloaded
         one more time, and so we'll miss the place where the user click on the post; we need a way to keep the page in its place
@@ -66,3 +81,52 @@ $(".exit-button").hover(function(event) {
     */
     window.history.back();
 });
+
+// Get the first image's src and past it to the post viewer image
+$(".asset-image").attr("src", $(".images").find(".post-asset-image").first().val());
+$(".asset-back").css("display", "none");
+
+// If the post has only one image, then we don't have to have navigation buttons
+let current_index = $(".current-asset-image").val();
+let images_length =$(".images").find(".post-asset-image").length;
+
+if(images_length == 1) {
+    $(".asset-move-button").remove();
+} else {
+    // If it does, then we handle navigation buttons
+
+    /*
+        Next button: we first get the current image position then we move forward. Notice when we reach the last 
+        element we fetch the first one
+        IMPORTANT: Later try to add reactions on each image so that when we fetch the next item we send a request to the 
+        server to get informations about the fetched image and set response data to the components in the right side
+    */
+    $(".asset-next").click(function() {
+
+        $(".asset-back").css("display", "flex");
+        if(current_index == images_length-2) {
+            $(".asset-next").css("display", "none");
+            let next_image_src = $(".images").find(".post-asset-image").eq(++current_index).val();
+            $(".asset-image").attr("src", next_image_src);
+            return;
+        }
+        
+        let next_image_src = $(".images").find(".post-asset-image").eq(++current_index).val();
+        $(".asset-image").attr("src", next_image_src);
+        $(".current-asset-image").val(current_index)
+    });
+
+    $(".asset-back").click(function() {
+        $(".asset-next").css("display", "flex");
+        if(current_index == 1) {
+            $(".asset-back").css("display", "none");
+            let next_image_src = $(".images").find(".post-asset-image").eq(--current_index).val();
+            $(".asset-image").attr("src", next_image_src);
+            return;
+        }
+
+        let next_image_src = $(".images").find(".post-asset-image").eq(--current_index).val();
+        $(".asset-image").attr("src", next_image_src);
+        $(".current-asset-image").val(current_index)
+    });
+}

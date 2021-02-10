@@ -7,7 +7,9 @@
 
     class Post {
 
-        function generate_post($post) {
+        function generate_post($post, $user) {
+            $current_user_picture = $user->getPropertyValue("picture");
+
             $post_owner_user = new User();
             $post_owner_user->fetchUser("id", $post->get_property("post_owner"));
 
@@ -114,7 +116,7 @@ VIDEO;
                         </div>
                         <div class="comment-block">
                             <div>
-                                <img src="" class="image-style-9" alt="">
+                                <img src="$" class="image-style-9" alt="">
                             </div>
                             <div class="comment-input-form-wrapper">
                                 <form action="" method="POST" class="comment-form relative">
@@ -132,8 +134,9 @@ EOS;
 
         public function generate_post_image($url) {
             return <<<PI
-                <div class="post-media-item-container">
+                <div class="post-media-item-container relative">
                     <img src="$url" class="post-media-image" alt="">
+                    <div class="post-view-button"></div>
                 </div>
 PI;
         }

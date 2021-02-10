@@ -59,6 +59,12 @@
     <?php include_once "components/basic/header.php"; ?>
     <main>
         <div id="global-container" class="relative">
+            <div class="post-viewer-only">
+                <div class="viewer-post-wrapper">
+                    <img src="assets/images/read.png" class="post-view-image" alt="">
+                    <div class="close-view-post"></div>
+                </div>
+            </div>
             <?php include_once "components/basic/master-left.php"; ?>
             <div id="master-middle">
                 <div class="green-message">
@@ -140,80 +146,20 @@
                     <input type="hidden" class="pid" value="">
                 </div>
                 <div id="posts-container">
-                <div class="post-item">
-                <div class="timeline-post image-post">
-                    <div class="post-header flex-space">
-                        <div class="post-header-without-more-button">
-                            <div class="post-owner-picture-container">
-                                <img src="$post_owner_picture" class="post-owner-picture" alt="">
-                            </div>
-                            <div class="post-header-textual-section">
-                                <a href="$post_owner_profile" class="post-owner-name">$post_owner_name</a>
-                                <div class="row-v-flex">
-                                    <p class="regular-text"><a href="" class="post-date">$post_date</a> <span style="font-size: 8px">.</span></p>
-                                    <img src="assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
-                                </div>
-                            </div>
-                        </div>
+                    <?php if(count($journal_posts) == 0) { ?>
                         <div>
-                            <a href="" class="button-style-6 dotted-more-back"></a>
+                            <h2>Try to add friends, or follow them to see their posts ..</h1>
+                            <p>click <a href="http://127.0.0.1/CHAT/search.php" class="link" style="color: rgb(66, 219, 66)">here</a> to go to the search page</p>
                         </div>
-                    </div>
-                    <p class="post-text">
-                        This is post text
-                    </p>
-                    <div class="media-container">
-                    <video class="post-video" controls>
-                        <source src="data/seed.mp4" type="video/mp4">
-                        <source src="movie.ogg" type="video/ogg">
-                        Your browser does not support the video tag.
-                    </video>
-                    </div>
-                    <div class="react-on-opost-buttons-container">
-                        <a href="" class="white-like-back post-bottom-button">Like</a>
-                        <a href="" class="white-comment-back post-bottom-button">Comment</a>
-                        <a href="" class="reply-back post-bottom-button">Share</a>
-                    </div>
-                    <div class="comment-section">
-                        <div class="comment-block">
-                            <div>
-                                <img src="assets/images/read.png" class="image-style-9" alt="">
-                            </div>
-                            <div>
-                                <div class="comment-wrapper">
-                                    <a href="" class="comment-owner">grotto</a>
-                                    <p class="comment-text">This is a comment for testing stuff</p>
-                                </div>
-                                <div class="row-v-flex underneath-comment-buttons-container">
-                                    <a href="" class="link-style-3">like</a>
-                                    <a href="" class="link-style-3">reply</a>
-                                    <div style="margin-left: 6px">
-                                        <p class="regular-text-style-2"> . <span class="time-of-comment">5min</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-block">
-                            <div>
-                                <img src="" class="image-style-9" alt="">
-                            </div>
-                            <div class="comment-input-form-wrapper">
-                                <form action="" method="POST" class="comment-form relative">
-                                    <input type="text" name="comment" placeholder="Write a comment .." class="comment-style">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    <input type="hidden" class="pid" value="$post_id">
-                </div>
-                    <?php
+                    <?php } else { 
                         foreach($journal_posts as $post) {
                             $post_view = new Post_View();
 
-                            echo $post_view->generate_post($post);
+                            echo $post_view->generate_post($post, $user);
                         }
+                    }
                     ?>
+
                 </div>
             </div>
             <?php include_once "components/basic/master-right.php" ?>

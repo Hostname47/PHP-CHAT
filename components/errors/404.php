@@ -1,6 +1,6 @@
 <?php
-    require "../../core/init.php";
     require "../../vendor/autoload.php";
+    require "../../core/init.php";
 
     use classes\Config;
 ?>
@@ -23,7 +23,13 @@
         We need first to check whether the user is logged in, if so we need to include basic header, otherwise 
         disconnected-header will be included. (We'll do that by using condition here)
     -->
-    <?php include_once "../basic/disconnected-header.php"; ?>
+    <?php
+        if($user->getPropertyValue("isLoggedIn")) {
+            include_once "../basic/header.php";
+        } else {
+            include_once "../basic/log-header.php";
+        }
+    ?>
     <main>
         <div id="main-wrapper">
             <h1 class="big-error-title">404 ERROR</h1>

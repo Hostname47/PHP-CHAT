@@ -17,6 +17,9 @@ require_once "../functions/sanitize_id.php";
 $pid = null;
 if(isset($_GET["pid"])) {
     $pid = sanitize_id($_GET["pid"]);
+} else {
+    // Redirect user to post not found page
+    Redirect::to(Config::get("root/path")."components/errors/404.php");
 }
 
 $post = new Post();
@@ -40,8 +43,31 @@ if($post->get_property("post_visibility") == 1) {
 $post_text_data = $post->get_property("text_content");
 
 // Get images
-$images = array();
 $poster_image_directory = $post->get_property("picture_media");
+
+$root = Config::get("root/path");
+$project_name = Config::get("root/project_name");
+$project_path = $_SERVER['DOCUMENT_ROOT'] . "/" . $project_name . "/";
+
+$post_images_dir = $project_path . $post->get_property("picture_media");
+
+$post_text_content = htmlspecialchars_decode($post->get_property("text_content"));
+
+$images = "";
+if(is_dir($post_images_dir)) {
+    if(is_dir_empty($post_images_dir) == false) {
+        $fileSystemIterator = new \FilesystemIterator($post_images_dir);
+        foreach ($fileSystemIterator as $fileInfo){
+            $fileName = $root . $poster_image_directory . $fileInfo->getFilename();
+            $images .= "<input type='hidden' value='$fileName' class='post-asset-image'>";
+        }
+        $images .= "<input type='hidden' value='0' class='current-asset-image'>";
+    }
+}
+
+function is_dir_empty($dir) {
+    return (count(glob("$dir/*")) === 0); // empty
+}
 
 function str_replace_first($search, $replace, $subject) {
     $pos = strpos($subject, $search);
@@ -85,10 +111,11 @@ foreach (scandir($directory) as $file) {
 <body>
 <?php include_once "../components/basic/header.php"; ?>
 <main>
-    <?php if($pid == null) { ?>
-        <p>Something went wrong</p>
-    <?php } else { ?>
+    <?php // Redirect to Post not found page ?>
     <div id="post-viewer">
+        <div class="images">
+            <?php echo $images; ?>
+        </div>
         <div id="post-assets-container" class="relative">
             <div id="asset-wrapper">
                 <img src="../assets/images/read.png" class="asset-image" alt="">
@@ -200,7 +227,6 @@ foreach (scandir($directory) as $file) {
             </div>
         </div>
     </div>
-    <?php } ?>
 </main>
 </body>
 </html>

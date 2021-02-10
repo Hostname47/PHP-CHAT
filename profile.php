@@ -30,7 +30,7 @@ if(!($user->getPropertyValue("username") == $username) && $username != "") {
 }
 
 $profile_user_id = $fetched_user->getPropertyValue("id");
-$profile_user_picture = empty($fetched_user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $fetched_user->getPropertyValue("picture");
+$profile_user_picture = Config::get("root/path") . (empty($fetched_user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $fetched_user->getPropertyValue("picture"));
 
 if(isset($_POST["save-profile-edites"])) {
     if(Token::check(Common::getInput($_POST, "save_token"), "saveEdits")) {
@@ -55,16 +55,23 @@ if(isset($_POST["save-profile-edites"])) {
             )
         ));
         
-        $validate->check($_FILES, array(
-            "picture"=>array(
-                "name"=>"Picture",
-                "image"=>"image"
-            ),
-            "cover"=>array(
-                "name"=>"Cover",
-                "image"=>"image"
-            )
-        ));
+        if(!empty($_FILES["picture"]["name"])) {
+            $validate->check($_FILES, array(
+                "picture"=>array(
+                    "name"=>"Picture",
+                    "image"=>"image"
+                )
+            ));
+        }
+
+        if(!empty($_FILES["cover"]["name"])) {
+            $validate->check($_FILES, array(
+                "cover"=>array(
+                    "name"=>"Cover",
+                    "image"=>"image"
+                )
+            ));
+        }
 
         if($validate->passed()) {
             // Set textual data
@@ -161,6 +168,12 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
 <body>
     <?php include_once "components/basic/header.php"; ?>
     <main class="relative">
+        <div class="post-viewer-only">
+            <div class="viewer-post-wrapper">
+                <img src="assets/images/read.png" class="post-view-image" alt="">
+                <div class="close-view-post"></div>
+            </div>
+        </div>
         <section id="first-section">
             <div class="relative flex-column">
                 <div>
@@ -234,40 +247,56 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
                 <div class="user-info-section">
                     <h2 class="title-style-4">About</h2>
                     <p class="calendar-icon regular-text-style-2">Member since <?php echo date("F Y", strtotime($fetched_user->getPropertyValue("joined"))) ?></p>
+
+                    <div style="margin-top: 8px">
+                        <?php 
+
+                            $metadata = $user->get_metadata();
+
+                            foreach($metadata as $md) {
+                                $label = $md->label;
+                                $content = $md->content;
+                                echo <<<METADATA
+                                <div class="flex metadata-box">
+                                    <p class="regular-text-style-1">$label</p>
+                                    <p class="regular-text-style-1 right-pos-margin">$content</p>
+                                </div>
+METADATA;
+                            }
+
+                        ?>
+                    </div>
                 </div>
                 <div class="user-info-section">
                     <div class="flex-space">
                         <h2 class="title-style-4">Media</h2>
                         <a href="" class="link-style-1">Show all</a>
                     </div>
-                    <div>
-                        <div class="user-info-square-shapes-container">
-                            <div class="user-info-square-shape">
-                                
-                            </div>
-                            <div class="user-info-square-shape">
-                                
-                            </div>
-                            <div class="user-info-square-shape">
-                                
-                            </div>
-                            <div class="user-info-square-shape">
-                                
-                            </div>
+                    <div class="flex flex-wrap">
+                        <div class="user-info-square-shape">
+                            
                         </div>
-                        <div class="user-info-square-shapes-container">
-                            <div class="user-info-square-shape">
-                                
-                            </div>
-                            <div class="user-info-square-shape">
-                                
-                            </div>
-                            <div class="user-info-square-shape">
-                                
-                            </div>
-                            <div class="user-info-square-shape">
-                                
-                            </div>
+                        <div class="user-info-square-shape">
+                            
+                        </div>
+                        <div class="user-info-square-shape">
+                            
+                        </div>
+                        <div class="user-info-square-shape">
+                            
+                        </div>
+                    
+                        <div class="user-info-square-shape">
+                            
+                        </div>
+                        <div class="user-info-square-shape">
+                            
+                        </div>
+                        <div class="user-info-square-shape">
+                            
+                        </div>
+                        <div class="user-info-square-shape">
+                            
                         </div>
                     </div>
 
@@ -280,7 +309,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
                         foreach($posts as $post) {
                             $post_view = new Post_view();
 
-                            echo $post_view->generate_post($post);
+                            echo $post_view->generate_post($post, $user);
                         }
                     ?>
                 </div>

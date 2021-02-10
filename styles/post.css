@@ -106,13 +106,13 @@
 }
 
 .react-on-opost-buttons-container {
-    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     padding: 6px 0 8px 0;
     display: flex;
     align-items: center;
     margin: 0 8px;
-    border-bottom: thin solid rgb(190, 190, 190);
+    border-bottom: thin solid rgb(59, 59, 59);
 }
 
 .post-bottom-button {
@@ -216,3 +216,61 @@
 .post-video {
     width: 100%;
 }
+
+.post-view-button, .close-view-post {
+    position: absolute;
+
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    opacity: 0.6;
+
+    border-radius: 50%;
+
+    top: 16px;
+    right: 16px;
+
+    cursor: pointer;
+
+    background-image: url(../assets/images/icons/white-eye.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 18px;
+
+    transition: all 0.4s ease;
+}
+
+.close-view-post {
+    right: 20px;
+    background-image: url(../assets/images/icons/white-close.png);
+}
+.close-view-post:hover {
+    opacity: 1;
+}
+
+.post-view-button:hover {
+    opacity: 1;
+}
+
+.post-viewer-only {
+    position: fixed;
+    top: 55px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 400px;
+
+    background-color: black;
+    z-index: 9;
+}
+
+.viewer-post-wrapper {
+    height: 100%;
+}
+
+.post-view-image {
+    display: flex;
+}
+

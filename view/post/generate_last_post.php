@@ -21,6 +21,6 @@ $p = new Post();
 $p->fetchPost($post->id);
 
 $post_component = new Post_Manager();
-$post_component = $post_component->generate_post($p);
+$post_component = $post_component->generate_post($p, $user);
 
 echo $post_component;
