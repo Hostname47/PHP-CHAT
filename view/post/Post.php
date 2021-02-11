@@ -3,11 +3,12 @@
     namespace view\post;
 
     use classes\{Config};
-    use models\User;
+    use models\{User, Comment, Post as Pst};
 
     class Post {
 
         function generate_post($post, $user) {
+            $current_user_id = $user->getPropertyValue("id");
             $current_user_picture = $user->getPropertyValue("picture");
 
             $post_owner_user = new User();
@@ -63,6 +64,14 @@ VIDEO;
                 }
             }
 
+            $comments_components = '';
+            foreach(Comment::fetch_post_comments($post_id) as $comment) {
+                $cm = new Comment();
+                $cm->fetch_comment($comment->id);
+
+                $comments_components .= self::generate_comment($cm, $current_user_id);
+            }
+
             return <<<EOS
             <div class="post-item">
                 <div class="timeline-post image-post">
@@ -96,24 +105,7 @@ VIDEO;
                         <a href="" class="reply-back post-bottom-button">Share</a>
                     </div>
                     <div class="comment-section">
-                        <div class="comment-block">
-                            <div>
-                                <img src="assets/images/read.png" class="image-style-9" alt="">
-                            </div>
-                            <div>
-                                <div class="comment-wrapper">
-                                    <a href="" class="comment-owner">grotto</a>
-                                    <p class="comment-text">This is a comment for testing stuff</p>
-                                </div>
-                                <div class="row-v-flex underneath-comment-buttons-container">
-                                    <a href="" class="link-style-3">like</a>
-                                    <a href="" class="link-style-3">reply</a>
-                                    <div style="margin-left: 6px">
-                                        <p class="regular-text-style-2"> . <span class="time-of-comment">5min</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        $comments_components
                         <div class="class="owner-comment"">
                             <div class="comment-block">
                                 <div>
@@ -134,14 +126,17 @@ VIDEO;
 EOS;
         }
 
-        public static function generate_comment($comment) {
+        public static function generate_comment($comment, $current_user_id) {
 
             $comment_owner = new User();
+            $comment_owner->fetchUser('id', $comment->get_property("comment_owner"));
+
             $comment_owner_picture = Config::get("root/path") . 
                 (empty($comment_owner->getPropertyValue("picture")) 
                 ? "assets/images/logos/logo512.png" : $comment_owner->getPropertyValue("picture"));
             $comment_owner_username = $comment_owner->getPropertyValue("username");
             $comment_text = $comment->get_property("comment_text");
+            $comment_id = $comment->get_property("id");
 
             $now = strtotime("now");
             $seconds = floor($now - strtotime($comment->get_property("comment_date")));
@@ -157,18 +152,62 @@ EOS;
             } else if($seconds < 3600 && $seconds > 60) {
                 $comment_life = floor($seconds / 60) . "min";
             } else {
-                $comment_life = $seconds . "sec";
+                $comment_life = "Now";
             }
+
+            /*
+                Here we want to give the user the ability to delete a comment only in two situations:
+                1- If the comment owner if the same user logged in
+                2- if the user who is currently logging in is the owner of the post (Here we need to get post owner from Post table
+                by using comment post_id)
+                -----------
+                First we get the post id from comment and then pass it to get_post_owner function to get the owner of post
+            */
+            
+            $comment_options = <<<CO
+    <div class="relative comment">
+        <div class="comment-options-container button-with-suboption"></div>
+        <div class="sub-options-container sub-options-container-style-2" style="z-index: 1; width: 129px; top: 20px; left: -100px">
+            <div class="options-container-style-1 black">
+CO;
+
+            $owner_of_post_contains_current_comment = $comment->get_property('post_id');
+            // We use Pst as Post model alias cauz we alsready have Post view manager in use
+            $owner_of_post_contains_current_comment = Pst::get_post_owner($owner_of_post_contains_current_comment);
+            if(($comment->get_property("comment_owner") == $current_user_id)
+                || $current_user_id == $owner_of_post_contains_current_comment->post_owner)
+            {
+                $comment_options .= <<<CO
+                <div class="sub-option-style-2">
+                    <a href="" class="black-link delete-comment">Delete comment</a>
+                </div>
+CO;
+            }
+
+            $comment_options .= <<<CO
+            <div class="sub-option-style-2">
+                <a href="" class="black-link reply-comment-button">Reply</a>
+            </div>
+        </div>
+    </div>
+</div>
+CO;
 
             return <<<COM
                 <div class="comment-block">
+                    <input type="hidden" class="comment_id" value="$comment_id">
                     <div>
                         <img src="$comment_owner_picture" class="image-style-9" alt="">
                     </div>
                     <div>
-                        <div class="comment-wrapper">
-                            <a href="" class="comment-owner">$comment_owner_username</a>
-                            <p class="comment-text">$comment_text</p>
+                        <div class="row-v-flex">
+                            <div class="comment-wrapper">
+                                <div>
+                                    <a href="" class="comment-owner">$comment_owner_username</a>
+                                    <p class="comment-text">$comment_text</p>
+                                </div>
+                            </div>
+                            $comment_options
                         </div>
                         <div class="row-v-flex underneath-comment-buttons-container">
                             <a href="" class="link-style-3">like</a>

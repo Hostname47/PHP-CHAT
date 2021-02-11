@@ -161,6 +161,16 @@ class Post {
         return $posts;
     }
 
+    public static function get_post_owner($post_id) {
+        DB::getInstance()->query("SELECT * FROM post WHERE id = ?", array($post_id));
+
+        if(DB::getInstance()->count() > 0) {
+            return DB::getInstance()->results()[0];
+        }
+
+        return false;
+    }
+
     public static function get_posts_number($user_id) {
         DB::getInstance()->query("SELECT * FROM post WHERE post_owner = ?", array($user_id));
 

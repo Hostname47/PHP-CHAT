@@ -23,6 +23,13 @@ if(!isset($_POST["post_id"])) {
     ));
 }
 
+if(!isset($_POST["current_user_id"])) {
+    echo json_encode(array(
+        "message"=>"Current user id required !",
+        "success"=>false
+    ));
+}
+
 if(!isset($_POST["comment_owner"])) {
     echo json_encode(array(
         "message"=>"comment owner required !",
@@ -40,6 +47,7 @@ if(!isset($_POST["comment_owner"]) || empty($_POST["comment_owner"])) {
 $comment_owner = sanitize_id($_POST["comment_owner"]);
 $post_id = sanitize_id($_POST["post_id"]);
 $comment_text = sanitize_text($_POST["comment_text"]);
+$current_user_id = sanitize_id($_POST["current_user_id"]);
 
 $comment = new Comment();
 $comment->setData(array(
@@ -49,7 +57,7 @@ $comment->setData(array(
 ));
 $comment = $comment->add();
 
-$post_manager = Post_Manager::generate_comment($comment);
+$post_manager = Post_Manager::generate_comment($comment, $current_user_id);
 
 echo $post_manager;
 

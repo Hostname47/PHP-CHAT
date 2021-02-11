@@ -183,7 +183,8 @@ $(".comment-input").on({
                             data: {
                                 "comment_owner": comment_owner,
                                 "post_id": post_id,
-                                "comment_text": comment_text
+                                "comment_text": comment_text,
+                                "current_user_id": current_user_id
                             },
                             type: 'POST',
                             success: function(response) {
@@ -196,6 +197,8 @@ $(".comment-input").on({
                                 }
                                 
                                 comment_container.prepend(response);
+                                let component = comment_container.find(".comment-block").first().find(".button-with-suboption")[0];
+                                handle_comment_event(component);
                             }
                         })
                     }
@@ -207,3 +210,20 @@ $(".comment-input").on({
         }
     }
 });
+
+function handle_comment_event(element) {
+    console.log("handling !");
+    $(element).click(function() {
+        console.log("I'm working !");
+        let container = $(element).parent().find(".sub-options-container");
+        if(container.css("display") == "none") {
+            $(".sub-options-container").css("display", "none");
+            container.css("display", "block");
+        } else {
+            container.css("display", "none");
+        }
+        return false;
+    });
+
+    // Handle like and reply below
+}

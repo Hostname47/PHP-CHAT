@@ -52,7 +52,7 @@ class Comment {
         return $this->db->error() == false ? true : false;
     }
 
-    public static function fetch_comment($property="id", $value) {
+    public function fetch_comment($value, $property="id") {
         $this->db->query("SELECT * FROM comment WHERE $property = ?", array($value));
         if($this->db->count() > 0) {
             $fetched_comment = $this->db->results()[0];
@@ -64,16 +64,16 @@ class Comment {
             $this->comment_edit_date = $fetched_comment->comment_edit_date;
             $this->comment_text = $fetched_comment->comment_text;
 
-            return $this;
+            return true;
         }
 
         return false;
     }
 
     public static function fetch_post_comments($post_id) {
-        $this->db->query("SELECT * FROM comment WHERE post_id = ?", array($post_id));
-        if($this->db->count() > 0) {
-            return $this->db->results();
+        DB::getInstance()->query("SELECT * FROM comment WHERE post_id = ?", array($post_id));
+        if(DB::getInstance()->count() > 0) {
+            return DB::getInstance()->results();
         }
 
         return array();

@@ -264,7 +264,7 @@ FM;
                                         <input type="hidden" class="message_id" value="$reply_message_id">
                                     </div>
                                     <div class="sub-option-style-2">
-                                        <a href="" class="black-link reply-button">Reply (under construction)</a>
+                                        <a href="" class="black-link reply-button">Reply</a>
                                         <input type="hidden" class="message_id" value="$reply_message_id">
                                     </div>
                                 </div>
