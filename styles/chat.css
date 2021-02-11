@@ -63,9 +63,25 @@
     font-size: 13px;
 }
 
-.chat-disc-user-image {
+.chat-disc-user-image-container {
     display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 44px;
+    width: 44px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+    background-color: rgb(31, 31, 31);
+
     margin-right: 6px;
+}
+
+.chat-disc-user-image {
+    height: 100%;
+    display: flex;
 }
 
 #friend-chat-discussions-container {

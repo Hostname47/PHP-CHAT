@@ -251,7 +251,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
                     <div style="margin-top: 8px">
                         <?php 
 
-                            $metadata = $user->get_metadata();
+                            $metadata = $fetched_user->get_metadata();
 
                             foreach($metadata as $md) {
                                 $label = $md->label;

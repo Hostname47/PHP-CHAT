@@ -197,7 +197,7 @@ $(".comment-input").on({
                                 }
                                 
                                 comment_container.prepend(response);
-                                let component = comment_container.find(".comment-block").first().find(".button-with-suboption")[0];
+                                let component = comment_container.find(".comment-block").first();
                                 handle_comment_event(component);
                             }
                         })
@@ -211,19 +211,167 @@ $(".comment-input").on({
     }
 });
 
+
+
 function handle_comment_event(element) {
-    console.log("handling !");
-    $(element).click(function() {
-        console.log("I'm working !");
-        let container = $(element).parent().find(".sub-options-container");
-        if(container.css("display") == "none") {
-            $(".sub-options-container").css("display", "none");
-            container.css("display", "block");
+    let suboption_container = $(element).find(".sub-options-container");
+    let suboption_button = $(element).find(".comment-options-button");
+
+    $(suboption_button).click(function(event) {
+        if($(suboption_container).css("display") == "none") {
+            $(".comment-block").find(".sub-options-container").css("display", "none");
+            $(suboption_container).css("display", "block");
         } else {
-            container.css("display", "none");
+            $(suboption_container).css("display", "none");
         }
+
+        event.stopPropagation();
+    });
+
+    $(".comment-block").on({
+        mouseenter: function() {
+            $(this).find(".comment-options-button").css("opacity", "1");
+        },
+        mouseleave: function() {
+            $(this).find(".comment-options-button").css("opacity", "0");
+        }
+    })
+
+    // Handle hide comment button
+    let hide = $(element).find(".hide-button");
+    $(hide).click(function() {
+        let container = $(this);
+        while(!container.hasClass("comment-block")) {
+            container = container.parent();
+        }
+
+        container.find(".comment-op").css("display", "none");
+        container.find(".comment-global-wrapper").css("display", "none");
+        container.find(".sub-options-container").css("display", "none");
+
+        container.find(".hidden-comment-hint").css("display", "block");
+
+        return false;
+    });
+    // Handle show comment after hide it
+    let show_comment = $(element).find(".show-comment");
+    $(show_comment).click(function() {
+        let container = $(this);
+        while(!container.hasClass("comment-block")) {
+            container = container.parent();
+        }
+
+        container.find(".comment-op").css("display", "block");
+        container.find(".comment-global-wrapper").css("display", "block");
+
+        container.find(".hidden-comment-hint").css("display", "none");
+
+        return false;
+    });
+    // Handle comment deletion
+    let delete_comment = $(element).find(".delete-comment");
+    $(delete_comment).click(function() {
+        let container = $(this);
+        while(!container.hasClass("comment-block")) {
+            container = container.parent();
+        }
+
+        let cid = container.find(".comment_id").val();
+        $.ajax({
+            url: root + "api/comment/delete.php",
+            type: 'POST',
+            data: {
+                comment_id: cid
+            },
+            success(response) {
+                if(response == 1) {
+                    container.find(".sub-options-container").css("display", "none");
+                    container.remove();
+                }
+            }
+        });
+
         return false;
     });
 
-    // Handle like and reply below
+    $(".close-edit").click(function() {
+        let container = $(this);
+        while(!container.hasClass("comment-block")) {
+            container = container.parent();
+        }
+        container.find(".comment-text").css("display", "block");
+        $(this).parent().css("display", "none");
+    });
+
+    let edit_comment = $(element).find(".edit-comment");
+    $(edit_comment).click(function() {
+        let container = $(this);
+        while(!container.hasClass("comment-block")) {
+            container = container.parent();
+        }
+
+        container.find(".sub-options-container").css("display", "none");
+
+        let cid = container.find(".comment_id").val();
+        let comment = container.find(".comment-text").text();
+
+        container.find(".comment-text").css("display", "none");
+
+        container.find(".comment-edit-container").find(".comment-editable-text").val(comment);
+        container.find(".comment-edit-container").css("display", "block");
+        container.find(".comment-edit-container").find(".comment-editable-text").focus();
+        
+        $(".comment-editable-text").on({
+            keydown: function(event) {
+                if($(this).is(":focus") && (event.keyCode == 13) && $(this).css("display") != "none") {
+                    if (event.keyCode == 13 && !event.shiftKey) {
+                        if($(this).val() != container.find(".comment-text").text()) {
+                            event.preventDefault();
+
+                            let new_com = container.find(".comment-edit-container").find(".comment-editable-text").val();
+                            $.ajax({
+                                url: root + "api/comment/edit.php",
+                                type: 'post',
+                                data: {
+                                    new_comment: new_com,
+                                    comment_id: cid,
+                                },
+                                success: function(response) {
+                                    if(response) {
+                                        container.find(".comment-edit-container").css("display", "none");
+                                        container.find(".comment-text").css("display", "block");
+                                        container.find(".comment-text").text(response);
+                                    }
+                                }
+                            })
+
+                        } else {
+                            container.find(".comment-edit-container").css("display", "none");
+                            container.find(".comment-text").css("display", "block");
+                        }
+                    }
+                }
+            }
+        })
+
+        return false;
+    });
 }
+
+$(".comment-block").each(function(index, block) {
+    handle_comment_event(block);
+})
+
+//find(".comment-block")
+handle_comment_event();
+
+$(".write-comment-button").click(function() {
+    let container = $(this);
+    while(!container.hasClass("post-item")) {
+        container = container.parent();
+    }
+
+    container.find(".comment-input").focus();
+
+    return false;
+})

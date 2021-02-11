@@ -45,6 +45,24 @@ class Comment {
         return $this->db->error() == false ? $this : false;
     }
 
+    public function update() {
+        $this->db->query("UPDATE comment SET `comment_owner` = ?, 
+            `post_id` = ?, `comment_date` = ?, `comment_edit_date` = ?, `comment_text` = ? WHERE `id` = ?
+        ", array(
+            $this->comment_owner,
+            $this->post_id,
+            $this->comment_date,
+            // Notice we set the edit time to current time because we only call update when we want to edit a comment
+            date("Y/m/d H:i:s"),
+            $this->comment_text,
+            $this->id,
+        ));
+
+        $i = $this->id;
+
+        return $this->db->error() == false ? $this : false;
+    }
+
     public function delete() {
         $this->db->query("DELETE FROM `comment` WHERE id = ?",
             array($this->id));

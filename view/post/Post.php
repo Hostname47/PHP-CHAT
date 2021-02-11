@@ -101,15 +101,15 @@ VIDEO;
                     </div>
                     <div class="react-on-opost-buttons-container">
                         <a href="" class="white-like-back post-bottom-button">Like</a>
-                        <a href="" class="white-comment-back post-bottom-button">Comment</a>
+                        <a href="" class="white-comment-back post-bottom-button write-comment-button">Comment</a>
                         <a href="" class="reply-back post-bottom-button">Share</a>
                     </div>
                     <div class="comment-section">
                         $comments_components
                         <div class="class="owner-comment"">
                             <div class="comment-block">
-                                <div>
-                                    <img src="$current_user_picture" class="image-style-9" alt="">
+                                <div class="comment_owner_picture_container">
+                                    <img src="$current_user_picture" class="comment_owner_picture" alt="">
                                 </div>
                                 <div class="comment-input-form-wrapper">
                                     <form action="" method="POST" class="comment-form relative">
@@ -151,6 +151,8 @@ EOS;
                 $comment_life = floor($seconds / 3600) . "h";
             } else if($seconds < 3600 && $seconds > 60) {
                 $comment_life = floor($seconds / 60) . "min";
+            } else if($seconds > 15){
+                $comment_life = $seconds . "sec";
             } else {
                 $comment_life = "Now";
             }
@@ -162,11 +164,12 @@ EOS;
                 by using comment post_id)
                 -----------
                 First we get the post id from comment and then pass it to get_post_owner function to get the owner of post
+                Notice only the comment owner could edit his comment. The post owner could only delete it
             */
             
             $comment_options = <<<CO
     <div class="relative comment">
-        <div class="comment-options-container button-with-suboption"></div>
+        <div class="comment-options-button"></div>
         <div class="sub-options-container sub-options-container-style-2" style="z-index: 1; width: 129px; top: 20px; left: -100px">
             <div class="options-container-style-1 black">
 CO;
@@ -177,6 +180,13 @@ CO;
             if(($comment->get_property("comment_owner") == $current_user_id)
                 || $current_user_id == $owner_of_post_contains_current_comment->post_owner)
             {
+                if($comment->get_property("comment_owner") == $current_user_id) {
+                    $comment_options .= <<<CO
+                <div class="sub-option-style-2">
+                    <a href="" class="black-link edit-comment">Edit comment</a>
+                </div>
+CO;
+                }
                 $comment_options .= <<<CO
                 <div class="sub-option-style-2">
                     <a href="" class="black-link delete-comment">Delete comment</a>
@@ -186,7 +196,7 @@ CO;
 
             $comment_options .= <<<CO
             <div class="sub-option-style-2">
-                <a href="" class="black-link reply-comment-button">Reply</a>
+                <a href="" class="black-link hide-button">Hide comment</a>
             </div>
         </div>
     </div>
@@ -196,15 +206,22 @@ CO;
             return <<<COM
                 <div class="comment-block">
                     <input type="hidden" class="comment_id" value="$comment_id">
-                    <div>
-                        <img src="$comment_owner_picture" class="image-style-9" alt="">
+                    <div class="small-text hidden-comment-hint">The comment is hidden ! click <span class="show-comment">here</span> to show it again</div>
+                    <div class="comment-op">
+                        <div class="comment_owner_picture_container">
+                            <img src="$comment_owner_picture" class="comment_owner_picture" alt="">
+                        </div>
                     </div>
-                    <div>
+                    <div class="comment-global-wrapper">
                         <div class="row-v-flex">
                             <div class="comment-wrapper">
                                 <div>
                                     <a href="" class="comment-owner">$comment_owner_username</a>
                                     <p class="comment-text">$comment_text</p>
+                                    <div class="comment-edit-container relative">
+                                        <textarea autocomplete="off" class="editable-input comment-editable-text"></textarea>
+                                        <div class="close-edit"></div>
+                                    </div>
                                 </div>
                             </div>
                             $comment_options

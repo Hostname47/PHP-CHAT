@@ -9,7 +9,7 @@ body {
     font-size: 15px;
 }
 
-input, textarea {
+input, textarea, a {
     outline: none;
 }
 
@@ -113,6 +113,11 @@ input, textarea {
 .regular-text-style-1 {
     margin: 0;
     font-size: 16px;
+}
+
+.small-text {
+    margin: 0;
+    font-size: 12px;
 }
 
 .regular-text-style-2 {
@@ -905,7 +910,7 @@ input, textarea {
     background-image: url("../assets/images/icons/like-white.png");
 }
 
-.white-like-back:hover {
+.white-like-filled-back {
     background-image: url("../assets/images/icons/like-white-filled.png");
 }
 
@@ -915,10 +920,6 @@ input, textarea {
 
 .white-comment-back {
     background-image: url("../assets/images/icons/white-comment.png");
-}
-
-.white-comment-back:hover {
-    background-image: url("../assets/images/icons/white-comment-filled.png");
 }
 
 .eye-background:hover {

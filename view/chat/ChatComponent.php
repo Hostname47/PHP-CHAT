@@ -319,7 +319,7 @@ FM;
                 $message_life = floor($seconds / 29030400) . "y";
             } else if($seconds > 2419200) {
                 $message_life = floor($seconds / 604800) . "w";
-            } else if($seconds < 604799 && $seconds > 86400) {
+            } else if($seconds > 86400) {
                 $message_life = floor($seconds / 86400) . "d";
             } else if($seconds < 86400 && $seconds > 3600) {
                 $message_life = floor($seconds / 3600) . "h";
@@ -333,8 +333,8 @@ FM;
                 <div class="friend-chat-discussion-item-wraper relative">
                     <input type="hidden" class="sender" value="$current_user_id">
                     <input type="hidden" class="receiver" value="$friend_id">
-                    <div class="chat-disc-user-image">
-                        <img src="$friend_picture" class="image-style-7" alt="">
+                    <div class="chat-disc-user-image-container">
+                        <img src="$friend_picture" class="chat-disc-user-image" alt="">
                     </div>
                     <div>
                         <div class="chat-disc-name-and-username">
