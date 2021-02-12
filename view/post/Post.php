@@ -3,13 +3,13 @@
     namespace view\post;
 
     use classes\{Config};
-    use models\{User, Comment, Post as Pst};
+    use models\{User, Comment, Like, Post as Pst};
 
     class Post {
 
         function generate_post($post, $user) {
             $current_user_id = $user->getPropertyValue("id");
-            $current_user_picture = $user->getPropertyValue("picture");
+            $current_user_picture = Config::get("root/path") . (($user->getPropertyValue("picture") != "") ? $user->getPropertyValue("picture") : "assets/images/icons/user.png");
 
             $post_owner_user = new User();
             $post_owner_user->fetchUser("id", $post->get_property("post_owner"));
@@ -64,6 +64,43 @@ VIDEO;
                 }
             }
 
+            $like_class = "white-like-back";
+            $nodisplay = 'no-display';
+
+            $post_meta_like = <<<LM
+            <div class="no-display post-meta-likes post-meta"><span class="meta-count">0</span>Likes</div>
+LM;;
+            $post_meta_comment = <<<CM
+            <div class="no-display post-meta-comments post-meta"><span class="meta-count">0</span>Comments</div>
+CM;
+            $post_meta_share = <<<SM
+            <div class="no-display post-meta-shares post-meta"><span class="meta-count">0</span>Share</div>
+SM;
+
+
+            // Comment meta
+            $pmc = count(Comment::fetch_post_comments($post_id));
+            if($pmc > 0) {
+                $post_meta_comment = <<<CM
+                <div class="post-meta-comments post-meta"><span class="meta-count">$pmc</span>Comments</div>
+CM;
+            }
+
+            $like_manager = new Like();
+            if($likes_count = count($like_manager->get_post_users_likes_by_post($post_id)) > 0) {
+                $post_meta_like = <<<LM
+                <div class="post-meta-likes post-meta"><span class="meta-count">$likes_count</span>Likes</div>
+LM;
+            }
+            $like_manager->setData(array(
+                "user_id"=>$current_user_id,
+                "post_id"=>$post_id
+            ));
+            $like_class = "white-like-back";
+            if($like_manager->exists()) {
+                $like_class = "white-like-filled-back bold";
+            }
+
             $comments_components = '';
             foreach(Comment::fetch_post_comments($post_id) as $comment) {
                 $cm = new Comment();
@@ -99,17 +136,26 @@ VIDEO;
                         $video_components
                         $image_components
                     </div>
+                    <div class="post-statis row-v-flex $nodisplay">
+                        $post_meta_like
+                        <div class="right-pos-margin row-v-flex">
+                            $post_meta_comment
+                            $post_meta_share
+                        </div>
+                    </div>
                     <div class="react-on-opost-buttons-container">
-                        <a href="" class="white-like-back post-bottom-button">Like</a>
+                        <a href="" class="$like_class post-bottom-button like-button">Like</a>
                         <a href="" class="white-comment-back post-bottom-button write-comment-button">Comment</a>
-                        <a href="" class="reply-back post-bottom-button">Share</a>
+                        <a href="" class="reply-back post-bottom-button share-button">Share</a>
                     </div>
                     <div class="comment-section">
                         $comments_components
-                        <div class="class="owner-comment"">
+                        <div class="owner-comment">
                             <div class="comment-block">
-                                <div class="comment_owner_picture_container">
-                                    <img src="$current_user_picture" class="comment_owner_picture" alt="">
+                                <div class="comment-op">
+                                    <div class="comment_owner_picture_container">
+                                        <img src="$current_user_picture" class="comment_owner_picture" alt="">
+                                    </div>
                                 </div>
                                 <div class="comment-input-form-wrapper">
                                     <form action="" method="POST" class="comment-form relative">
@@ -132,8 +178,7 @@ EOS;
             $comment_owner->fetchUser('id', $comment->get_property("comment_owner"));
 
             $comment_owner_picture = Config::get("root/path") . 
-                (empty($comment_owner->getPropertyValue("picture")) 
-                ? "assets/images/logos/logo512.png" : $comment_owner->getPropertyValue("picture"));
+                (empty($comment_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $comment_owner->getPropertyValue("picture"));
             $comment_owner_username = $comment_owner->getPropertyValue("username");
             $comment_text = $comment->get_property("comment_text");
             $comment_id = $comment->get_property("id");
@@ -209,7 +254,7 @@ CO;
                     <div class="small-text hidden-comment-hint">The comment is hidden ! click <span class="show-comment">here</span> to show it again</div>
                     <div class="comment-op">
                         <div class="comment_owner_picture_container">
-                            <img src="$comment_owner_picture" class="comment_owner_picture" alt="">
+                            <img src="$comment_owner_picture" class="comment_owner_picture" alt="TT">
                         </div>
                     </div>
                     <div class="comment-global-wrapper">

@@ -62,7 +62,7 @@
 
 .post-text {
     padding: 0 12px;
-    margin: 4px 0 10px 0;
+    margin: 4px 0 4px 0;
 }
 
 .post-text::selection {
@@ -133,13 +133,19 @@
     padding: 8px;
 }
 
+.owner-comment {
+    margin-top: 8px;
+}
+
 .comment-input-form-wrapper {
     width: 100%;
+    margin: 0 8px;
+
     box-sizing: border-box;
 }
 
 .comment-block {
-    margin: 6px 0;
+    margin: 12px 0;
     display: flex;
 }
 
@@ -158,8 +164,13 @@
     color: white;
     padding: 9px 9px 9px 12px;
     margin-left: 6px;
-    border-radius: 20px;
+    border-radius: 12px;
     width: 100%;
+}
+
+.comment-style:focus {
+    background-color: rgb(30, 30, 30);
+    border-color: rgb(102, 250, 102);
 }
 
 .comment-edit-container {
@@ -335,6 +346,10 @@
     background-color: rgb(56, 56, 56);
 }
 
+.comment-op {
+    margin-left: 6px;
+}
+
 .comment_owner_picture_container {
     display: flex;
     align-items: center;
@@ -373,3 +388,27 @@
 .show-comment:hover {
     text-decoration: underline;
 }
+
+.post-statis{
+    margin: 8px 14px;
+    color: rgb(192, 192, 192);
+
+    font-size: 13px;
+}
+
+.post-meta-comments {
+    margin-right: 10px;
+}
+
+.meta-count {
+    margin-right: 3px;
+}
+
+.post-meta {
+    cursor: pointer;
+}
+
+.post-meta:hover {
+    text-decoration: underline;
+}
+
