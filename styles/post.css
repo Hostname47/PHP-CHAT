@@ -396,8 +396,8 @@
     font-size: 13px;
 }
 
-.post-meta-comments {
-    margin-right: 10px;
+.post-meta-shares {
+    margin-left: 10px;
 }
 
 .meta-count {
@@ -412,3 +412,60 @@
     text-decoration: underline;
 }
 
+.share-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-animation-container {
+    display: none;
+    position: absolute;
+}
+
+.share-animation-outer-circle-container {
+    position: absolute;
+    overflow: hidden;
+    height: 20px;
+    width: 20px;
+    background-color: white;
+
+    border-radius: 50%;
+}
+
+.share-animation-inner-circle-container {
+    position: absolute;
+    overflow: hidden;
+    height: 16px;
+    width: 16px;
+
+    border-radius: 50%;
+
+    background-color: rgb(24, 24, 24);
+}
+
+.animation-hand {
+    position: absolute;
+    top: -18px;
+    overflow: hidden;
+    height: 30px;
+    width: 10px;
+
+    background-color: rgb(24, 24, 24);
+
+    transform-origin: 50% 18px;
+    transform: translate(50%, 50%);
+    animation: orbita 2s linear infinite;
+    -webkit-animation: orbita 2s linear infinite;
+    -moz-animation: orbita 2s cubic-bezier(.59,.39,.74,.71) infinite;
+    -o-animation: orbita 2s linear infinite;
+}
+
+@keyframes orbita {
+    0% {
+      transform:translate(0%, 0%) rotate(0deg);
+    }
+    100% {
+      transform:translate(0%, 0%) rotate(360deg);
+    }
+}

@@ -30,7 +30,7 @@ class Post {
     public function setData($data = array()) {
         $this->post_owner = $data["post_owner"];
         $this->post_visibility = $data["post_visibility"];
-        $this->post_visibility = $data["post_place"];
+        $this->post_place = $data["post_place"];
         $this->post_edit_date = null;
         $this->post_date = empty("post_date") ? date("Y/m/d h:i:s") : $data["post_date"];
         $this->text_content = $data["text_content"];

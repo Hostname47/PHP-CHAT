@@ -1209,3 +1209,21 @@ border-bottom-color: #ffffff;
 .delete-message-hint:hover {
     background-color: black;
 }
+
+.notification-bottom-container {
+    display: none;
+    opacity: 0;
+    z-index: 10;
+    padding: 0 8px 0 36px;
+    background-color: rgb(20, 20, 20);
+    margin: 0;
+    border-radius: 8px;
+    position: fixed;
+    bottom: 14px;
+    left: 14px;
+    padding-left: 36px;
+    background-image: url(../assets/images/icons/seen.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}

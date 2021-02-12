@@ -3,7 +3,7 @@
     namespace view\post;
 
     use classes\{Config};
-    use models\{User, Comment, Like, Post as Pst};
+    use models\{User, Comment, Like, Shared_Post, Post as Pst};
 
     class Post {
 
@@ -74,7 +74,7 @@ LM;;
             <div class="no-display post-meta-comments post-meta"><span class="meta-count">0</span>Comments</div>
 CM;
             $post_meta_share = <<<SM
-            <div class="no-display post-meta-shares post-meta"><span class="meta-count">0</span>Share</div>
+            <div class="no-display post-meta-shares post-meta"><span class="meta-count">0</span>Shares</div>
 SM;
 
 
@@ -92,6 +92,23 @@ CM;
                 <div class="post-meta-likes post-meta"><span class="meta-count">$likes_count</span>Likes</div>
 LM;
             }
+
+            if(($shares = Shared_Post::get_post_share_numbers($post_id)) > 0) {
+                $nodisplay = '';
+                $post_meta_share = <<<SM
+                <div class="post-meta-shares post-meta"><span class="meta-count">$shares</span>Shares</div>
+SM;
+            }
+            
+            $like_manager = new Like();
+            if($likes_count = count($like_manager->get_post_users_likes_by_post($post_id)) > 0) {
+                $post_meta_like = <<<LM
+                <div class="post-meta-likes post-meta"><span class="meta-count">$likes_count</span>Likes</div>
+LM;
+            }
+
+
+
             $like_manager->setData(array(
                 "user_id"=>$current_user_id,
                 "post_id"=>$post_id
@@ -146,7 +163,20 @@ LM;
                     <div class="react-on-opost-buttons-container">
                         <a href="" class="$like_class post-bottom-button like-button">Like</a>
                         <a href="" class="white-comment-back post-bottom-button write-comment-button">Comment</a>
-                        <a href="" class="reply-back post-bottom-button share-button">Share</a>
+                        <div class="relative share-button-container">
+                            <a href="" class="reply-back post-bottom-button share-button">Share</a>
+                            <div class="share-animation-container flex-row-column">
+                                <div class="share-animation-outer-circle-container">
+                                    
+                                </div>
+                                <div class="share-animation-inner-circle-container">
+                                    
+                                </div>
+                                <div class="animation-hand">
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="comment-section">
                         $comments_components

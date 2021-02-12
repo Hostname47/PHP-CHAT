@@ -188,6 +188,19 @@ $(".comment-input").on({
                             },
                             type: 'POST',
                             success: function(response) {
+
+                                // Update number of comments
+                                let count = post_container.find(".post-meta-comments").find(".meta-count").html();
+                                let comments_counter = (count == "0") ? 0 : parseInt(post_container.find(".post-meta-comments").find(".meta-count").html());
+                                if(post_container.find(".post-statis").css("display") == "none") {
+                                    post_container.find(".post-statis").css("display", "flex");
+                                }
+                                
+                                comments_counter = comments_counter + 1;
+                                post_container.find(".post-meta-comments").find(".meta-count").html(comments_counter);
+                                post_container.find(".post-meta-comments").removeClass("no-display");
+
+                                // Emptying comment input
                                 comment.val("");
 
                                 // Get post comments container
@@ -412,15 +425,14 @@ $(".like-button").click(function(event) {
                 -1: there's a problem
             */
             let count = container.find(".post-meta-likes").find(".meta-count").html();
-            let likes_counter = (count == "") ? 0 : parseInt(container.find(".post-meta-likes").find(".meta-count").html());
-            console.log(likes_counter);
+            let likes_counter = (count == "0") ? 0 : parseInt(container.find(".post-meta-likes").find(".meta-count").html());
             if(response == 1) {
                 $(like_button).removeClass("white-like-back");
                 $(like_button).addClass("white-like-filled-back");
                 $(like_button).addClass("bold");
 
                 if(container.find(".post-statis").css("display") == "none") {
-                    $(".post-statis").css("display", "flex");
+                    container.find(".post-statis").css("display", "flex");
                 }
                 
                 likes_counter = likes_counter + 1;
@@ -428,18 +440,74 @@ $(".like-button").click(function(event) {
                 container.find(".post-meta-likes").removeClass("no-display");
 
             } else if(response == 2) {
-                if(likes_counter == 0) {
+                console.log("counter: " + likes_counter);
+                if(likes_counter == 1) {
                     container.find(".post-meta-likes").addClass("no-display");
+                    likes_counter = 0;
                 } else {
                     container.find(".post-meta-likes").find(".meta-count").html(--likes_counter);
                 }
+
                 $(like_button).addClass("white-like-back");
                 $(like_button).removeClass("white-like-filled-back");
                 $(like_button).removeClass("bold");
-
+                container.find(".post-meta-likes").find(".meta-count").html(likes_counter);
             }
         }
     })
 
     event.preventDefault();
 })
+
+$(".share-button").click(function(event) {
+
+    let container = $(this);
+    while(!container.hasClass("post-item")) {
+        container = container.parent();
+    }
+    let pid = container.find(".pid").val();
+
+    $(this).css("opacity", "0");
+    $(this).css("cursor", "default");
+
+    $(this).parent().find(".share-animation-container").css("display", "flex");
+    
+    let count = container.find(".post-meta-shares").find(".meta-count").html();
+    let shares_counter = (count == "0") ? 0 : parseInt(container.find(".post-meta-shares").find(".meta-count").html());
+    
+    $.ajax({
+        url: root+"api/post/shared/add.php",
+        type: "post",
+        data: {
+            post_id: pid,
+            poster_id: current_user_id
+        },
+        success: function() {
+            if(container.find(".post-statis").css("display") == "none") {
+                container.find(".post-statis").css("display", "flex");
+            }
+            
+            shares_counter = shares_counter + 1;
+            container.find(".post-meta-shares").find(".meta-count").html(shares_counter);
+            container.find(".post-meta-shares").removeClass("no-display");
+
+            container.find(".share-animation-container").css("display", "none");
+            container.find(".share-button").css("opacity", "1");
+            container.find(".share-button").css("cursor", "pointer");
+
+            $(".notification-bottom-sentence").text("Post shared in your timeline successfully !");
+            $(".notification-bottom-container").css("display", "block");
+            $(".notification-bottom-container").animate({
+                opacity: 1
+            }, 400);
+            setTimeout(function() { 
+                $(".notification-bottom-container").animate({
+                    opacity: 0
+                }, 400);
+            }, 3000, function() {$(".notification-bottom-container").css("display", "none");});
+            $(".share-post").css('display', "none");
+        }
+    })
+
+    event.preventDefault();
+});

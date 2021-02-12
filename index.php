@@ -58,6 +58,9 @@
 <body>
     <?php include_once "components/basic/header.php"; ?>
     <main>
+        <div class="notification-bottom-container">
+            <p class="notification-bottom-sentence">THIS IS TEST</p>
+        </div>
         <div id="global-container" class="relative">
             <div class="post-viewer-only">
                 <div class="viewer-post-wrapper">
