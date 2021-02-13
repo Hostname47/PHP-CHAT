@@ -13,10 +13,13 @@ class Post {
     $post_edit_date='',
     $text_content='',
     $picture_media='',
-    $video_media='';
+    $video_media='',
+    $is_shared=0,
+    $post_shared_id=null;
 
     public function __construct() {
         $this->db = DB::getInstance();
+        $this->post_date = date("Y/m/d H:i:s");
     }
 
     public function get_property($propertyName) {
@@ -29,26 +32,29 @@ class Post {
 
     public function setData($data = array()) {
         $this->post_owner = $data["post_owner"];
-        $this->post_visibility = $data["post_visibility"];
-        $this->post_place = $data["post_place"];
-        $this->post_edit_date = null;
-        $this->post_date = empty("post_date") ? date("Y/m/d h:i:s") : $data["post_date"];
+        $this->post_visibility = isset($data["post_visibility"]) ? $data["post_visibility"] : 1;
+        $this->post_place = isset($data["post_place"]) ? $data["post_place"] : 1;
+        $this->post_date = isset($data["post_date"]) ? $data["post_date"] : $this->post_date;
         $this->text_content = $data["text_content"];
         $this->picture_media = $data["picture_media"];
         $this->video_media = $data["video_media"];
+        $this->is_shared = isset($data["is_shared"]) ? $data["is_shared"] : 0;
+        $this->post_shared_id = isset($data["post_shared_id"]) ? $data["post_shared_id"] : null;
     }
 
     public function add() {
         $this->db->query("INSERT INTO post 
-        (post_owner, post_visibility, post_place, post_date, text_content, picture_media, video_media) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)", array(
+        (post_owner, post_visibility, post_place, post_date, text_content, picture_media, video_media, is_shared, post_shared_id) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", array(
             $this->post_owner,
             $this->post_visibility,
             $this->post_place,
             $this->post_date,
             $this->text_content,
             $this->picture_media,
-            $this->video_media
+            $this->video_media,
+            $this->is_shared,
+            $this->post_shared_id
         ));
 
         return $this->db->error() == false ? true : false;
@@ -70,6 +76,8 @@ class Post {
             $this->text_content = $fetchedPost->text_content;
             $this->picture_media = $fetchedPost->picture_media;
             $this->video_media = $fetchedPost->video_media;
+            $this->is_shared = $fetchedPost->is_shared;
+            $this->post_shared_id = $fetchedPost->post_shared_id;
 
             return true;
         }
@@ -124,6 +132,8 @@ class Post {
                     $f_post->text_content = $post->text_content;
                     $f_post->picture_media = $post->picture_media;
                     $f_post->video_media = $post->video_media;
+                    $f_post->is_shared = $post->is_shared;
+                    $f_post->post_shared_id = $post->post_shared_id;
     
                     $posts[] = $f_post;
                 }
@@ -153,6 +163,8 @@ class Post {
                 $f_post->text_content = $post->text_content;
                 $f_post->picture_media = $post->picture_media;
                 $f_post->video_media = $post->video_media;
+                $f_post->is_shared = $post->is_shared;
+                $f_post->post_shared_id = $post->post_shared_id;
 
                 $posts[] = $f_post;
             }
@@ -176,6 +188,14 @@ class Post {
 
         return DB::getInstance()->count();
     }
+
+    public static function get_post_share_numbers($post_id) {
+        DB::getInstance()->query("SELECT * FROM post WHERE post_shared_id = ?", array($post_id));
+
+        return DB::getInstance()->count();
+    }
+
+
 
     public function toString() {
         return 'Post with id: ' . $this->post_id . " and owner of id: " . $this->post_owner . " published at: " . $this->post_date . "<br>";

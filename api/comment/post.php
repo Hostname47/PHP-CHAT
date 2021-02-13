@@ -4,6 +4,7 @@
 require_once "../../vendor/autoload.php";
 require_once "../../core/rest_init.php";
 
+use classes\DB;
 use models\{User, Comment};
 use view\post\Post as Post_Manager;
 
@@ -56,6 +57,14 @@ $comment->setData(array(
     "comment_text"=>$comment_text
 ));
 $comment = $comment->add();
+// Right now, we don't now the id of added comment
+$captured_id = DB::getInstance()->query("SELECT id FROM comment WHERE comment_owner = ? AND comment_date = ?", array(
+    "comment_owner"=>$comment->get_property("comment_owner"),
+    "comment_date"=>$comment->get_property("comment_date")
+))->results()[0]->id;
+
+$comment->set_property("id", $captured_id);
+    
 
 $post_manager = Post_Manager::generate_comment($comment, $current_user_id);
 

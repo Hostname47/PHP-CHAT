@@ -211,6 +211,7 @@ $(".comment-input").on({
                                 
                                 comment_container.prepend(response);
                                 let component = comment_container.find(".comment-block").first();
+                                component.find(".comment_id").val();
                                 handle_comment_event(component);
 
                                 if(post_container.find(".post-statis").css("display") == "none") {
@@ -283,6 +284,7 @@ function handle_comment_event(element) {
 
         return false;
     });
+    
     // Handle comment deletion
     let delete_comment = $(element).find(".delete-comment");
     $(delete_comment).click(function() {
@@ -300,6 +302,21 @@ function handle_comment_event(element) {
             },
             success(response) {
                 if(response == 1) {
+                    let post_container = delete_comment;
+                    while(!post_container.hasClass("post-item")) {
+                        post_container = post_container.parent();
+                    }
+
+                    let count = post_container.find(".post-meta-comments").find(".meta-count").html();
+                    let comment_counter = (count == "0") ? 0 : parseInt(count);
+
+                    if(comment_counter == 1) {
+                        post_container.find(".post-meta-comments").addClass("no-display");
+                        comment_counter = 0;
+                    } else {
+                        post_container.find(".post-meta-comments").find(".meta-count").html(--comment_counter);
+                    }
+
                     container.find(".sub-options-container").css("display", "none");
                     container.remove();
                 }
@@ -479,33 +496,40 @@ $(".share-button").click(function(event) {
         url: root+"api/post/shared/add.php",
         type: "post",
         data: {
-            post_id: pid,
-            poster_id: current_user_id
+            post_owner: current_user_id,
+            post_visibility: 1,
+            post_place: 1,
+            post_shared_id: pid
         },
-        success: function() {
-            if(container.find(".post-statis").css("display") == "none") {
-                container.find(".post-statis").css("display", "flex");
-            }
-            
-            shares_counter = shares_counter + 1;
-            container.find(".post-meta-shares").find(".meta-count").html(shares_counter);
-            container.find(".post-meta-shares").removeClass("no-display");
-
-            container.find(".share-animation-container").css("display", "none");
-            container.find(".share-button").css("opacity", "1");
-            container.find(".share-button").css("cursor", "pointer");
-
-            $(".notification-bottom-sentence").text("Post shared in your timeline successfully !");
-            $(".notification-bottom-container").css("display", "block");
-            $(".notification-bottom-container").animate({
-                opacity: 1
-            }, 400);
-            setTimeout(function() { 
+        success: function(response) {
+            if(response == 1) {
+                if(container.find(".post-statis").css("display") == "none") {
+                    container.find(".post-statis").css("display", "flex");
+                }
+                
+                shares_counter = shares_counter + 1;
+                container.find(".post-meta-shares").find(".meta-count").html(shares_counter);
+                container.find(".post-meta-shares").removeClass("no-display");
+    
+                container.find(".share-animation-container").css("display", "none");
+                container.find(".share-button").css("opacity", "1");
+                container.find(".share-button").css("cursor", "pointer");
+    
+                $(".notification-bottom-sentence").text("Post shared in your timeline successfully !");
+                $(".notification-bottom-container").css("display", "block");
                 $(".notification-bottom-container").animate({
-                    opacity: 0
+                    opacity: 1
                 }, 400);
-            }, 3000, function() {$(".notification-bottom-container").css("display", "none");});
-            $(".share-post").css('display', "none");
+                setTimeout(function() { 
+                    $(".notification-bottom-container").animate({
+                        opacity: 0
+                    }, 400);
+                }, 3000, function() {$(".notification-bottom-container").css("display", "none");});
+                $(".share-post").css('display', "none");
+            } else {
+                // Show error occured message into screen !
+            }
+
         }
     })
 

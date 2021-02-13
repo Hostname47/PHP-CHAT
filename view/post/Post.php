@@ -8,6 +8,10 @@
     class Post {
 
         function generate_post($post, $user) {
+            $root = Config::get("root/path");
+            $project_name = Config::get("root/project_name");
+            $project_path = $_SERVER['DOCUMENT_ROOT'] . "/" . $project_name . "/";
+
             $current_user_id = $user->getPropertyValue("id");
             $current_user_picture = Config::get("root/path") . (($user->getPropertyValue("picture") != "") ? $user->getPropertyValue("picture") : "assets/images/icons/user.png");
 
@@ -24,9 +28,8 @@
 
             $post_owner_profile = Config::get("root/path") . "profile.php?username=" . $post_owner_user->getPropertyValue("username");
 
-            $root = Config::get("root/path");
-            $project_name = Config::get("root/project_name");
-            $project_path = $_SERVER['DOCUMENT_ROOT'] . "/" . $project_name . "/";
+            $image_components = "";
+            $video_components = "";
 
             $post_images_location = $post->get_property("picture_media");
             $post_videos_location = $post->get_property("video_media");
@@ -35,10 +38,7 @@
             $post_videos_dir = $project_path . $post->get_property("video_media");
 
             $post_text_content = htmlspecialchars_decode($post->get_property("text_content"));
-
-            $image_components = "";
-            $video_components = "";
-            if(is_dir($post_images_dir)) {
+            if($post_images_location != null && is_dir($post_images_dir)) {
                 if($this->is_dir_empty($post_images_dir) == false) {
                     $fileSystemIterator = new \FilesystemIterator($post_images_dir);
                     foreach ($fileSystemIterator as $fileInfo){
@@ -47,7 +47,7 @@
                 }
             }
 
-            if(is_dir($post_videos_dir)) {
+            if($post_videos_location != null && is_dir($post_videos_dir)) {
                 if($this->is_dir_empty($post_videos_dir) == false) {
 
                     $fileSystemIterator = new \FilesystemIterator($post_videos_dir);
@@ -66,6 +66,95 @@ VIDEO;
 
             $like_class = "white-like-back";
             $nodisplay = 'no-display';
+            $shared_post_component = "";
+            if($post->get_property("is_shared")) {
+                // We don't want the entire post so we're forced to hard code it hhh
+                //$shared_post_component = $this->generate_post($shared_post, $user);
+
+                $shared = new Pst();
+                $shared->fetchPost($post->get_property("post_shared_id"));
+
+                $shared_post_owner_user = new User();
+                $shared_post_owner_user->fetchUser("id", $shared->get_property("post_owner"));
+
+                $shared_post_owner_picture = Config::get("root/path") . (($shared_post_owner_user->getPropertyValue("picture") != "") ? $shared_post_owner_user->getPropertyValue("picture") : "assets/images/logos/logo512.png");
+                
+                $shared_post_id= $shared->get_property("post_id");
+                $shared_post_owner_name = $shared_post_owner_user->getPropertyValue("firstname") . " " . $shared_post_owner_user->getPropertyValue("lastname") . " -@" . $shared_post_owner_user->getPropertyValue("username");
+
+                $shared_post_date = $shared->get_property("post_date");
+                $shared_post_date = date("F d \a\\t Y h:i A",strtotime($shared_post_date)); //January 9 at 1:34 PM
+
+                $shared_post_owner_profile = Config::get("root/path") . "profile.php?username=" . $shared_post_owner_user->getPropertyValue("username");
+
+                $shared_image_components = "";
+                $shared_video_components = "";
+
+                $shared_post_images_location = $shared->get_property("picture_media");
+                $shared_post_videos_location = $shared->get_property("video_media");
+
+                $shared_post_images_dir = $project_path . $shared->get_property("picture_media");
+                $shared_post_videos_dir = $project_path . $shared->get_property("video_media");
+
+                $shared_post_text_content = htmlspecialchars_decode($shared->get_property("text_content"));
+                if(is_dir($shared_post_images_dir)) {
+                    if($this->is_dir_empty($shared_post_images_dir) == false) {
+                        $fileSystemIterator = new \FilesystemIterator($shared_post_images_dir);
+                        foreach ($fileSystemIterator as $fileInfo){
+                            $shared_image_components .= $this->generate_post_image($root . $shared_post_images_location . $fileInfo->getFilename());
+                        }
+                    }
+                }
+
+                if(is_dir($shared_post_videos_dir)) {
+                    if($this->is_dir_empty($shared_post_videos_dir) == false) {
+
+                        $fileSystemIterator = new \FilesystemIterator($shared_post_videos_dir);
+                        foreach ($fileSystemIterator as $fileInfo){
+                            $src = $root . $shared_post_videos_location . $fileInfo->getFilename();
+                            $shared_video_components = <<<VIDEO
+                            <video class="post-video" controls>
+                                <source src="$src" type="video/mp4">
+                                <source src="movie.ogg" type="video/ogg">
+                                Your browser does not support the video tag.
+                            </video>
+    VIDEO;
+                        }
+                    }
+                }
+
+                $shared_post_component = <<<SHARED_POST
+                <div class="post-item">
+                    <div class="timeline-post image-post">
+                        <div class="post-header flex-space">
+                            <div class="post-header-without-more-button">
+                                <div class="post-owner-picture-container">
+                                    <img src="$shared_post_owner_picture" class="post-owner-picture" alt="">
+                                </div>
+                                <div class="post-header-textual-section">
+                                    <a href="$shared_post_owner_profile" class="post-owner-name">$shared_post_owner_name</a>
+                                    <div class="row-v-flex">
+                                        <p class="regular-text"><a href="" class="post-date">$shared_post_date</a> <span style="font-size: 8px">.</span></p>
+                                        <img src="assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="" class="button-style-6 dotted-more-back"></a>
+                            </div>
+                        </div>
+                        <p class="post-text">
+                            $shared_post_text_content
+                        </p>
+                        <div class="media-container">
+                            $shared_video_components
+                            $shared_image_components
+                        </div>
+                    </div>
+                    <input type="hidden" class="pid" value="$post_id">
+                </div>
+SHARED_POST;
+            }
 
             $post_meta_like = <<<LM
             <div class="no-display post-meta-likes post-meta"><span class="meta-count">0</span>Likes</div>
@@ -93,7 +182,7 @@ CM;
 LM;
             }
 
-            if(($shares = Shared_Post::get_post_share_numbers($post_id)) > 0) {
+            if(($shares = Pst::get_post_share_numbers($post_id)) > 0) {
                 $nodisplay = '';
                 $post_meta_share = <<<SM
                 <div class="post-meta-shares post-meta"><span class="meta-count">$shares</span>Shares</div>
@@ -149,6 +238,9 @@ LM;
                     <p class="post-text">
                         $post_text_content
                     </p>
+                    <div class="shared_post_container">
+                        $shared_post_component
+                    </div>
                     <div class="media-container">
                         $video_components
                         $image_components
