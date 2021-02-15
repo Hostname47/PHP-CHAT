@@ -306,10 +306,13 @@ main {
     padding-left: 18px;
 }
 
-.user-info-square-shape {
+.user-media-post {
+    cursor: pointer;
+    overflow: hidden;
     display: flex;
-    width: 32.2%;
-    padding: 2px;
+    justify-content: center;
+    align-items: center;
+    width: 23.9%;
     margin: 2px;
     flex-wrap: wrap;
     box-sizing: border-box;

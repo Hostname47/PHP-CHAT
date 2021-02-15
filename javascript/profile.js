@@ -165,7 +165,7 @@ $(".user-info-section-link").on( {
 }
 );
 
-$(".user-info-square-shape").css("height", $(".user-info-square-shape").css("width"))
+$(".user-media-post").css("height", $(".user-media-post").css("width"))
 
 $("#change-cover-button, #change-picture-button").click(function(event) {
     
@@ -183,3 +183,21 @@ $("#private-account-button").click(function() {
 });
 
 //$("#edit-sub-container").height($("#edit-sub-container").parent().height() - $("#edit-profile-header").height());
+
+$(".user-media-post").each(function(index, obj) {
+    let img = $(obj).find(".user-media-post-img");
+
+    if(img.width() >= img.height()) {
+        img.css("height", "100%");
+    } else {
+        img.css("width", "100%");
+    }
+});
+
+$(".user-media-post").click(function() {;
+
+    let post_id = $(this).find(".pid").val();
+
+    // Check if the post is image(s) only post
+    window.location.href = root + "post/post-skeleton.php?pid=" + post_id;
+});

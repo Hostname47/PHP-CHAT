@@ -133,8 +133,8 @@
                         <div class="options-container">
                             <a href="<?php echo Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");?>" class="sub-option">
                                 <div class="message-option-item" style="align-items: center">
-                                    <div>
-                                        <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="image-style-1" alt="user's profile picture">
+                                    <div class="header-menu-profile-picture-container">
+                                        <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="header-menu-profile-picture" alt="user's profile picture">
                                     </div>
                                     <div class="message-content-container">
                                         <p class="account-user"><?php echo $user->getPropertyValue("username"); ?></p>

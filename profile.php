@@ -138,6 +138,10 @@ function post_date_latest_sort($post1, $post2) {
     return $post1->get_property('post_date') < $post2->get_property('post_date') ? 0 : ($post1->get_property('post_date') > $post2->get_property('post_date')) ? -1 : 1;
 }
 
+function is_dir_empty($dir) {
+    return (count(glob("$dir/*")) === 0); // empty
+}
+
 $posts_number = Post::get_posts_number($profile_user_id);
 $followers_number = Follow::get_user_followers_number($profile_user_id);
 $followed_number = Follow::get_followed_users_number($profile_user_id);
@@ -273,31 +277,41 @@ METADATA;
                         <a href="" class="link-style-1">Show all</a>
                     </div>
                     <div class="flex flex-wrap">
-                        <div class="user-info-square-shape">
+                        <?php
+                            $posts = Post::fetch_journal_posts($profile_user_id);
                             
-                        </div>
-                        <div class="user-info-square-shape">
+                            $root = Config::get("root/path");
+                            $project_name = Config::get("root/project_name");
+                            $project_path = $_SERVER['DOCUMENT_ROOT'] . "/" . $project_name . "/";
                             
-                        </div>
-                        <div class="user-info-square-shape">
-                            
-                        </div>
-                        <div class="user-info-square-shape">
-                            
-                        </div>
-                    
-                        <div class="user-info-square-shape">
-                            
-                        </div>
-                        <div class="user-info-square-shape">
-                            
-                        </div>
-                        <div class="user-info-square-shape">
-                            
-                        </div>
-                        <div class="user-info-square-shape">
-                            
-                        </div>
+                            $post_asset = "";
+                            $max_ = 8;
+                            $counter = 0;
+
+                            foreach($posts as $pst) {
+                                $shared_post_images_dir = $project_path . $pst->get_property("picture_media");
+                                if($counter == 8) {
+                                    break;
+                                }
+                                
+                                if($pst->get_property("picture_media") != null && is_dir_empty($shared_post_images_dir) == false) {
+                                    $fileSystemIterator = new \FilesystemIterator($shared_post_images_dir);
+                                    foreach ($fileSystemIterator as $fileInfo){
+                                        $post_asset = $root . $pst->get_property("picture_media") . $fileInfo->getFilename();
+                                        break;
+                                    }
+                                    $post_id = $pst->get_property("post_id");
+                                    $counter++;
+                                    echo <<<PPI
+                                        <div class="user-media-post">
+                                        <img src="$post_asset" class="user-media-post-img" alt="">
+                                        <input type="hidden" class="pid" value="$post_id">
+                                        </div>
+PPI;
+                                }
+                            }
+                        ?>
+                        
                     </div>
 
                 </div>

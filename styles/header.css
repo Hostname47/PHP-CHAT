@@ -197,3 +197,19 @@ header {
     display: flex;
     height: 33px;
 }
+
+.header-menu-profile-picture-container {
+    height: 55px;
+    width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.header-menu-profile-picture {
+    height: 100%;
+    display: flex;
+}

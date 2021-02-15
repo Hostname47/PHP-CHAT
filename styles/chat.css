@@ -394,3 +394,19 @@
     background-position: 0px center;
     background-repeat: no-repeat;
 }
+
+.contact-user-picture-container {
+    height: 24px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.contact-user-picture {
+    height: 24px;
+    display: flex;
+}

@@ -23,7 +23,9 @@ use models\{User, Message};
 
             echo <<<EOS
             <div class="friends-chat-item">
-                <img src="$user_picture" class="image-style-3 contact-user-picture" alt="">
+                <div class="contact-user-picture-container">
+                    <img src="$user_picture" class="contact-user-picture" alt="">
+                </div>
                 <p class="regular-text" style="margin-left: 8px">$user_name</p>
                 <img src="assets/images/icons/$online_status" class="image-style-4 right-pos-margin" alt="">
                 <input type="hidden" class="sender" value="$current_user_id">
