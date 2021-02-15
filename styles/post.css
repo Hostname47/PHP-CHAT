@@ -471,6 +471,6 @@
     }
 }
 
-.shared_post_container {
+.shared_post_container .post-header, .shared_post_container .post-text {
     padding-left: 40px;
 }

@@ -151,7 +151,7 @@ VIDEO;
                             $shared_image_components
                         </div>
                     </div>
-                    <input type="hidden" class="pid" value="$post_id">
+                    <input type="hidden" class="pid" value="$shared_post_id">
                 </div>
 SHARED_POST;
             }
@@ -176,7 +176,7 @@ CM;
             }
 
             $like_manager = new Like();
-            if($likes_count = count($like_manager->get_post_users_likes_by_post($post_id)) > 0) {
+            if(($likes_count = count($like_manager->get_post_users_likes_by_post($post_id))) > 0) {
                 $post_meta_like = <<<LM
                 <div class="post-meta-likes post-meta"><span class="meta-count">$likes_count</span>Likes</div>
 LM;
@@ -188,15 +188,6 @@ LM;
                 <div class="post-meta-shares post-meta"><span class="meta-count">$shares</span>Shares</div>
 SM;
             }
-            
-            $like_manager = new Like();
-            if($likes_count = count($like_manager->get_post_users_likes_by_post($post_id)) > 0) {
-                $post_meta_like = <<<LM
-                <div class="post-meta-likes post-meta"><span class="meta-count">$likes_count</span>Likes</div>
-LM;
-            }
-
-
 
             $like_manager->setData(array(
                 "user_id"=>$current_user_id,
@@ -302,6 +293,7 @@ EOS;
             $comment_owner_picture = Config::get("root/path") . 
                 (empty($comment_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $comment_owner->getPropertyValue("picture"));
             $comment_owner_username = $comment_owner->getPropertyValue("username");
+            $comment_owner_profile = Config::get("root/path") . "profile.php?username=" . $comment_owner_username;
             $comment_text = $comment->get_property("comment_text");
             $comment_id = $comment->get_property("id");
 
@@ -383,7 +375,7 @@ CO;
                         <div class="row-v-flex">
                             <div class="comment-wrapper">
                                 <div>
-                                    <a href="" class="comment-owner">$comment_owner_username</a>
+                                    <a href="$comment_owner_profile" class="comment-owner">$comment_owner_username</a>
                                     <p class="comment-text">$comment_text</p>
                                     <div class="comment-edit-container relative">
                                         <textarea autocomplete="off" class="editable-input comment-editable-text"></textarea>

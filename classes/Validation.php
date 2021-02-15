@@ -65,11 +65,9 @@ class Validation {
                                 // ----------------------      CHECK IMAGE TYPE      ----------------------
 
                                 $img = $_FILES[$name];
-
-                                $fileName = $img["name"];
                                 $allowedImageExtensions = array(".png", ".jpeg", ".gif", ".jpg", ".jfif");
 
-                                $original_extension = (false === $pos = strrpos($fileName, '.')) ? '' : substr($fileName, $pos);
+                                $original_extension = (false === $pos = strrpos($name, '.')) ? '' : substr($name, $pos);
                                 $original_extension = strtolower($original_extension);
 
                                 // This is more secure (IMPOSTANT: change name to tmp_name ine $file variable if you want to use finfo to check images)

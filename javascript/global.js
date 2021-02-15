@@ -395,6 +395,7 @@ $(".share-post").click(function(event) {
                 url: root + "view/post/generate_last_post.php",
                 success: function(component) {
                     $("#posts-container").prepend(component);
+                    handle_post_assets($(".post-item").first());
                 }
             })
 
@@ -776,4 +777,103 @@ function getVideoCover(file, seekTo = 0.0) {
             });
         });
     });
+}
+
+function handle_post_assets(post) {
+    let media_containers = post.find(".post-media-item-container");
+    let num_of_medias = $(post).find(".post-media-item-container").length;
+
+    // Here the appearance of images in post will be different depends on the number of images
+    if(num_of_medias == 1) {
+
+        console.log("I'm here !");
+
+        if($(post).find(".post-media-image").height() > $(post).find(".post-media-image").width()) {
+            $(post).find(".post-media-image").width("100%");
+        } else if ($(post).find(".post-media-image").height() > $(post).find(".post-media-image").width()){
+            $(post).find(".post-media-image").height("100%");
+        } else {
+            $(post).find(".post-media-image").height("100%");
+            $(post).find(".post-media-image").width("100%");
+        }
+
+        return;
+    }
+    if(num_of_medias == 2) {
+        for(let k = 0;k<num_of_medias; k++) {
+            $(media_containers[k]).css("width", half_width_marg + 3);
+            $(media_containers[k]).css("height", full_height_marg + 3);
+            $(media_containers[k]).find(".post-media-image").height("100%");
+        }
+
+        $(media_containers[0]).css("margin-right", "3px");
+        $(media_containers[1]).css("margin-left", "3px");
+
+    } else if(num_of_medias == 3) {
+        for(let k = 0;k<2; k++) {
+            let ctn = media_containers[k];
+
+            $(ctn).css("width", half_width_marg);
+            $(ctn).css("height", half_height_marg);
+            if($(ctn).find(".post-media-image").height() >= $(ctn).find(".post-media-image").width()) {
+                $(ctn).find(".post-media-image").width("100%");
+            } else {
+                $(ctn).find(".post-media-image").height("100%");
+            }
+        }
+
+        $(media_containers[0]).css("margin-right", "3px");
+        $(media_containers[1]).css("margin-left", "3px");
+
+        let ctn = media_containers[2];
+        $(ctn).css("margin-top", "3px");
+        $(ctn).css("width", full_width_marg + 3);
+        $(ctn).css("height", half_height_marg + 3);
+
+        if($(ctn).find(".post-media-image").height() >= $(ctn).find(".post-media-image").width()) {
+            $(ctn).find(".post-media-image").width("100%");
+        } else {
+            $(ctn).find(".post-media-image").height("100%");
+        }
+
+    } else if(num_of_medias == 4) {
+        for(let k = 0;k<4; k++) {
+            let ctn = media_containers[k];
+            $(ctn).css("align-items", "self-start");
+            $(ctn).css("margin", "3px");
+            $(ctn).css("width", half_width_marg);
+            $(ctn).css("height", half_height_marg);
+
+            if($(ctn).find(".post-media-image").height() >= $(ctn).find(".post-media-image").width()) {
+                $(ctn).find(".post-media-image").width("100%");
+            } else {
+                $(ctn).find(".post-media-image").height("100%");
+            }
+        }
+    } else if(num_of_medias > 4){
+        media_containers.css("align-items", "self-start")
+        let ctn = media_containers;
+        for(let k = 0;k<4; k++) {
+            ctn = media_containers[k];
+
+            $(ctn).css("margin", "3px");
+            $(ctn).css("width", half_width_marg);
+            $(ctn).css("height", half_height_marg);
+
+            if($(ctn).find(".post-media-image").height() >= $(ctn).find(".post-media-image").width()) {
+                $(ctn).find(".post-media-image").width("100%");
+            } else {
+                $(ctn).find(".post-media-image").height("100%");
+            }
+        }
+
+        let plus = num_of_medias - 4;
+        for(let j = 4;j<num_of_medias;j++) {
+            $(media_containers[j]).remove();
+        }
+        $(media_containers[3]).append("<div class='more-posts-items'><h1>+" + plus + "</h1></div>");
+        $(".more-posts-items").click(function() {
+            go_to_post($(this));
+        });
+    }
 }

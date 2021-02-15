@@ -5,7 +5,7 @@ require_once "../vendor/autoload.php";
 require_once "../core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
-use models\{Post, User, Follow};
+use models\{Post, User, Comment, Like};
 use view\post\Post as Post_View;
 
 if(!$user->getPropertyValue("isLoggedIn")) {
@@ -22,6 +22,8 @@ if(isset($_GET["pid"])) {
     Redirect::to(Config::get("root/path")."components/errors/404.php");
 }
 
+$current_user_id = $user->getPropertyValue("id");
+
 $post = new Post();
 $post->fetchPost($pid);
 $post_owner_id = $post->get_property("post_owner");
@@ -32,6 +34,7 @@ $post_owner_picture = $root . (empty($post_owner->getPropertyValue("picture")) ?
 $post_owner_fullname = $post_owner->getPropertyValue("firstname") . " " . $post_owner->getPropertyValue("lastname");
 $post_owner_username = $post_owner->getPropertyValue("username");
 $post_date = $post->get_property("post_date");
+$post_date = date("F d \a\\t Y h:i A",strtotime($post_date));
 $post_visibility_image_path = "";
 if($post->get_property("post_visibility") == 1) {
     $post_visibility_image_path = "public";
@@ -64,6 +67,52 @@ if(is_dir($post_images_dir)) {
         $images .= "<input type='hidden' value='0' class='current-asset-image'>";
     }
 }
+
+$post_meta_like = <<<LM
+<div class="no-display post-meta-likes post-meta"><span class="meta-count">0</span>Likes</div>
+LM;
+$post_meta_comment = <<<CM
+<div class="no-display post-meta-comments post-meta"><span class="meta-count">0</span>Comments</div>
+CM;
+$post_meta_share = <<<SM
+<div class="no-display post-meta-shares post-meta"><span class="meta-count">0</span>Shares</div>
+SM;
+
+$ce = $se = "";
+
+// Comment meta
+$pmc = count(Comment::fetch_post_comments($pid));
+if($pmc == 0) {
+    $ce = "no-display";
+}
+
+// Like
+$like_manager = new Like();
+$likes_count = count($like_manager->get_post_users_likes_by_post($pid));
+$lk = "like-black-filled.png";
+if($likes_count == 0) {
+    $likes_count = "";
+    $lk = "like-black.png";
+}
+
+$like_text_state = "Like";
+$like_manager->setData(array(
+    "user_id"=>$user->getPropertyValue("id"),
+    "post_id"=>$pid
+));
+$like_image = "like-black.png";
+if($like_manager->exists()) {
+    $like_text_state = "Liked";
+    $like_image = "like-black-filled.png";
+}
+
+// Share
+$shares = Post::get_post_share_numbers($pid);
+if($shares == 0) {
+    $se = "no-display";
+}
+
+$current_user_picture = $root . (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
 
 function is_dir_empty($dir) {
     return (count(glob("$dir/*")) === 0); // empty
@@ -105,14 +154,18 @@ foreach (scandir($directory) as $file) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="../javascript/config.js" defer></script>
 <script src="../javascript/header.js" defer></script>
+<script src="../javascript/post.js" defer></script>
 <script src="../javascript/post-viewer.js" defer></script>
 <script src="../javascript/global.js" defer></script>
 </head>
 <body>
 <?php include_once "../components/basic/header.php"; ?>
 <main>
+    <div class="notification-bottom-container">
+        <p class="notification-bottom-sentence">THIS IS TEST</p>
+    </div>
     <?php // Redirect to Post not found page ?>
-    <div id="post-viewer">
+    <div id="post-viewer" class="post-item">
         <div class="images">
             <?php echo $images; ?>
         </div>
@@ -173,56 +226,62 @@ foreach (scandir($directory) as $file) {
             <!-- post reactions number, comments and shares -->
             <div style="margin-top: 14px" class="flex">
                 <div class="pointer list-liked-people row-v-flex">
-                    <img src="../assets/images/icons/like-black.png" class="like-button-image" alt="">
-                    <p class="regular-text-style-2 bold">128</p>
+                    <img src="../assets/images/icons/like-black.png" class="like-friends-btn reaction-button-image" alt="">
+                    <p class="regular-text-style-2 bold like-counter"><?php echo $likes_count; ?></p>
                 </div>
                 <div class="right-pos-margin flex">
-                    <div style="margin-right: 6px" class="pointer hover-underline"><span class="num-of-comments regular-text">1</span>Comments</div>
-                    <div class="pointer hover-underline"><span class="num-of-shares regular-text">14</span>shares</div>
+                    <div style="margin-right: 6px" class="pointer hover-underline <?php echo $ce ?> noc-container"><span class="num-of-comments regular-text"><?php echo $pmc ?></span>Comments</div>
+                    <div class="pointer hover-underline nos-container <?php echo $se ?>"><span class="num-of-shares regular-text"><?php echo $shares; ?></span>shares</div>
                 </div>
             </div>
             <div class="reaction-box">
-                <div class="pointer like-button row-v-flex reaction-button">
-                    <img src="../assets/images/icons/like-black.png" class="like-button-image" alt="">
-                    <a class="regular-text-style-2 bold">Like</a>
+                <div class="pointer like row-v-flex reaction-button">
+                    <img src="../assets/images/icons/<?php echo $like_image; ?>" class="reaction-button-image like-button-image" alt="">
+                    <a class="regular-text-style-2 bold like-text-state"><?php echo $like_text_state ?></a>
                 </div>
-                <div class="pointer row-v-flex reaction-button comment-button" style="flex: 4">
-                    <img src="../assets/images/icons/black-comment.png" class="like-button-image" alt="">
+                <div class="pointer row-v-flex reaction-button comment" style="flex: 4">
+                    <img src="../assets/images/icons/black-comment.png" class="reaction-button-image comment-button-image" alt="">
                     <a class="regular-text-style-2 bold">Comment</a>
                 </div>
-                <div class="pointer row-v-flex reaction-button share-button">
-                    <img src="../assets/images/icons/reply-black.png" class="like-button-image" alt="">
-                    <a class="regular-text-style-2 bold">Share</a>
+                <div class="relative share-button-container">
+                    <div class="pointer row-v-flex reaction-button share">
+                        <img src="../assets/images/icons/reply-black.png" class="reaction-button-image share-button-image" alt="">
+                        <a class="regular-text-style-2 bold">Share</a>
+                    </div>
+                    <div class="share-animation-container flex-row-column">
+                        <div class="share-animation-outer-circle-container">
+                            
+                        </div>
+                        <div class="share-animation-inner-circle-container">
+                            
+                        </div>
+                        <div class="animation-hand">
+
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="comment-section">
-                <div class="comment-block">
-                    <div>
-                        <img src="../assets/images/read.png" class="image-style-9" alt="">
-                    </div>
-                    <div>
-                        <div class="comment-wrapper">
-                            <a href="" class="comment-owner">grotto</a>
-                            <p class="comment-text">This is a comment for testing stuff</p>
-                        </div>
-                        <div class="row-v-flex underneath-comment-buttons-container">
-                            <a href="" class="link-style-3">like</a>
-                            <a href="" class="link-style-3">reply</a>
-                            <div style="margin-left: 6px">
-                                <p class="regular-text-style-2"> . <span class="time-of-comment">5min</span></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="comment-block">
-                    <div>
-                        <img src="../assets/images/read.png" class="image-style-9" alt="">
+                <div class="comment-block owner_type_section">
+                    <div class="comment_owner_picture_container">
+                        <img src="<?php echo $current_user_picture ?>" class="comment_owner_picture" alt="TT">
                     </div>
                     <div class="comment-input-form-wrapper">
                         <form action="" method="POST" class="comment-form relative">
-                            <input type="text" name="comment" placeholder="Write a comment .." class="comment-style">
+                            <input type="text" name="comment" placeholder="Write a comment .." autocomplete="off" class="comment-input-style comment-inp">
                         </form>
                     </div>
+                </div>
+                <div id="pcomments">
+                    <?php 
+                        $comments_components = '';
+                        foreach(Comment::fetch_post_comments($pid) as $comment) {
+                            $cm = new Comment();
+                            $cm->fetch_comment($comment->id);
+            
+                            echo Post_View::generate_comment($cm, $current_user_id);
+                        }        
+                    ?>
                 </div>
             </div>
         </div>

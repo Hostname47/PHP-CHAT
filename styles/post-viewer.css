@@ -133,7 +133,7 @@ body, html {
     box-shadow: 1px 3px 7px 0.1px rgba(0, 0, 0, 0.4);
 }
 
-.like-button-image {
+.reaction-button-image {
     display: block;
     height: 20px;
     width: 20px;
@@ -154,7 +154,7 @@ body, html {
 .reaction-box {
     display: flex;
     justify-content: center;
-    margin: 12px 0;
+    margin: 12px 0 0 0;
     padding: 6px 0;
     border-top: 1px solid rgb(189, 189, 189);
     border-bottom: 1px solid rgb(189, 189, 189);
@@ -190,12 +190,19 @@ body, html {
     color: black
 }
 
-.comment-style {
+.comment-input-style {
     background-color: rgb(220, 220, 220);
     border: none;
     color: black;
     border-radius: 6px;
-    margin-left: 8px;
+    margin-left: 2px;
+    padding: 9px 9px 9px 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.comment-input-style:focus {
+    background-color: rgb(230, 230, 230);
 }
 
 .exit-button {
@@ -220,4 +227,36 @@ body, html {
 
 .exit-button:hover {
     background-color: rgb(60, 60, 60);
+}
+
+.comment-options-button {
+    background-image: url(../assets/images/icons/dotted-more.png);
+}
+
+.comment-options-button:hover {
+    background-color: rgb(224, 224, 224);
+}
+
+.comment-op {
+    margin-left: 0;
+}
+
+.comment_owner_picture_container {
+    min-width: 34px;
+}
+
+.share-animation-outer-circle-container {
+    background-color: black;
+}
+
+.share-animation-inner-circle-container {
+    background-color: white;
+}
+
+.animation-hand {
+    background-color: white;
+}
+
+.notification-bottom-sentence {
+    color: white;
 }
