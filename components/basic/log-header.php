@@ -16,8 +16,8 @@
         <div class="flex-column">
 
             <!----------------------  EMAIL OR USERNAME  ---------------------->
-            <label for="email-or-phone" class="small-label">Email or Phone</label>
-            <input type="text" name="email-or-username" tabindex="1" autocomplete="off" value="<?php echo htmlspecialchars(Common::getInput($_POST, 'email-or-username'));?>" class="text-input medium-text-input" form="login-form" placeholder="Email">
+            <label for="username-or-email" class="small-label">Username or email</label>
+            <input type="text" name="email-or-username" id="username-or-email" tabindex="1" autocomplete="off" value="<?php echo htmlspecialchars(Common::getInput($_POST, 'email-or-username'));?>" class="text-input medium-text-input" form="login-form" placeholder="Email">
             
             <!----------------------  REMEMBER ME  ---------------------->
             <div class="row-v-flex">
@@ -29,8 +29,8 @@
         <div class="flex-column">
 
             <!----------------------  PASSWORD  ---------------------->
-            <label for="email-or-phone" class="small-label">Password</label>
-            <input type="password" name="password" tabindex="2" autocomplete="off" class="text-input medium-text-input" form="login-form" placeholder="Password">
+            <label for="password" class="small-label">Password</label>
+            <input type="password" name="password" tabindex="2" autocomplete="off" id="password" class="text-input medium-text-input" form="login-form" placeholder="Password">
             <a href="<?php echo Config::get("root/path");?>login/passwordRecover.php" tabindex="5" class="link">Forgotten your passowrd?</a>
 
         </div>

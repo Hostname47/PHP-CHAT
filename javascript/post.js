@@ -524,7 +524,9 @@ $(".share-button").click(function(event) {
                     $(".notification-bottom-container").animate({
                         opacity: 0
                     }, 400);
-                }, 3000, function() {$(".notification-bottom-container").css("display", "none");});
+                }, 3000, function() {
+                    $(".notification-bottom-container").css("display", "none");
+                });
                 $(".share-post").css('display', "none");
             } else {
                 // Show error occured message into screen !

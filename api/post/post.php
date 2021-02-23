@@ -53,7 +53,7 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
         if(!empty($_FILES)) {
             foreach($_FILES as $file) {
                 $fileName = $file["name"];
-                $ext = get_extension($fileName);
+                $ext = strtolower(get_extension($fileName));
 
                 if(in_array($ext, $supported_video_extensions)) {
                     $validator->check($_FILES, array(
@@ -95,12 +95,9 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
                 ));
 
                 $user_posts_path = "../../data/users/" . $user->getPropertyValue("username") . "/posts";
-                createPostFolders($user_posts_path, $post_id);
                 
                 if(isset($_FILES)) {
-
-                } else {
-
+                    createPostFolders($user_posts_path, $post_id);
                 }
 
                 $post_images_dir = $user_posts_path . "/" . $post_id . "/media/pictures/";
@@ -108,14 +105,7 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
 
                 foreach($_FILES as $asset) {
                     $fileName = $asset["name"];
-                    $ext = get_extension($fileName);
-    
-                    if(in_array($ext, $supported_video_extensions)) {
-                        
-                    } else if(in_array($ext, $supported_image_extensions)) {
-                        
-                    }
-
+                    $ext = strtolower(get_extension($fileName));
 
                     $file = $asset["name"];
                     $original_extension = (false === $pos = strrpos($file, '.')) ? '' : substr($file, $pos);

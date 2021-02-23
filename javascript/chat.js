@@ -485,7 +485,7 @@ function open_friend_chat_section($element) {
                     // --------------- Update the receiver_user_id used for long-polling purpose ---------------------
                     receiver_user_id = $element.find(".receiver").val();
                     waitForMessages();
-                    //track_message_writing();
+                    track_message_writing();
                 }
             });
 

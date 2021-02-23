@@ -50,8 +50,8 @@ EOS;
                     <input type="hidden" class="chat-sender" value="$sender">
                     <input type="hidden" class="chat-receiver" value="$receiver">
                     <div id="chat-header">
-                        <div class="chat-disc-user-image">
-                            <img src="$friend_picture" class="image-style-7" alt="">
+                        <div class="chat-disc-user-image-container">
+                            <img src="$friend_picture" class="chat-disc-user-image" alt="">
                         </div>
                         <a href="$user_profile_link" class="no-underline">
                             <div class="chat-disc-name-and-username">
@@ -128,7 +128,7 @@ CHAT_SECTION;
                                 <p class="regular-text-style-2">$message_date</p>
                             </div>
                         </div>
-                        <a href="$user_profile_link"><img src="$user_profile" class="image-style-10" alt=""></a>
+                        <a href="$user_profile_link" class="cupp"><img src="$user_profile" class="message-part-picture" alt=""></a>
                     </div>
                 </div>
 CUM;
@@ -143,7 +143,7 @@ CUM;
             return <<<FM
                 <div class="message-global-container">
                     <div class="friend-message-container">
-                        <a href="$user_profile_link"><img src="$user_profile" class="image-style-10" alt=""></a>
+                        <a href="$user_profile_link" class="cupp"><img src="$user_profile" class="message-part-picture" alt=""></a>
                         <div class="message-wrapper relative">
                             <p class="regular-text message-text">$message_text</p>
                             <div class="absolute message-date friend-message-date">
@@ -217,7 +217,7 @@ FM;
                                 <p class="regular-text-style-2">$message_date</p>
                             </div>
                         </div>
-                        <a href="$replier_profile"><img src="$reply_message_picture" class="image-style-10" alt=""></a>
+                        <a href="$replier_profile" class="cupp"><img src="$reply_message_picture" class="message-part-picture" alt=""></a>
                     </div>
                 </div>
 FM;
@@ -248,7 +248,7 @@ FM;
                         </div>
                     </div>
                     <div class="received-replied-container">
-                        <a href="$replier_profile"><img src="$reply_message_picture" class="image-style-10" alt=""></a>
+                        <a href="$replier_profile" class="cupp"><img src="$reply_message_picture" class="message-part-picture" alt=""></a>
                         <div class="message-wrapper relative">
                             <p class="regular-text message-text received_replied_message_text">$reply_message_text</p>
                             <div class="absolute message-date friend-message-date">

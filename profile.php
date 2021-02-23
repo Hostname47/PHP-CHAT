@@ -278,8 +278,6 @@ METADATA;
                     </div>
                     <div class="flex flex-wrap">
                         <?php
-                            $posts = Post::fetch_journal_posts($profile_user_id);
-                            
                             $root = Config::get("root/path");
                             $project_name = Config::get("root/project_name");
                             $project_path = $_SERVER['DOCUMENT_ROOT'] . "/" . $project_name . "/";
@@ -317,7 +315,11 @@ PPI;
                 </div>
             </div>
             <div id="profile-posts-section">
-                <?php include_once "components/basic/create-post.php"; ?>
+                <?php
+                    if($fetched_user->getPropertyValue("id") == $user->getPropertyValue("id")) {
+                        include_once "components/basic/create-post.php";
+                    }
+                ?>
                 <div id="posts-container">
                     <?php
                         foreach($posts as $post) {

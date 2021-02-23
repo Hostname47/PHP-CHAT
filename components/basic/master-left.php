@@ -6,6 +6,11 @@
     $current_user_id = $user->getPropertyValue("id");
 
     $user_profile = Config::get("root/path") . (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
+    if(empty($user->getPropertyValue("cover"))) {
+        $user_cover = "";
+    } else {
+        $user_cover = Config::get("root/path") . $user->getPropertyValue("cover");
+    }
     $posts_number = Post::get_posts_number($current_user_id);
     $followers_number = Follow::get_user_followers_number($current_user_id);
     $followed_number = Follow::get_followed_users_number($current_user_id);
@@ -27,7 +32,7 @@
         <div>
             <a href="<?php echo Config::get("root/path") . "profile.php?user=" . $user->getPropertyValue("username"); ?>" class="no-underline menu-item-style-1 row-v-flex">
                 <div class="profile-owner-picture-left-panel-container">
-                    <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="profile-owner-picture-left-panel" alt="">
+                    <img src="<?php echo $user_profile; ?>" class="profile-owner-picture-left-panel" alt="">
                 </div>
                 <p class="label-style-3"><?php echo $user->getPropertyValue("username"); ?></p>
             </a>
@@ -69,7 +74,7 @@
                         <a href="" class="button-style-4 header-profile-edit-button">Edit</a>
                     </div>
                     <div class="cover-container">
-                        <img src="<?php echo $user->getPropertyValue("cover"); ?>" class="cover-photo" alt="">
+                        <img src="<?php echo $user_cover; ?>" class="cover-photo" alt="">
                     </div>
                     <a href="<?php echo $user_profile_path; ?>" class="picture-container absolute">
                         <img src="<?php echo $user_profile; ?>" class="picture-photo" alt="">

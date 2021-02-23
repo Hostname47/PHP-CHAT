@@ -39,6 +39,7 @@ class Validation {
         error_reporting(E_ERROR | E_PARSE);
 
         if($source === $_FILES) {
+            $counter = 0;
             foreach($items as $item=>$rules) {
                 foreach($rules as $rule => $rule_value) {
                     //$item = htmlspecialchars($item);
@@ -64,7 +65,29 @@ class Validation {
                                 */
                                 // ----------------------      CHECK IMAGE TYPE      ----------------------
 
+                                /*
+                                    IMPORTANT: Notice when we pass data through javascript the server automatically convert dots(.) to _ which was always assign null to $img
+                                    I stuck with this error for days before I realize it.
+                                    Try to solve this problem in the client side using javascript by checking the filename or replace the last hyphen with dot
+                                */
+                                foreach($_FILES as $key=>$value) {
+                                    /*
+                                        Here why we should do that, because we need to check that the php is replace the dot with hyphen and
+                                        doesn't contains a dot then we should take the original file name and past it as new key to $_FILES array
+                                        otherwise if the filename doesn't contain any hyphen or when the filename contains a dotthen we do the process as usual
+                                        We only have a problem when we append the data from js file to php, php take the filename and replace spaces and extension
+                                        dot to hyphens
+
+                                    */
+
+                                    if(!strpos($key, '.') && strpos($key, '_')) {
+                                        $_FILES[$value['name']] = $value;
+                                        unset($_FILES[$key]);
+                                    }
+                                }
                                 $img = $_FILES[$name];
+                                $name = $img["name"];
+
                                 $allowedImageExtensions = array(".png", ".jpeg", ".gif", ".jpg", ".jfif");
 
                                 $original_extension = (false === $pos = strrpos($name, '.')) ? '' : substr($name, $pos);
@@ -107,6 +130,7 @@ class Validation {
                         }
                     }
                 }
+                $counter++;
             }
         } else {
             foreach($items as $item=>$rules) {
@@ -178,6 +202,7 @@ class Validation {
             $this->_passed = false;
         }
 
+        // Clearing $_FILES
         return $this;
     }
 

@@ -79,6 +79,7 @@ $("#create-post-textual-content").on({
     keyup: function() {
         if($(this).val() != "") {
             $("#post-create-button").css("display", "block");
+            $(".share-post").css("display", "block");
         } else {
             if($("#post-assets").val() == "") {
                 $("#post-create-button").css("display", "none");
@@ -250,8 +251,6 @@ $("#post-video").change(function(event) {
         document.getElementById("post-video").value = "";
         return false;
     }
-    
-    console.log("I passed !");
 
     $.ajax({
         type: 'GET',
@@ -363,6 +362,7 @@ $(".share-post").click(function(event) {
     // Append image files
     for(let i = 0;i<uploaded_post_assets.length;i++) {
         formData.append(uploaded_post_assets[i].name, uploaded_post_assets[i]);
+        console.log("name submited: " + uploaded_post_assets[i].name);
     }
 
     // Append video files
@@ -394,7 +394,9 @@ $(".share-post").click(function(event) {
                 type: 'post',
                 url: root + "view/post/generate_last_post.php",
                 success: function(component) {
+                    console.log("before !");
                     $("#posts-container").prepend(component);
+                    console.log("after !");
                     handle_post_assets($(".post-item").first());
                 }
             })
@@ -418,6 +420,17 @@ $(".share-post").click(function(event) {
                 }, 300);
             }, 3000, function() {$(".post-created-message").css("display", "none");});
             $(".share-post").css('display', "none");
+
+            $.ajax({
+                type: 'POST',
+                url: root+'security/generate_new_token_post.php',
+                data: {
+                    token_name: "token_post"
+                },
+                success: function(response) {
+                    $("#share_post_token").val(response);
+                }
+            })
         },
         error: function(){
             console.log('error');

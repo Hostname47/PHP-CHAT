@@ -86,7 +86,7 @@
     <div class="button-style-7-container" id="post-create-button">
         <form action="" method="POST" id="create-post-form" name="create-post-form" enctype="multipart/form-data">
             <input type="hidden" name="post_owner" value="<?php echo $user->getPropertyValue("id"); ?>">
-            <input type="hidden" name="token_post" value="<?php 
+            <input type="hidden" id="share_post_token" name="token_post" value="<?php 
                     if(Session::exists("share-post")) 
                         echo Session::get("share-post");
                     else {
