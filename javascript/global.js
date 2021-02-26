@@ -146,6 +146,7 @@ $("#post-assets").change(function(event) {
         $(".red-message").css("display", "flex");
         $(".red-message-text").text("Some files have invalid format: Only JPG/PNG/JPEG and GIF files formats are supported.");
     }
+
     files = validate_image_file_Type(files);
     uploaded_post_assets.push(...files);
     // Then get the component skeleton
@@ -159,8 +160,11 @@ $("#post-assets").change(function(event) {
             // We check if there's no file and text area is empty we hide the share button
             if(files.length == 0 && $("#create-post-textual-content").val() == "") {
                 $("#post-create-button").css("display", "none");
+                console.log("I'm here in none !");
             } else {
                 $("#post-create-button").css("display", "block");
+                $(".share-post").css("display", "block");
+                console.log("I'm here instead !");
             }
 
             // Now we loop through the new files and append components to post component as small images to show them to user
@@ -394,9 +398,7 @@ $(".share-post").click(function(event) {
                 type: 'post',
                 url: root + "view/post/generate_last_post.php",
                 success: function(component) {
-                    console.log("before !");
                     $("#posts-container").prepend(component);
-                    console.log("after !");
                     handle_post_assets($(".post-item").first());
                 }
             })
@@ -798,17 +800,17 @@ function handle_post_assets(post) {
 
     // Here the appearance of images in post will be different depends on the number of images
     if(num_of_medias == 1) {
-
-        console.log("I'm here !");
-
         if($(post).find(".post-media-image").height() > $(post).find(".post-media-image").width()) {
             $(post).find(".post-media-image").width("100%");
         } else if ($(post).find(".post-media-image").height() > $(post).find(".post-media-image").width()){
             $(post).find(".post-media-image").height("100%");
         } else {
-            $(post).find(".post-media-image").height("100%");
             $(post).find(".post-media-image").width("100%");
         }
+
+        $(post).find(".post-view-button").click(function() {
+            view_image($(post));
+        });
 
         return;
     }
@@ -817,6 +819,10 @@ function handle_post_assets(post) {
             $(media_containers[k]).css("width", half_width_marg + 3);
             $(media_containers[k]).css("height", full_height_marg + 3);
             $(media_containers[k]).find(".post-media-image").height("100%");
+
+            $(media_containers[k]).find(".post-view-button").click(function() {
+                view_image(media_containers[k]);
+            });
         }
 
         $(media_containers[0]).css("margin-right", "3px");
@@ -833,6 +839,10 @@ function handle_post_assets(post) {
             } else {
                 $(ctn).find(".post-media-image").height("100%");
             }
+
+            $(ctn).find(".post-view-button").click(function() {
+                view_image($(ctn));
+            });
         }
 
         $(media_containers[0]).css("margin-right", "3px");
@@ -842,6 +852,9 @@ function handle_post_assets(post) {
         $(ctn).css("margin-top", "3px");
         $(ctn).css("width", full_width_marg + 3);
         $(ctn).css("height", half_height_marg + 3);
+        $(ctn).find(".post-view-button").click(function() {
+            view_image(ctn);
+        });
 
         if($(ctn).find(".post-media-image").height() >= $(ctn).find(".post-media-image").width()) {
             $(ctn).find(".post-media-image").width("100%");
@@ -862,6 +875,10 @@ function handle_post_assets(post) {
             } else {
                 $(ctn).find(".post-media-image").height("100%");
             }
+
+            $(ctn).find(".post-view-button").click(function() {
+                view_image(ctn);
+            });
         }
     } else if(num_of_medias > 4){
         media_containers.css("align-items", "self-start")
@@ -878,6 +895,10 @@ function handle_post_assets(post) {
             } else {
                 $(ctn).find(".post-media-image").height("100%");
             }
+
+            $(ctn).find(".post-view-button").click(function() {
+                view_image(ctn);
+            });
         }
 
         let plus = num_of_medias - 4;
@@ -889,4 +910,18 @@ function handle_post_assets(post) {
             go_to_post($(this));
         });
     }
+}
+
+function view_image(post) {
+    $(".post-viewer-only").css("display", "flex");
+    
+    $(".post-view-image").attr("src", $(post).find(".post-media-image").attr("src"));
+
+    if($(".post-view-image").height() >= $(".post-view-image").width) {
+        $(".post-view-image").width("100%");
+    } else {
+        $(".post-view-image").height("100%");
+    }
+
+    $("body").css("overflow-y", "hidden");
 }
