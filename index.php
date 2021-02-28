@@ -150,7 +150,7 @@
                 </div>
                 <div id="posts-container">
                     <?php if(count($journal_posts) == 0) { ?>
-                        <div>
+                        <div id="empty-posts-message">
                             <h2>Try to add friends, or follow them to see their posts ..</h1>
                             <p>click <a href="http://127.0.0.1/CHAT/search.php" class="link" style="color: rgb(66, 219, 66)">here</a> to go to the search page</p>
                         </div>

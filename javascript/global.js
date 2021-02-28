@@ -359,14 +359,12 @@ $(".share-post").click(function(event) {
 
     let value = $("#create-post-textual-content").val().replace(/\n/g, '<br/>');
     $("#create-post-textual-content").val(value);
-    console.log($("#create-post-textual-content").html());
 
     let formData = new FormData($("#create-post-form").get(0));
     
     // Append image files
     for(let i = 0;i<uploaded_post_assets.length;i++) {
         formData.append(uploaded_post_assets[i].name, uploaded_post_assets[i]);
-        console.log("name submited: " + uploaded_post_assets[i].name);
     }
 
     // Append video files
@@ -398,6 +396,9 @@ $(".share-post").click(function(event) {
                 type: 'post',
                 url: root + "view/post/generate_last_post.php",
                 success: function(component) {
+                    if($('#empty-posts-message').length != 0) {
+                        $('#empty-posts-message').remove();
+                    }
                     $("#posts-container").prepend(component);
                     handle_post_assets($(".post-item").first());
                 }

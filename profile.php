@@ -22,7 +22,7 @@ if(!($user->getPropertyValue("username") == $username) && $username != "") {
     if($fetched_user->fetchUser("username", $username)) {
         $posts = Post::get("post_owner", $fetched_user->getPropertyValue("id"));
     } else {
-        Redirect::to("errors/404.php");
+        Redirect::to("components/errors/404.php");
     }
 } else {
     $fetched_user = $user;
@@ -31,6 +31,7 @@ if(!($user->getPropertyValue("username") == $username) && $username != "") {
 
 $profile_user_id = $fetched_user->getPropertyValue("id");
 $profile_user_picture = Config::get("root/path") . (empty($fetched_user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $fetched_user->getPropertyValue("picture"));
+$bio = $fetched_user->getPropertyValue('bio');
 
 if(isset($_POST["save-profile-edites"])) {
     if(Token::check(Common::getInput($_POST, "save_token"), "saveEdits")) {
@@ -40,13 +41,13 @@ if(isset($_POST["save-profile-edites"])) {
             "firstname"=>array(
                 "name"=>"Firstname",
                 "required"=>true,
-                "min"=>6,
+                "min"=>4,
                 "max"=>40
             ),
             "lastname"=>array(
                 "name"=>"Lastname",
                 "required"=>true,
-                "min"=>6,
+                "min"=>4,
                 "max"=>40
             ),
             "private"=>array(
@@ -250,6 +251,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
                 </div>
                 <div class="user-info-section">
                     <h2 class="title-style-4">About</h2>
+                    <p class="regular-text" style="margin: 10px 0"><?php echo $bio; ?></p>
                     <p class="calendar-icon regular-text-style-2">Member since <?php echo date("F Y", strtotime($fetched_user->getPropertyValue("joined"))) ?></p>
 
                     <div style="margin-top: 8px">
@@ -315,18 +317,37 @@ PPI;
                 </div>
             </div>
             <div id="profile-posts-section">
+                <div class="green-message">
+                    <p class="green-message-text"><?php echo $welcomeMessage; ?></p>
+                    <script type="text/javascript" defer>
+                        if($(".green-message-text").text() !== "") {
+                            $(".green-message").css("display", "block");
+                        }
+                    </script>
+                </div>
+                <div class="red-message">
+                    <p class="red-message-text"></p>
+                    <div class="delete-message-hint">
+                    </div>
+                </div>
                 <?php
                     if($fetched_user->getPropertyValue("id") == $user->getPropertyValue("id")) {
                         include_once "components/basic/create-post.php";
                     }
                 ?>
                 <div id="posts-container">
-                    <?php
+                    <?php if(count($posts) == 0) { ?>
+                        <div id="empty-posts-message">
+                            <h2>Try to add friends, or follow them to see their posts ..</h1>
+                            <p>click <a href="http://127.0.0.1/CHAT/search.php" class="link" style="color: rgb(66, 219, 66)">here</a> to go to the search page</p>
+                        </div>
+                    <?php } else { 
                         foreach($posts as $post) {
-                            $post_view = new Post_view();
+                            $post_view = new Post_View();
 
                             echo $post_view->generate_post($post, $user);
                         }
+                    }
                     ?>
                 </div>
             </div>

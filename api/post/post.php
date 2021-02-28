@@ -96,7 +96,7 @@ if(Token::check(Common::getInput($_POST, "token_post"), "share-post")) {
 
                 $user_posts_path = "../../data/users/" . $user->getPropertyValue("username") . "/posts";
                 
-                if(isset($_FILES)) {
+                if(isset($_FILES) && !empty($_FILES)) {
                     createPostFolders($user_posts_path, $post_id);
                 }
 

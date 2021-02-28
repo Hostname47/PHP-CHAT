@@ -583,3 +583,10 @@ $(".refresh-discussion").click(function() {
 
     return false;
 });
+
+window.onresize = function() {
+    $("#second-chat-part").height($(window).height() - 55);
+    $("#first-chat-part").height($(window).height() - 55);
+
+    $("#friends-chat-container").height($(window).height() - 402);
+}

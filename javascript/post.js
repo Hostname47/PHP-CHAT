@@ -171,7 +171,14 @@ $(".comment-input").on({
                 while(!post_container.hasClass("post-item")) {
                     post_container = post_container.parent();
                 }
-                let post_id = post_container.find(".pid").val();
+                //let post_id = post_container.find(".pid").val();
+
+                /*
+                    Here we get the last pid because in case we have a shared post, we'll have two pid inputs, one for the original post
+                    and the other for the shared post, so we need the shared post id for comment to attach the comment to the shared post
+                    and the same approach for liking posts as well as sharing the post
+                */
+                let post_id = post_container.find(".pid").last().val();
                 $.ajax({
                     url: root + "security/get_current_user.php",
                     success(response) {
@@ -426,7 +433,8 @@ $(".like-button").click(function(event) {
     while(!container.hasClass("post-item")) {
         container = container.parent();
     }
-    let pid = container.find(".pid").val();
+    //let pid = container.find(".pid").val();
+    let pid = container.find(".pid").last().val();
 
     $.ajax({
         url: root + "api/like/post.php",
@@ -482,6 +490,7 @@ $(".share-button").click(function(event) {
     while(!container.hasClass("post-item")) {
         container = container.parent();
     }
+    //let pid = container.find(".pid").val();
     let pid = container.find(".pid").val();
 
     $(this).css("opacity", "0");
@@ -537,3 +546,17 @@ $(".share-button").click(function(event) {
 
     event.preventDefault();
 });
+
+function view_image(post) {
+    $(".post-viewer-only").css("display", "flex");
+    
+    $(".post-view-image").attr("src", $(post).find(".post-media-image").attr("src"));
+
+    if($(".post-view-image").height() >= $(".post-view-image").width) {
+        $(".post-view-image").width("100%");
+    } else {
+        $(".post-view-image").height("100%");
+    }
+
+    $("body").css("overflow-y", "hidden");
+}

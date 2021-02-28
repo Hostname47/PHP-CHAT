@@ -57,7 +57,8 @@ class Post {
             $this->post_shared_id
         ));
 
-        return $this->db->error() == false ? true : false;
+        $res = $this->db->error();
+        return $res == false ? true : false;
     }
 
     // Remember to use this function only 
@@ -88,6 +89,7 @@ class Post {
     public static function get_last_post() {
         DB::getInstance()->query("SELECT * FROM post ORDER BY id DESC LIMIT 1");
 
+        $res = DB::getInstance()->results();
         return DB::getInstance()->results()[0];
     }
 

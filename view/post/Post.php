@@ -97,7 +97,7 @@ VIDEO;
                 $shared_post_videos_dir = $project_path . $shared->get_property("video_media");
 
                 $shared_post_text_content = htmlspecialchars_decode($shared->get_property("text_content"));
-                if(is_dir($shared_post_images_dir)) {
+                if(is_dir($shared_post_images_dir) && $shared_post_images_dir != $project_path) {
                     if($this->is_dir_empty($shared_post_images_dir) == false) {
                         $fileSystemIterator = new \FilesystemIterator($shared_post_images_dir);
                         foreach ($fileSystemIterator as $fileInfo){
@@ -106,7 +106,7 @@ VIDEO;
                     }
                 }
 
-                if(is_dir($shared_post_videos_dir)) {
+                if(is_dir($shared_post_videos_dir) && $shared_post_videos_dir != $project_path) {
                     if($this->is_dir_empty($shared_post_videos_dir) == false) {
 
                         $fileSystemIterator = new \FilesystemIterator($shared_post_videos_dir);
