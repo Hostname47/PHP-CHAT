@@ -153,78 +153,8 @@ function go_to_post(post) {
     }
 }
 
-$(".comment-input").on({
-    keydown: function(event) {
-        let comment = $(this);
-        if($(this).is(":focus") && (event.keyCode == 13)) {
-            if($(this).val() != "") {
-                let post_container = $(this);
-                while(!post_container.hasClass("post-item")) {
-                    post_container = post_container.parent();
-                }
-                //let post_id = post_container.find(".pid").val();
-
-                /*
-                    Here we get the last pid because in case we have a shared post, we'll have two pid inputs, one for the original post
-                    and the other for the shared post, so we need the shared post id for comment to attach the comment to the shared post
-                    and the same approach for liking posts as well as sharing the post
-                */
-                let post_id = post_container.find(".pid").last().val();
-                $.ajax({
-                    url: root + "security/get_current_user.php",
-                    success(response) {
-                        let comment_owner = response.id;
-                        let comment_text = comment.val();
-
-                        $.ajax({
-                            url: root+"api/comment/post.php",
-                            data: {
-                                "comment_owner": comment_owner,
-                                "post_id": post_id,
-                                "comment_text": comment_text,
-                                "current_user_id": current_user_id
-                            },
-                            type: 'POST',
-                            success: function(response) {
-
-                                // Update number of comments
-                                let count = post_container.find(".post-meta-comments").find(".meta-count").html();
-                                let comments_counter = (count == "0") ? 0 : parseInt(post_container.find(".post-meta-comments").find(".meta-count").html());
-                                if(post_container.find(".post-statis").css("display") == "none") {
-                                    post_container.find(".post-statis").css("display", "flex");
-                                }
-                                
-                                comments_counter = comments_counter + 1;
-                                post_container.find(".post-meta-comments").find(".meta-count").html(comments_counter);
-                                post_container.find(".post-meta-comments").removeClass("no-display");
-
-                                // Emptying comment input
-                                comment.val("");
-
-                                // Get post comments container
-                                let comment_container = comment;
-                                while(!comment_container.hasClass("comment-section")) {
-                                    comment_container = comment_container.parent();
-                                }
-                                
-                                comment_container.prepend(response);
-                                let component = comment_container.find(".comment-block").first();
-                                component.find(".comment_id").val();
-                                handle_comment_event(component);
-
-                                if(post_container.find(".post-statis").css("display") == "none") {
-                                    $(".post-statis").css("display", "flex");
-                                }
-                            }
-                        })
-                    }
-                });
-            } else {
-                console.log("empty comment !");
-            }
-            return false;
-        }
-    }
+$(".comment-input").each(function(index, comment) {
+    handle_comment_input(comment);
 });
 
 function handle_comment_event(element) {
@@ -406,81 +336,17 @@ $(".comment-block").each(function(index, block) {
 
 handle_comment_event();
 
-$(".write-comment-button").click(function() {
-    let container = $(this);
-    while(!container.hasClass("post-item")) {
-        container = container.parent();
-    }
-
-    container.find(".comment-input").focus();
-
-    return false;
+$(".write-comment-button").each(function(index, comment_button) {
+    handle_coment_button(comment_button);
 })
 
 $(".like-button").click(function(event) {
-    like_post_func($(this));
+    handle_like_button($(this));
     event.preventDefault();
 });
 
 $(".share-button").click(function(event) {
-
-    let container = $(this);
-    while(!container.hasClass("post-item")) {
-        container = container.parent();
-    }
-    //let pid = container.find(".pid").val();
-    let pid = container.find(".pid").val();
-
-    $(this).css("opacity", "0");
-    $(this).css("cursor", "default");
-
-    $(this).parent().find(".share-animation-container").css("display", "flex");
-    
-    let count = container.find(".post-meta-shares").find(".meta-count").html();
-    let shares_counter = (count == "0") ? 0 : parseInt(container.find(".post-meta-shares").find(".meta-count").html());
-    
-    $.ajax({
-        url: root+"api/post/shared/add.php",
-        type: "post",
-        data: {
-            post_owner: current_user_id,
-            post_visibility: 1,
-            post_place: 1,
-            post_shared_id: pid
-        },
-        success: function(response) {
-            if(response == 1) {
-                if(container.find(".post-statis").css("display") == "none") {
-                    container.find(".post-statis").css("display", "flex");
-                }
-                
-                shares_counter = shares_counter + 1;
-                container.find(".post-meta-shares").find(".meta-count").html(shares_counter);
-                container.find(".post-meta-shares").removeClass("no-display");
-    
-                container.find(".share-animation-container").css("display", "none");
-                container.find(".share-button").css("opacity", "1");
-                container.find(".share-button").css("cursor", "pointer");
-    
-                $(".notification-bottom-sentence").text("Post shared in your timeline successfully !");
-                $(".notification-bottom-container").css("display", "block");
-                $(".notification-bottom-container").animate({
-                    opacity: 1
-                }, 400);
-                setTimeout(function() { 
-                    $(".notification-bottom-container").animate({
-                        opacity: 0
-                    }, 400);
-                }, 3000, function() {
-                    $(".notification-bottom-container").css("display", "none");
-                });
-                $(".share-post").css('display', "none");
-            } else {
-                // Show error occured message into screen !
-            }
-
-        }
-    })
+    handle_share_button($(this));
 
     event.preventDefault();
 });
@@ -497,60 +363,6 @@ function view_image(media_container) {
     }
 
     $("body").css("overflow-y", "hidden");
-}
-
-function like_post_func(like_button) {
-    let container = like_button;
-    while(!container.hasClass("post-item")) {
-        container = container.parent();
-    }
-    //let pid = container.find(".pid").val();
-    let pid = container.find(".pid").last().val();
-
-    $.ajax({
-        url: root + "api/like/post.php",
-        type: 'post',
-        data: {
-            post_id: pid,
-            current_user_id: current_user_id
-        },
-        success: function(response) {
-            /*
-                1: added successfully
-                2: deleted successfully
-                -1: there's a problem
-            */
-            let count = container.find(".post-meta-likes").find(".meta-count").html();
-            let likes_counter = (count == "0") ? 0 : parseInt(container.find(".post-meta-likes").find(".meta-count").html());
-            if(response == 1) {
-                $(like_button).removeClass("white-like-back");
-                $(like_button).addClass("white-like-filled-back");
-                $(like_button).addClass("bold");
-
-                if(container.find(".post-statis").css("display") == "none") {
-                    container.find(".post-statis").css("display", "flex");
-                }
-                
-                likes_counter = likes_counter + 1;
-                container.find(".post-meta-likes").find(".meta-count").html(likes_counter);
-                container.find(".post-meta-likes").removeClass("no-display");
-
-            } else if(response == 2) {
-                console.log("counter: " + likes_counter);
-                if(likes_counter == 1) {
-                    container.find(".post-meta-likes").addClass("no-display");
-                    likes_counter = 0;
-                } else {
-                    container.find(".post-meta-likes").find(".meta-count").html(--likes_counter);
-                }
-
-                $(like_button).addClass("white-like-back");
-                $(like_button).removeClass("white-like-filled-back");
-                $(like_button).removeClass("bold");
-                container.find(".post-meta-likes").find(".meta-count").html(likes_counter);
-            }
-        }
-    })
 }
 
 function handle_post_assets(post) {
@@ -733,8 +545,11 @@ $(".share-post").click(function(event) {
                         $('#empty-posts-message').remove();
                     }
                     $("#posts-container").prepend(component);
-                    handle_post_assets($(".post-item").first());
-                    handle_comment_event($(".post-item").first());
+                    let post = $(".post-item").first();
+                    // Handle post if it contains images or videos
+                    handle_post_assets(post);
+                    // Handle like, comment, and share buttons
+                    handle_post_buttons_actions(post);
                 }
             })
 
@@ -758,6 +573,11 @@ $(".share-post").click(function(event) {
             }, 3000, function() {$(".post-created-message").css("display", "none");});
             $(".share-post").css('display', "none");
 
+            /*
+                After sharing the post share-post token is removed from server session, so we need to regenerate one
+                by storing a new one in server session and get it as response from ajax request and put it to share-post
+                ttoken hidden input
+            */
             $.ajax({
                 type: 'POST',
                 url: root+'security/generate_new_token_post.php',
@@ -808,11 +628,9 @@ $("#post-assets").change(function(event) {
             // We check if there's no file and text area is empty we hide the share button
             if(files.length == 0 && $("#create-post-textual-content").val() == "") {
                 $("#post-create-button").css("display", "none");
-                console.log("I'm here in none !");
             } else {
                 $("#post-create-button").css("display", "block");
                 $(".share-post").css("display", "block");
-                console.log("I'm here instead !");
             }
 
             // Now we loop through the new files and append components to post component as small images to show them to user
@@ -888,7 +706,6 @@ $("#post-assets").change(function(event) {
 
 let uploaded_post_assets_videos = [];
 $("#post-video").change(function(event) {
-    console.log("upload a videos !");
     let files = event.originalEvent.target.files;
     if(files.length != validate_video_file_Type(files).length) {
         $(".red-message").css("display", "flex");
@@ -958,7 +775,6 @@ $("#post-video").change(function(event) {
                     // Here we want to get the index of item the user want to delete and loop through the array and
                     // Delete the item which has pciid input value with that index and
                     let delete_index = $(this).parent().find(".pciid").val();
-                    console.log("delete : " + delete_index);
                     let new_arr = [];
                     let cn = 0;
                     for(let k=0; k<uploaded_post_assets.length; k++) {
@@ -986,6 +802,7 @@ $("#post-video").change(function(event) {
     });
 })
 
+// Later try to track string where changed to add symbols like <3 to love symbol and so on
 $("#create-post-textual-content").on({
     keyup: function() {
         if($(this).val() != "") {
@@ -1045,10 +862,7 @@ const get_thumbnail = async function(file, seekTo, component) {
     let response = await getVideoCover(file, seekTo);
 
     component.find(".video-post-thumbnail").attr("src", response);
-    console.log("what we get: ");
-    console.log(response);
 }
-
 function createPoster($video) {
     var canvas = document.createElement("canvas");
     canvas.width = 350;
@@ -1056,9 +870,7 @@ function createPoster($video) {
     canvas.getContext("2d").drawImage($video, 0, 0, canvas.width, canvas.height);
     return canvas.toDataURL("image/jpeg");;
 }
-
 function getVideoCover(file, seekTo = 0.0) {
-    console.log("getting video cover for file: ", file);
     return new Promise((resolve, reject) => {
         // load the file to a video player
         const videoPlayer = document.createElement('video');
@@ -1098,5 +910,224 @@ function getVideoCover(file, seekTo = 0.0) {
                 );
             });
         });
+    });
+}
+
+// This function ->handle_post_buttons_actions: handle like, comment and share buttons by calling the next four functions
+function handle_post_buttons_actions(post) {
+    let like_button = $(post).find('.like-button');
+    let comment_input = $(post).find('.comment-input');
+    let comment_button = $(post).find('.write-comment-button');
+    let share_button = $(post).find('.share-button');
+
+    handle_like_button(like_button);
+    handle_comment_input(comment_input);
+    handle_coment_button(comment_button);
+    handle_share_button(share_button);
+}
+function handle_like_button(like_button) {
+    like_button.click(function(event) {
+        let container = like_button;
+        while(!container.hasClass("post-item")) {
+            container = container.parent();
+        }
+        //let pid = container.find(".pid").val();
+        let pid = container.find(".pid").last().val();
+    
+        $.ajax({
+            url: root + "api/like/post.php",
+            type: 'post',
+            data: {
+                post_id: pid,
+                current_user_id: current_user_id
+            },
+            success: function(response) {
+                /*
+                    1: added successfully
+                    2: deleted successfully
+                    -1: there's a problem
+                */
+                let count = container.find(".post-meta-likes").find(".meta-count").html();
+                let likes_counter = (count == "0") ? 0 : parseInt(container.find(".post-meta-likes").find(".meta-count").html());
+                if(response == 1) {
+                    $(like_button).removeClass("white-like-back");
+                    $(like_button).addClass("white-like-filled-back");
+                    $(like_button).addClass("bold");
+    
+                    if(container.find(".post-statis").css("display") == "none") {
+                        container.find(".post-statis").css("display", "flex");
+                    }
+                    
+                    likes_counter = likes_counter + 1;
+                    container.find(".post-meta-likes").find(".meta-count").html(likes_counter);
+                    container.find(".post-meta-likes").removeClass("no-display");
+    
+                } else if(response == 2) {
+                    if(likes_counter == 1) {
+                        container.find(".post-meta-likes").addClass("no-display");
+                        likes_counter = 0;
+                    } else {
+                        container.find(".post-meta-likes").find(".meta-count").html(--likes_counter);
+                    }
+    
+                    $(like_button).addClass("white-like-back");
+                    $(like_button).removeClass("white-like-filled-back");
+                    $(like_button).removeClass("bold");
+                    container.find(".post-meta-likes").find(".meta-count").html(likes_counter);
+                }
+            }
+        })
+
+        event.preventDefault();
+    })
+}
+function handle_comment_input(comment_input) {
+    $(comment_input).on({
+        keydown: function(event) {
+            let comment = $(comment_input);
+            if($(comment_input).is(":focus") && (event.keyCode == 13)) {
+                if($(comment_input).val() != "") {
+                    let post_container = $(comment_input);
+                    while(!post_container.hasClass("post-item")) {
+                        post_container = post_container.parent();
+                    }
+                    //let post_id = post_container.find(".pid").val();
+    
+                    /*
+                        Here we get the last pid because in case we have a shared post, we'll have two pid inputs, one for the original post
+                        and the other for the shared post, so we need the shared post id for comment to attach the comment to the shared post
+                        and the same approach for liking posts as well as sharing the post
+                    */
+                    let post_id = post_container.find(".pid").last().val();
+                    $.ajax({
+                        url: root + "security/get_current_user.php",
+                        success(response) {
+                            let comment_owner = response.id;
+                            let comment_text = comment.val();
+    
+                            $.ajax({
+                                url: root+"api/comment/post.php",
+                                data: {
+                                    "comment_owner": comment_owner,
+                                    "post_id": post_id,
+                                    "comment_text": comment_text,
+                                    "current_user_id": current_user_id
+                                },
+                                type: 'POST',
+                                success: function(response) {
+    
+                                    // Update number of comments
+                                    let count = post_container.find(".post-meta-comments").find(".meta-count").html();
+                                    let comments_counter = (count == "0") ? 0 : parseInt(post_container.find(".post-meta-comments").find(".meta-count").html());
+                                    if(post_container.find(".post-statis").css("display") == "none") {
+                                        post_container.find(".post-statis").css("display", "flex");
+                                    }
+                                    
+                                    comments_counter = comments_counter + 1;
+                                    post_container.find(".post-meta-comments").find(".meta-count").html(comments_counter);
+                                    post_container.find(".post-meta-comments").removeClass("no-display");
+    
+                                    // Emptying comment input
+                                    comment.val("");
+    
+                                    // Get post comments container
+                                    let comment_container = comment;
+                                    while(!comment_container.hasClass("comment-section")) {
+                                        comment_container = comment_container.parent();
+                                    }
+                                    
+                                    comment_container.prepend(response);
+                                    let component = comment_container.find(".comment-block").first();
+                                    component.find(".comment_id").val();
+                                    handle_comment_event(component);
+    
+                                    if(post_container.find(".post-statis").css("display") == "none") {
+                                        $(".post-statis").css("display", "flex");
+                                    }
+                                }
+                            })
+                        }
+                    });
+                } else {
+                    console.log("empty comment !");
+                }
+                return false;
+            }
+        }
+    });
+}
+function handle_coment_button(comment_button) {
+    console.log("handled !");
+    $(comment_button).click(function(event) {
+        let container = $(comment_button);
+        while(!container.hasClass("post-item")) {
+            container = container.parent();
+        }
+    
+        container.find(".comment-input").focus();
+    
+        event.preventDefault();
+    });
+}
+function handle_share_button(share_button) {
+    share_button.click(function(event) {
+        let container = share_button;
+        while(!container.hasClass("post-item")) {
+            container = container.parent();
+        }
+        //let pid = container.find(".pid").val();
+        let pid = container.find(".pid").val();
+    
+        share_button.css("opacity", "0");
+        share_button.css("cursor", "default");
+    
+        share_button.parent().find(".share-animation-container").css("display", "flex");
+        
+        let count = container.find(".post-meta-shares").find(".meta-count").html();
+        let shares_counter = (count == "0") ? 0 : parseInt(container.find(".post-meta-shares").find(".meta-count").html());
+        
+        $.ajax({
+            url: root+"api/post/shared/add.php",
+            type: "post",
+            data: {
+                post_owner: current_user_id,
+                post_visibility: 1,
+                post_place: 1,
+                post_shared_id: pid
+            },
+            success: function(response) {
+                if(response == 1) {
+                    if(container.find(".post-statis").css("display") == "none") {
+                        container.find(".post-statis").css("display", "flex");
+                    }
+                    
+                    shares_counter = shares_counter + 1;
+                    container.find(".post-meta-shares").find(".meta-count").html(shares_counter);
+                    container.find(".post-meta-shares").removeClass("no-display");
+        
+                    container.find(".share-animation-container").css("display", "none");
+                    container.find(".share-button").css("opacity", "1");
+                    container.find(".share-button").css("cursor", "pointer");
+        
+                    $(".notification-bottom-sentence").text("Post shared in your timeline successfully !");
+                    $(".notification-bottom-container").css("display", "block");
+                    $(".notification-bottom-container").animate({
+                        opacity: 1
+                    }, 400);
+                    setTimeout(function() { 
+                        $(".notification-bottom-container").animate({
+                            opacity: 0
+                        }, 400);
+                    }, 3000, function() {
+                        $(".notification-bottom-container").css("display", "none");
+                    });
+                    $(".share-post").css('display', "none");
+                } else {
+                    // Show error occured message into screen !
+                }
+            }
+        });
+
+        event.preventDefault();
     });
 }
