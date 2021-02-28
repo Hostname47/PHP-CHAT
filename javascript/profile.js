@@ -199,5 +199,5 @@ $(".user-media-post").click(function() {;
     let post_id = $(this).find(".pid").val();
 
     // Check if the post is image(s) only post
-    window.location.href = root + "post/post-skeleton.php?pid=" + post_id;
+    window.location.href = root + "post-viewer.php?pid=" + post_id;
 });

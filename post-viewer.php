@@ -1,8 +1,8 @@
 
 <?php
 
-require_once "../vendor/autoload.php";
-require_once "../core/init.php";
+require_once "vendor/autoload.php";
+require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
 use models\{Post, User, Comment, Like};
@@ -12,7 +12,7 @@ if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
 }
 
-require_once "../functions/sanitize_id.php";
+require_once "functions/sanitize_id.php";
 
 $pid = null;
 if(isset($_GET["pid"])) {
@@ -145,21 +145,21 @@ foreach (scandir($directory) as $file) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>V01D47</title>
-<link rel='shortcut icon' type='image/x-icon' href='../assets/images/favicons/favicon.ico' />
-<link rel="stylesheet" href="../styles/header.css">
-<link rel="stylesheet" href="../styles/global.css">
-<link rel="stylesheet" href="../styles/post.css">
-<link rel="stylesheet" href="../styles/post-viewer.css">
+<link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
+<link rel="stylesheet" href="styles/header.css">
+<link rel="stylesheet" href="styles/global.css">
+<link rel="stylesheet" href="styles/post.css">
+<link rel="stylesheet" href="styles/post-viewer.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="../javascript/config.js" defer></script>
-<script src="../javascript/header.js" defer></script>
-<script src="../javascript/post.js" defer></script>
-<script src="../javascript/post-viewer.js" defer></script>
-<script src="../javascript/global.js" defer></script>
+<script src="javascript/config.js" defer></script>
+<script src="javascript/header.js" defer></script>
+<script src="javascript/post.js" defer></script>
+<script src="javascript/post-viewer.js" defer></script>
+<script src="javascript/global.js" defer></script>
 </head>
 <body>
-<?php include_once "../components/basic/header.php"; ?>
+<?php include_once "components/basic/header.php"; ?>
 <main>
     <div class="notification-bottom-container">
         <p class="notification-bottom-sentence">THIS IS TEST</p>
@@ -171,7 +171,7 @@ foreach (scandir($directory) as $file) {
         </div>
         <div id="post-assets-container" class="relative">
             <div id="asset-wrapper">
-                <img src="../assets/images/read.png" class="asset-image" alt="">
+                <img src="assets/images/read.png" class="asset-image" alt="">
             </div>
 
             <div class="asset-back asset-move-button">
@@ -194,7 +194,7 @@ foreach (scandir($directory) as $file) {
                         <a href="http://127.0.0.1/CHAT/profile.php?username=<?php echo $post_owner_username; ?>" class="post-owner-name"><?php echo $post_owner_fullname; ?> -@<?php echo $post_owner_username ?></a>
                         <div class="row-v-flex">
                             <p class="regular-text"><a href="" class="post-date"><?php echo $post_date; ?></a> <span style="font-size: 14px; color: rgb(78, 78, 78);">.</span></p>
-                            <img src="../assets/images/icons/<?php echo $post_visibility_image_path; ?>.png" class="image-style-8" alt="" style="margin-left: 8px">
+                            <img src="assets/images/icons/<?php echo $post_visibility_image_path; ?>.png" class="image-style-8" alt="" style="margin-left: 8px">
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,7 @@ foreach (scandir($directory) as $file) {
             <!-- post reactions number, comments and shares -->
             <div style="margin-top: 14px" class="flex">
                 <div class="pointer list-liked-people row-v-flex">
-                    <img src="../assets/images/icons/like-black.png" class="like-friends-btn reaction-button-image" alt="">
+                    <img src="assets/images/icons/like-black.png" class="like-friends-btn reaction-button-image" alt="">
                     <p class="regular-text-style-2 bold like-counter"><?php echo $likes_count; ?></p>
                 </div>
                 <div class="right-pos-margin flex">
@@ -236,16 +236,16 @@ foreach (scandir($directory) as $file) {
             </div>
             <div class="reaction-box">
                 <div class="pointer like row-v-flex reaction-button">
-                    <img src="../assets/images/icons/<?php echo $like_image; ?>" class="reaction-button-image like-button-image" alt="">
+                    <img src="assets/images/icons/<?php echo $like_image; ?>" class="reaction-button-image like-button-image" alt="">
                     <a class="regular-text-style-2 bold like-text-state"><?php echo $like_text_state ?></a>
                 </div>
                 <div class="pointer row-v-flex reaction-button comment" style="flex: 4">
-                    <img src="../assets/images/icons/black-comment.png" class="reaction-button-image comment-button-image" alt="">
+                    <img src="assets/images/icons/black-comment.png" class="reaction-button-image comment-button-image" alt="">
                     <a class="regular-text-style-2 bold">Comment</a>
                 </div>
                 <div class="relative share-button-container">
                     <div class="pointer row-v-flex reaction-button share">
-                        <img src="../assets/images/icons/reply-black.png" class="reaction-button-image share-button-image" alt="">
+                        <img src="assets/images/icons/reply-black.png" class="reaction-button-image share-button-image" alt="">
                         <a class="regular-text-style-2 bold">Share</a>
                     </div>
                     <div class="share-animation-container flex-row-column">

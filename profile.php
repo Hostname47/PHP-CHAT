@@ -175,7 +175,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
     <main class="relative">
         <div class="post-viewer-only">
             <div class="viewer-post-wrapper">
-                <img src="assets/images/read.png" class="post-view-image" alt="">
+                <img src="" class="post-view-image" alt="">
                 <div class="close-view-post"></div>
             </div>
         </div>
@@ -317,14 +317,6 @@ PPI;
                 </div>
             </div>
             <div id="profile-posts-section">
-                <div class="green-message">
-                    <p class="green-message-text"><?php echo $welcomeMessage; ?></p>
-                    <script type="text/javascript" defer>
-                        if($(".green-message-text").text() !== "") {
-                            $(".green-message").css("display", "block");
-                        }
-                    </script>
-                </div>
                 <div class="red-message">
                     <p class="red-message-text"></p>
                     <div class="delete-message-hint">

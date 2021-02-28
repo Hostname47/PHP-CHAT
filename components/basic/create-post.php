@@ -1,7 +1,5 @@
 <?php
-
     use classes\{Config, Token, Session};
-
 ?>
 
 <div class="create-post-container">
