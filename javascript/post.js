@@ -550,6 +550,8 @@ $(".share-post").click(function(event) {
                     handle_post_assets(post);
                     // Handle like, comment, and share buttons
                     handle_post_buttons_actions(post);
+                    // Handle delete, edit, and hide post buttons
+                    handle_post_actions(post);
                 }
             })
 
@@ -1057,7 +1059,6 @@ function handle_comment_input(comment_input) {
     });
 }
 function handle_coment_button(comment_button) {
-    console.log("handled !");
     $(comment_button).click(function(event) {
         let container = $(comment_button);
         while(!container.hasClass("post-item")) {
@@ -1131,3 +1132,51 @@ function handle_share_button(share_button) {
         event.preventDefault();
     });
 }
+
+// The following function handle delete, edit and hide actions
+function handle_post_actions(post) {
+    handle_delete_post(post);
+    handle_edit_post(post);
+    handle_hide_post(post);
+}
+
+function handle_hide_post(post) {
+    $(post).find('.hide-post').click(function() {
+        $(post).css('display', 'none');
+        return false;
+    });
+}
+function handle_delete_post(post) {
+    $(post).find('.delete-post').click(function(event) {
+        // The reason why we want the last pid because in case of shared post we want the shared post to be deleted and not the original post
+        // and because we embed shared post along with original post the id of shared post is the last one in DOM order
+        let pid = $(post).find('.pid').last().val();
+
+        $.ajax({
+            url: root + 'api/post/delete.php',
+            type: 'post',
+            data: {
+                post_id: pid,
+                post_owner: current_user_id
+            },
+            success: function(response) {
+                /*
+                    Be carefull when you delete a post you need also to delete all likes comments and shared posts that
+                    are related to that post
+                */
+                $(post).remove();
+            }
+        });
+        
+        event.preventDefault();
+    });
+}
+function handle_edit_post(hide_post) {
+    $(hide_post).click(function() {
+        return false;
+    });
+}
+
+$('.post-item').each(function(index, post_item) {
+    handle_post_actions(post_item);
+});

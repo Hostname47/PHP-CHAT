@@ -495,6 +495,21 @@ input, textarea, a {
     border: 1px solid black;
 }
 
+.button-style-10 {
+    cursor: pointer;
+    display: flex;
+    width: 32px;
+    height: 32px;
+    margin: 0 2px;
+    border-radius: 50%;
+
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    transition: all 0.4s ease;
+}
+
 .more-button {
     padding-right: 30px;
     background-image: url(../assets/images/icons/more.png);
@@ -935,7 +950,7 @@ input, textarea, a {
 }
 
 .dotted-more-back:hover {
-    background-image: url("../assets/images/icons/dotted-more.png");
+    background-color: rgb(39, 39, 39);
 }
 
 .unfriend-black {

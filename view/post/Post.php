@@ -139,9 +139,6 @@ VIDEO;
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <a href="" class="button-style-6 dotted-more-back"></a>
-                            </div>
                         </div>
                         <p class="post-text">
                             $shared_post_text_content
@@ -222,8 +219,19 @@ SM;
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <a href="" class="button-style-6 dotted-more-back"></a>
+                        <div class="relative">
+                            <a href="" class="button-style-10 dotted-more-back button-with-suboption"></a>
+                            <div class="sub-options-container sub-options-container-style-2" style="z-index: 1; width: 129px; top: 30px; left: -100px; padding: 4px">
+                                <div class="sub-option-style-2">
+                                    <a href="" class="black-link delete-post">Delete post</a>
+                                </div>
+                                <div class="sub-option-style-2">
+                                    <a href="" class="black-link edit-post">Edit post</a>
+                                </div>
+                                <div class="sub-option-style-2">
+                                    <a href="" class="black-link hide-post">Hide post</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <p class="post-text">

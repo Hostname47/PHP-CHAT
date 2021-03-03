@@ -61,6 +61,12 @@ class Post {
         return $res == false ? true : false;
     }
 
+    public static function exists($value, $field_name='id') {
+        DB::getInstance()->query("SELECT * FROM post WHERE $field_name = $value");
+
+        return DB::getInstance()->count() > 0 ? true : false;
+    }
+
     // Remember to use this function only 
     public function fetchPost($id) {
         $this->db->query("SELECT * FROM post WHERE id = ?", array($id));
@@ -197,7 +203,11 @@ class Post {
         return DB::getInstance()->count();
     }
 
+    public function delete() {
+        $this->db->query('DELETE FROM post WHERE id = ?', array($this->post_id));
 
+        return $this->db->error() == false ? true : false;
+    }
 
     public function toString() {
         return 'Post with id: ' . $this->post_id . " and owner of id: " . $this->post_owner . " published at: " . $this->post_date . "<br>";

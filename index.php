@@ -64,7 +64,7 @@
         <div id="global-container" class="relative">
             <div class="post-viewer-only">
                 <div class="viewer-post-wrapper">
-                    <img src="assets/images/read.png" class="post-view-image" alt="">
+                    <img src="" class="post-view-image" alt="">
                     <div class="close-view-post"></div>
                 </div>
             </div>
