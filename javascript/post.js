@@ -1162,7 +1162,8 @@ function handle_delete_post(post) {
             success: function(response) {
                 /*
                     Be carefull when you delete a post you need also to delete all likes comments and shared posts that
-                    are related to that post
+                    are related to that post. Also we go to every post that is a shared post for that deleted post and we customized it
+                    by editing text to empty and add a section says: POST NOT FOUND
                 */
                 $(post).remove();
             }

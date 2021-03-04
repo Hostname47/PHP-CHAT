@@ -96,7 +96,17 @@ VIDEO;
                 $shared_post_images_dir = $project_path . $shared->get_property("picture_media");
                 $shared_post_videos_dir = $project_path . $shared->get_property("video_media");
 
-                $shared_post_text_content = htmlspecialchars_decode($shared->get_property("text_content"));
+                if($post->get_property('post_shared_id') == null) {
+                    $shared_post_text_content = <<<e
+                        <div class="clickable">
+                            <a href="#" class="post-text link-style-3">POST DELETED</a>
+                            <p class="regular-text post-text"><em>The owner of this post is either delete that post or make it private ..</em></p>
+                        </div>
+                    e;
+                } else {
+                    $shared_post_text_content = htmlspecialchars_decode($shared->get_property("text_content"));
+                }
+
                 if(is_dir($shared_post_images_dir) && $shared_post_images_dir != $project_path) {
                     if($this->is_dir_empty($shared_post_images_dir) == false) {
                         $fileSystemIterator = new \FilesystemIterator($shared_post_images_dir);

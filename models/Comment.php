@@ -107,6 +107,14 @@ class Comment {
         return array();
     }
 
+    public static function delete_post_comments($post_id) {
+        DB::getInstance()->query("DELETE FROM `comment` WHERE post_id = ?",
+            array($post_id)
+        );
+
+        return DB::getInstance()->error() == false ? true : false;
+    }
+
     public function toString() {
         return 'Post with id: ' . $this->post_id . " and owner of id: " . $this->post_owner . " published at: " . $this->post_date . "<br>";
     }

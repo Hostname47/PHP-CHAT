@@ -29,6 +29,10 @@ input, textarea, a {
     display: block;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 #global-container {
     display: flex;
     position: relative;

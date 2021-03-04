@@ -65,6 +65,16 @@ class Like {
         return $this->db->error() == false ? true : false;
     }
 
+    public static function delete_post_likes($post_id) {
+        DB::getInstance()->query("DELETE FROM `like` WHERE `post_id` = ?",
+            array(
+                $post_id
+            )
+        );
+
+        return DB::getInstance()->error() == false ? true : false;
+    }
+
     public function get_post_users_likes_by_post($post_id) {
         $this->db->query("SELECT * FROM `like` WHERE post_id = ?", array($post_id));
         $users = array();

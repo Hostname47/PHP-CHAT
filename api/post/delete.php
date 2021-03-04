@@ -4,7 +4,7 @@
 require_once "../../vendor/autoload.php";
 require_once "../../core/rest_init.php";
 
-use models\{Post};
+use models\{Post, Like, Comment};
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json;");
@@ -38,10 +38,24 @@ if(Post::exists($post_id)) {
         who makes the request is the owner of the post because we only allow the owner of the post to delete it.
     */
     if($post_owner == Post::get_post_owner($post_id)->post_owner) {
+
+        Like::delete_post_likes($post_id);
+        Comment::delete_post_comments($post_id);
+
         $post = new Post();
         $post->set_property('post_id', $post_id);
-    
         $post->delete();
+
+        /*
+            When the original post is deleted we want to edit all postst that are a shared post of that post and edit the column
+            shared_post_id to empty
+        */
+        $shared_posts = Post::get('post_shared_id', $post_id);
+        foreach($shared_posts as $post) {
+            $post->set_property('post_shared_id', '');
+            $post->update();
+        }
+
         echo json_encode(array(
             "success"=>true,
             "message"=>'post deleted successfully !'
