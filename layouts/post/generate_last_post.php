@@ -5,7 +5,7 @@ require_once "../../vendor/autoload.php";
 require_once "../../core/init.php";
 
 use models\{User, Post};
-use view\post\Post as Post_Manager;
+use layouts\post\Post as Post_Manager;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: text/html;");

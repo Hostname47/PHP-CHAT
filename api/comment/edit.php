@@ -4,8 +4,7 @@
 require_once "../../vendor/autoload.php";
 require_once "../../core/rest_init.php";
 
-use models\{User, Comment};
-use view\post\Post as Post_Manager;
+use models\{Comment};
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: text/html");

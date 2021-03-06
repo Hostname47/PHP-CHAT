@@ -1,6 +1,6 @@
 <?php
 
-namespace view\search;
+namespace layouts\search;
 
 use classes\Config;
 use models\{Follow};

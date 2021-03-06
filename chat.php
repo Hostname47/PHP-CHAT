@@ -6,8 +6,8 @@ require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
 use models\{Post, UserRelation, Follow, Message, User};
-use view\post\Post as Post_View;
-use view\chat\ChatComponent;
+use layouts\post\Post as Post_View;
+use layouts\chat\ChatComponent;
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
 
@@ -43,10 +43,10 @@ $current_user_id = $user->getPropertyValue("id");
     <script src="javascript/chat.js" defer></script>
 </head>
 <body>
-<?php include_once "components/basic/header.php"; ?>
+<?php include_once "page_parts/basic/header.php"; ?>
 <main>
     <div id="global-container">
-        <?php include_once "components/basic/master-left.php"; ?>
+        <?php include_once "page_parts/basic/master-left.php"; ?>
         <div id="master-middle">
             <div class="green-message">
                 <p class="green-message-text"><?php echo $welcomeMessage; ?></p>
@@ -82,7 +82,6 @@ $current_user_id = $user->getPropertyValue("id");
                                 only and exclude message sent by user with id: 5
                                 get_discussions function will return both sides but we need to adjust it to our needs
                             */
-
                             foreach($discussions as $discussion) {
 
                                 $current_disc = array(

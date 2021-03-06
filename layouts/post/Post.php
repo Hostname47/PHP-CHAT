@@ -1,6 +1,6 @@
 <?php
 
-    namespace view\post;
+    namespace layouts\post;
 
     use classes\{Config};
     use models\{User, Comment, Like, Shared_Post, Post as Pst};

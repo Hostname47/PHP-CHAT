@@ -82,7 +82,7 @@
     </style>
 </head>
 <body>
-    <?php include "../components/basic/log-header.php" ?>
+    <?php include "../page_parts/basic/log-header.php" ?>
     <main>
         <div id="reset-section">
             <h2 class="title-style1">Password recovery</h2>

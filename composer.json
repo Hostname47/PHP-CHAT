@@ -9,7 +9,7 @@
             "classes\\": "classes/",
             "models\\": "models/",
             "Mailgun\\": "Mailgun/",
-            "view\\": "view/"
+            "layouts\\": "layouts/"
         }
     }
 }

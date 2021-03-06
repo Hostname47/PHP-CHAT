@@ -299,7 +299,7 @@ function recurse_copy($src,$dst) {
 </head>
 <body>
 <main>
-    <?php require_once "components/settings/left-panel.php" ?>
+    <?php require_once "page_parts/settings/left-panel.php" ?>
     <div id="global-container">
         <div id="setting-master-container">
             <h1 class="no-margin">Edit profile</h1>

@@ -6,8 +6,8 @@
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
     use models\{Post, UserRelation, Follow};
-    use view\post\Post as Post_View;
-    use view\master_right\Right as MasterRightComponents;
+    use layouts\post\Post as Post_View;
+    use layouts\master_right\Right as MasterRightComponents;
 
     // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
     // Here we check if the user is not logged in and we redirect him to login page
@@ -56,7 +56,7 @@
     <script src="javascript/post.js" defer></script>
 </head>
 <body>
-    <?php include_once "components/basic/header.php"; ?>
+    <?php include_once "page_parts/basic/header.php"; ?>
     <main>
         <div class="notification-bottom-container">
             <p class="notification-bottom-sentence">THIS IS TEST</p>
@@ -68,7 +68,7 @@
                     <div class="close-view-post"></div>
                 </div>
             </div>
-            <?php include_once "components/basic/master-left.php"; ?>
+            <?php include_once "page_parts/basic/master-left.php"; ?>
             <div id="master-middle">
                 <div class="green-message">
                     <p class="green-message-text"><?php echo $welcomeMessage; ?></p>
@@ -83,7 +83,7 @@
                     <div class="delete-message-hint">
                     </div>
                 </div>
-                <?php include_once "components/basic/create-post.php"; ?>
+                <?php include_once "page_parts/basic/post_creator.php"; ?>
                 <div id="posts-container">
                     <?php if(count($journal_posts) == 0) { ?>
                         <div id="empty-posts-message">
@@ -101,7 +101,7 @@
 
                 </div>
             </div>
-            <?php include_once "components/basic/master-right.php" ?>
+            <?php include_once "page_parts/basic/master-right.php" ?>
         </div>
     </main>
 </body>

@@ -4,7 +4,7 @@
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
     use models\User;
-    use view\search\Search;
+    use layouts\search\Search;
     // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
     // Here we check if the user is not logged in and we redirect him to login page
 
@@ -57,10 +57,10 @@
     <script src="javascript/master-right.js" defer></script>
 </head>
 <body>
-    <?php include_once "components/basic/header.php"; ?>
+    <?php include_once "page_parts/basic/header.php"; ?>
     <main>
         <div id="global-container">
-            <?php include_once "components/basic/master-left.php"; ?>
+            <?php include_once "page_parts/basic/master-left.php"; ?>
             <div id="master-middle">
                 <div class="green-message">
                     <p class="green-message-text"><?php echo $welcomeMessage; ?></p>
@@ -81,7 +81,7 @@
                     <div style="padding: 8px">
                         <div class="flex-space">
                             <h1 class="title-style-4">People</h1>
-                            <a href="<?php echo Config::get("root/path") . "search/people.php?q=" . trim(htmlspecialchars($searchKeyword)); ?>" class="link-style-2">see more</a>
+                            <a href="<?php echo Config::get("root/path") . "people.php?q=" . trim(htmlspecialchars($searchKeyword)); ?>" class="link-style-2">see more</a>
                         </div>
                         <p class="label-style-2">Showing <span>
                             <?php echo ($number_of_users > $showingNumber) ? $showingNumber : $number_of_users; ?>
@@ -147,7 +147,7 @@
 
                 </script>
             </div>
-            <?php include_once "components/basic/master-right.php" ?>
+            <?php include_once "page_parts/basic/master-right.php" ?>
         </div>
     </main>
 </body>

@@ -141,7 +141,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <?php include "../components/basic/log-header.php" ?>
+    <?php include "../page_parts/basic/log-header.php" ?>
     <main>
         <div class="login-img-reg-container">
             <div id="left-asset-wrapper">

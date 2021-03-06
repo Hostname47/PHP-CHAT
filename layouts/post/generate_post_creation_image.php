@@ -4,10 +4,10 @@
 
     header('Access-Control-Allow-Origin: *');
 
-    use view\general\CreatePost;
+    use layouts\general\CreatePost;
     
     $cp = new CreatePost();
 
-    echo $cp->generatePostCreationVideo();
+    echo $cp->generatePostCreationImage();
 
 ?>

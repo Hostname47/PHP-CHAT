@@ -4,7 +4,7 @@ require_once "../../vendor/autoload.php";
 require_once "../../core/init.php";
 
 use models\{User, UserRelation};
-use view\chat\ChatComponent;
+use layouts\chat\ChatComponent;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: text/html");

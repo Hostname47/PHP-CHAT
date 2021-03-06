@@ -6,7 +6,7 @@ require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
 use models\{Post, User, Comment, Like};
-use view\post\Post as Post_View;
+use layouts\post\Post as Post_View;
 
 if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
@@ -19,7 +19,7 @@ if(isset($_GET["pid"])) {
     $pid = sanitize_id($_GET["pid"]);
 } else {
     // Redirect user to post not found page
-    Redirect::to(Config::get("root/path")."components/errors/404.php");
+    Redirect::to(Config::get("root/path") . "page_parts/errors/404.php");
 }
 
 $current_user_id = $user->getPropertyValue("id");
@@ -159,7 +159,7 @@ foreach (scandir($directory) as $file) {
 <script src="javascript/global.js" defer></script>
 </head>
 <body>
-<?php include_once "components/basic/header.php"; ?>
+<?php include_once "page_parts/basic/header.php"; ?>
 <main>
     <div class="notification-bottom-container">
         <p class="notification-bottom-sentence">THIS IS TEST</p>

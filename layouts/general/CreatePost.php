@@ -1,6 +1,6 @@
 <?php
 
-namespace view\general;
+namespace layouts\general;
 
     class CreatePost {
         public static function generatePostCreationImage() {

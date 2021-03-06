@@ -1,15 +1,15 @@
 <?php
-    require_once "../vendor/autoload.php";
-    require_once "../core/init.php";
+    require_once "vendor/autoload.php";
+    require_once "core/init.php";
 
     use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
     use models\User;
-    use view\search\Search;
+    use layouts\search\Search;
     // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
     // Here we check if the user is not logged in and we redirect him to login page
 
     if(!$user->getPropertyValue("isLoggedIn")) {
-        Redirect::to("../login/login.php");
+        Redirect::to("login/login.php");
     }
     if(Session::exists("register_success") && $user->getPropertyValue("username") == Session::get("new_username")) {
         $welcomeMessage = Session::flash("register_success");
@@ -17,7 +17,7 @@
     if(isset($_POST["logout"])) {
         if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
             $user->logout();
-            Redirect::to("../login/login.php");
+            Redirect::to("login/login.php");
         }
     }
     $welcomeMessage = '';
@@ -42,21 +42,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V01D47 - search</title>
-    <link rel='shortcut icon' type='../image/x-icon' href='../assets/images/favicons/favicon.ico' />
-    <link rel="stylesheet" href="../styles/global.css">
-    <link rel="stylesheet" href="../styles/header.css">
-    <link rel="stylesheet" href="../styles/index.css">
-    <link rel="stylesheet" href="../styles/search.css">
+    <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/search.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../javascript/config.js" defer></script>
-    <script src="../javascript/header.js" defer></script>
-    <script src="../javascript/index.js" defer></script>
-    <script src="../javascript/global.js" defer></script>
-    <script src="../javascript/search.js" defer></script>
+    <script src="javascript/config.js" defer></script>
+    <script src="javascript/header.js" defer></script>
+    <script src="javascript/index.js" defer></script>
+    <script src="javascript/global.js" defer></script>
+    <script src="javascript/search.js" defer></script>
 </head>
 <body>
-    <?php include_once "../components/basic/header.php"; ?>
+    <?php include_once "page_parts/basic/header.php"; ?>
     <main>
         <div id="global-container">
             <div id="master-left">
@@ -114,11 +114,7 @@
                             console.log("none");
                         }
                     });
-
                 </script>
-            </div>
-            <div id="master-right">
-                
             </div>
         </div>
     </main>

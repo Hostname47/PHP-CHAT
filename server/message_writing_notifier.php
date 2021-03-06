@@ -4,7 +4,7 @@ require_once "../core/init.php";
 
 use classes\DB;
 use models\{User, Message};
-use view\chat\ChatComponent;
+use layouts\chat\ChatComponent;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");

@@ -6,7 +6,7 @@ require_once "core/init.php";
 
 use classes\{DB, Config, Validation, Common, Session, Token, Hash, Redirect, Cookie};
 use models\{User, Post, Follow, UserRelation};
-use view\post\{Post as Post_view};
+use layouts\post\{Post as Post_view};
 // DONT'T FORGET $user OBJECT IS DECLARED WITHIN INIT.PHP (REALLY IMPORTANT TO SEE TO SEE [IMPORTANT#4]
 // Here we check if the user is not logged in and we redirect him to login page
 
@@ -22,7 +22,7 @@ if(!($user->getPropertyValue("username") == $username) && $username != "") {
     if($fetched_user->fetchUser("username", $username)) {
         $posts = Post::get("post_owner", $fetched_user->getPropertyValue("id"));
     } else {
-        Redirect::to("components/errors/404.php");
+        Redirect::to("page_parts/errors/404.php");
     }
 } else {
     $fetched_user = $user;
@@ -171,7 +171,7 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
     <script src="javascript/global.js" defer></script>
 </head>
 <body>
-    <?php include_once "components/basic/header.php"; ?>
+    <?php include_once "page_parts/basic/header.php"; ?>
     <main class="relative">
         <div class="post-viewer-only">
             <div class="viewer-post-wrapper">
@@ -215,9 +215,9 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
             </div>
             <?php
                 if($fetched_user->getPropertyValue("id") == $user->getPropertyValue("id")) {
-                    include_once "components/profile/owner-profile-header.php";
+                    include_once "page_parts/profile/owner-profile-header.php";
                 } else {
-                    include_once "components/profile/contact-header.php";
+                    include_once "page_parts/profile/contact-header.php";
                 }
             ?>
         </section>
@@ -324,7 +324,7 @@ PPI;
                 </div>
                 <?php
                     if($fetched_user->getPropertyValue("id") == $user->getPropertyValue("id")) {
-                        include_once "components/basic/create-post.php";
+                        include_once "page_parts/basic/post_creator.php";
                     }
                 ?>
                 <div id="posts-container">

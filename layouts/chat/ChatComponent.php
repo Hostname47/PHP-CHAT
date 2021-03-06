@@ -1,6 +1,6 @@
 <?php
 
-namespace view\chat;
+namespace layouts\chat;
 
 use classes\Config;
 use models\{User, Message};

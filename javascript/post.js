@@ -539,7 +539,7 @@ $(".share-post").click(function(event) {
 
             $.ajax({
                 type: 'post',
-                url: root + "view/post/generate_last_post.php",
+                url: root + "layouts/post/generate_last_post.php",
                 success: function(component) {
                     if($('#empty-posts-message').length != 0) {
                         $('#empty-posts-message').remove();
@@ -622,7 +622,7 @@ $("#post-assets").change(function(event) {
     // Then get the component skeleton
     $.ajax({
         type: 'GET',
-        url: root + "view/post/generate_post_creation_image.php",
+        url: root + "layouts/post/generate_post_creation_image.php",
         success: function(response) {
 
             let container = response;
@@ -725,7 +725,7 @@ $("#post-video").change(function(event) {
 
     $.ajax({
         type: 'GET',
-        url: root + "view/post/generate_post_creation_video.php",
+        url: root + "layouts/post/generate_post_creation_video.php",
         success: function(response) {
 
             let container = response;

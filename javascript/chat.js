@@ -48,7 +48,7 @@ $(".new-message-button").click(function() {
 $(".friend-search-input").on("change paste keyup", function() {
     let username = $(this).val();
     $.ajax({
-        url: root + "view/chat/get_chat_friend_by_username.php",
+        url: root + "layouts/chat/get_chat_friend_by_username.php",
         type: 'POST',
         data: {
             username: username
@@ -89,7 +89,7 @@ if(urlParams.get('username')) {
                         values["receiver"] = response["user"]["id"];
                         // If the user fetched successfully we generate a chat section based on the two values in values array(sender and receiver)
 
-                        let url = root + "view/chat/generate_chat_container.php";
+                        let url = root + "layouts/chat/generate_chat_container.php";
                         $.ajax({
                             type: "POST",
                             url: url,
@@ -454,7 +454,7 @@ function open_friend_chat_section($element) {
         'receiver': captured_id
     };
 
-    let url = root + "view/chat/generate_chat_container.php";
+    let url = root + "layouts/chat/generate_chat_container.php";
 
     if(discussion_chat_opened) {
         $("#second-chat-part").remove();
@@ -568,7 +568,7 @@ $(".refresh-discussion").click(function() {
             let current_user_id = data["id"];
 
             $.ajax({
-                url: root + "view/chat/discussions/get_user_discussions.php",
+                url: root + "layouts/chat/discussions/get_user_discussions.php",
                 type: 'POST',
                 data: {
                     'user_id': current_user_id

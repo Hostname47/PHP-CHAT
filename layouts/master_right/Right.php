@@ -1,6 +1,6 @@
 <?php
 
-namespace view\master_right;
+namespace layouts\master_right;
 use classes\Config;
 
     class Right {

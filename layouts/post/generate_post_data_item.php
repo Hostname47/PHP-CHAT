@@ -1,10 +1,10 @@
 <?php
 
-    include_once "../../../view/general/CreatePost.php";
+    include_once "../../view/general/CreatePost.php";
 
     header('Access-Control-Allow-Origin: *');
 
-    use view\general\CreatePost;
+    use layouts\general\CreatePost;
     
     $resource = (isset($_GET["resource"])) ? $_GET["resource"] : "";
     $cp = new CreatePost();

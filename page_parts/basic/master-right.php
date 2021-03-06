@@ -2,7 +2,7 @@
 
 use classes\Config;
 use models\UserRelation;
-use view\master_right\Right as MasterRightComponents;
+use layouts\master_right\Right as MasterRightComponents;
 
 $search_url = Config::get("root/path") . "search.php";
 

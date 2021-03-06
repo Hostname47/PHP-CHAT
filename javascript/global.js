@@ -11,7 +11,7 @@ $(".delete-message-hint").click(function() {
 $("#addd").click(function() {
     $.ajax({
         type: 'post',
-        url: root + "view/post/generate_post.php",
+        url: root + "layouts/post/generate_post.php",
         data: {
             "post_id": 40
         },
