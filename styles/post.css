@@ -462,6 +462,17 @@
     -o-animation: orbita 2s linear infinite;
 }
 
+.show-again {
+    color: rgb(102, 250, 102);
+    text-decoration: none;
+}
+
+.show-again:hover {
+    text-decoration: underline;
+}
+
+
+
 @keyframes orbita {
     0% {
       transform:translate(0%, 0%) rotate(0deg);

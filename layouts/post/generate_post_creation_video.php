@@ -1,6 +1,6 @@
 <?php
 
-    include_once "../../view/general/CreatePost.php";
+    include_once "../../layouts/general/CreatePost.php";
 
     header('Access-Control-Allow-Origin: *');
 

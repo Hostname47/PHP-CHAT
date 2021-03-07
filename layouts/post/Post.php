@@ -320,7 +320,7 @@ EOS;
             
             if($seconds > 29030400) {
                 $comment_life = floor($seconds / 29030400) . "y";
-            } else if($seconds > 2419200) {
+            } else if($seconds > 604799 && $seconds < 29030400) {
                 $comment_life = floor($seconds / 604800) . "w";
             } else if($seconds < 604799 && $seconds > 86400) {
                 $comment_life = floor($seconds / 86400) . "d";

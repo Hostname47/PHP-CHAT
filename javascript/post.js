@@ -552,6 +552,7 @@ $(".share-post").click(function(event) {
                     handle_post_buttons_actions(post);
                     // Handle delete, edit, and hide post buttons
                     handle_post_actions(post);
+                    handle_post_options_subcontainer(post);
                 }
             })
 
@@ -1133,16 +1134,29 @@ function handle_share_button(share_button) {
     });
 }
 
-// The following function handle delete, edit and hide actions
+// The following functions handle delete, edit and hide actions
 function handle_post_actions(post) {
-    handle_delete_post(post);
-    handle_edit_post(post);
-    handle_hide_post(post);
+    try {
+        handle_delete_post(post);
+        handle_edit_post(post);
+        handle_hide_post(post);
+    } catch(error) {
+        console.log("error: ");
+        console.log(error);
+    }
 }
 
 function handle_hide_post(post) {
     $(post).find('.hide-post').click(function() {
-        $(post).css('display', 'none');
+        $(post).append('<p class="small-text" style="padding: 10px 16px">This post is hidden. Click <a href="" class="show-again show-post-again">here</a> to see it again</p>')
+        $(post).find(".show-post-again").click(function() {
+            $(post).find('.timeline-post').css('display', 'block');
+            $(this).parent().remove();
+
+            $(".sub-options-container").css("display", "none");
+            return false;
+        })
+        $(post).find('.timeline-post').css('display', 'none');
         return false;
     });
 }
@@ -1172,8 +1186,21 @@ function handle_delete_post(post) {
         event.preventDefault();
     });
 }
-function handle_edit_post(hide_post) {
-    $(hide_post).click(function() {
+function handle_edit_post(post) {
+    $(post).find(".edit-post").click(function() {
+        return false;
+    });
+}
+
+function handle_post_options_subcontainer(post) {
+    $(post).find(".button-with-suboption").click(function() {
+        let container = $(this).parent().find(".sub-options-container");
+        if(container.css("display") == "none") {
+            $(".sub-options-container").css("display", "none");
+            container.css("display", "block");
+        } else {
+            container.css("display", "none");
+        }
         return false;
     });
 }

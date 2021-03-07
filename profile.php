@@ -167,8 +167,8 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
     <script src="javascript/config.js" defer></script>
     <script src="javascript/header.js" defer></script>
     <script src="javascript/profile.js" defer></script>
-    <script src="javascript/post.js" defer></script>
     <script src="javascript/global.js" defer></script>
+    <script src="javascript/post.js" defer></script>
 </head>
 <body>
     <?php include_once "page_parts/basic/header.php"; ?>

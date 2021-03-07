@@ -6,7 +6,7 @@ require_once "../../core/rest_init.php";
 
 use classes\DB;
 use models\{User, Comment};
-use view\post\Post as Post_Manager;
+use layouts\post\Post as Post_Manager;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: text/html");

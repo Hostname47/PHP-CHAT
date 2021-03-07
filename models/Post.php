@@ -203,6 +203,26 @@ class Post {
         return DB::getInstance()->count();
     }
 
+    public function update() {
+        $this->db->query("UPDATE post 
+        SET post_owner=?, post_visibility=?, post_place=?, post_date=?, 
+        text_content=?, picture_media=?, video_media=?, is_shared=?, post_shared_id=? WHERE id=?"
+        , array(
+            $this->post_owner,
+            $this->post_visibility,
+            $this->post_place,
+            $this->post_date,
+            $this->text_content,
+            $this->picture_media,
+            $this->video_media,
+            $this->is_shared,
+            $this->post_shared_id,
+            $this->post_id
+        ));
+
+        return ($this->db->error()) ? false : true;
+    }
+
     public function delete() {
         $this->db->query('DELETE FROM post WHERE id = ?', array($this->post_id));
 

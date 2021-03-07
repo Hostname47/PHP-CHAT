@@ -51,9 +51,9 @@ if(Post::exists($post_id)) {
             shared_post_id to empty
         */
         $shared_posts = Post::get('post_shared_id', $post_id);
-        foreach($shared_posts as $post) {
-            $post->set_property('post_shared_id', '');
-            $post->update();
+        foreach($shared_posts as $p) {
+            $p->set_property('post_shared_id', null);
+            $test = $p->update();
         }
 
         echo json_encode(array(

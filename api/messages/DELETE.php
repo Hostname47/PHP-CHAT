@@ -5,7 +5,7 @@ require_once "../../vendor/autoload.php";
 require_once "../../core/rest_init.php";
 
 use models\{Message};
-use view\chat\ChatComponent;
+use layouts\chat\ChatComponent;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json;");
