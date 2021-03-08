@@ -1,2 +1,3 @@
 /vendor/
-/data/users/*
+!data/users
+data/users/*

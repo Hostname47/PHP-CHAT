@@ -13,12 +13,12 @@
             $project_path = $_SERVER['DOCUMENT_ROOT'] . "/" . $project_name . "/";
 
             $current_user_id = $user->getPropertyValue("id");
-            $current_user_picture = Config::get("root/path") . (($user->getPropertyValue("picture") != "") ? $user->getPropertyValue("picture") : "assets/images/icons/user.png");
+            $current_user_picture = Config::get("root/path") . (($user->getPropertyValue("picture") != "") ? $user->getPropertyValue("picture") : "public/assets/images/icons/user.png");
 
             $post_owner_user = new User();
             $post_owner_user->fetchUser("id", $post->get_property("post_owner"));
 
-            $post_owner_picture = Config::get("root/path") . (($post_owner_user->getPropertyValue("picture") != "") ? $post_owner_user->getPropertyValue("picture") : "assets/images/logos/logo512.png");
+            $post_owner_picture = Config::get("root/path") . (($post_owner_user->getPropertyValue("picture") != "") ? $post_owner_user->getPropertyValue("picture") : "public/assets/images/logos/logo512.png");
             
             $post_id= $post->get_property("post_id");
             $post_owner_name = $post_owner_user->getPropertyValue("firstname") . " " . $post_owner_user->getPropertyValue("lastname") . " -@" . $post_owner_user->getPropertyValue("username");
@@ -77,7 +77,7 @@ VIDEO;
                 $shared_post_owner_user = new User();
                 $shared_post_owner_user->fetchUser("id", $shared->get_property("post_owner"));
 
-                $shared_post_owner_picture = Config::get("root/path") . (($shared_post_owner_user->getPropertyValue("picture") != "") ? $shared_post_owner_user->getPropertyValue("picture") : "assets/images/logos/logo512.png");
+                $shared_post_owner_picture = Config::get("root/path") . (($shared_post_owner_user->getPropertyValue("picture") != "") ? $shared_post_owner_user->getPropertyValue("picture") : "public/assets/images/logos/logo512.png");
                 
                 $shared_post_id= $shared->get_property("post_id");
                 $shared_post_owner_name = $shared_post_owner_user->getPropertyValue("firstname") . " " . $shared_post_owner_user->getPropertyValue("lastname") . " -@" . $shared_post_owner_user->getPropertyValue("username");
@@ -145,7 +145,7 @@ VIDEO;
                                     <a href="$shared_post_owner_profile" class="post-owner-name">$shared_post_owner_name</a>
                                     <div class="row-v-flex">
                                         <p class="regular-text"><a href="" class="post-date">$shared_post_date</a> <span style="font-size: 8px">.</span></p>
-                                        <img src="assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
+                                        <img src="public/assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
                                     </div>
                                 </div>
                             </div>
@@ -225,7 +225,7 @@ SM;
                                 <a href="$post_owner_profile" class="post-owner-name">$post_owner_name</a>
                                 <div class="row-v-flex">
                                     <p class="regular-text"><a href="" class="post-date">$post_date</a> <span style="font-size: 8px">.</span></p>
-                                    <img src="assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
+                                    <img src="public/assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
                                 </div>
                             </div>
                         </div>
@@ -309,7 +309,7 @@ EOS;
             $comment_owner->fetchUser('id', $comment->get_property("comment_owner"));
 
             $comment_owner_picture = Config::get("root/path") . 
-                (empty($comment_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $comment_owner->getPropertyValue("picture"));
+                (empty($comment_owner->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $comment_owner->getPropertyValue("picture"));
             $comment_owner_username = $comment_owner->getPropertyValue("username");
             $comment_owner_profile = Config::get("root/path") . "profile.php?username=" . $comment_owner_username;
             $comment_text = $comment->get_property("comment_text");

@@ -7,7 +7,7 @@ use classes\Config;
         public static function generateFriendContact($current_user_id, $user) {
             $user_id = $user->getPropertyValue("id");
             $user_name = $user->getPropertyValue("username");
-            $user_picture = Config::get("root/path") . (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
+            $user_picture = Config::get("root/path") . (empty($user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
             if(strlen($user_name) > 15) {
                 $user_name = substr($user_name, 0, 15) . " ..";
             }
@@ -34,7 +34,7 @@ use classes\Config;
                         <input type="hidden" class="uid" value="$user_id">
                         <input type="hidden" class="current" value="$current_user_id">
                     </div>
-                    <img src="assets/images/icons/$online_status" class="image-style-4 contact-user-connection-icon" alt="">
+                    <img src="public/assets/images/icons/$online_status" class="image-style-4 contact-user-connection-icon" alt="">
                 </div>
             </div>
 EOS;

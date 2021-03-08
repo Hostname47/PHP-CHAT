@@ -16,7 +16,7 @@ $search_url = Config::get("root/path") . "search.php";
         </div>
         <div class="absolute" id="contact-search-field-container">
             <input type="text" id="contact-search-field" placeholder="Search by friend or group ..">
-            <a class="not-link" href=""><img src="assets/images/icons/close.png" id="close-contact-search" class="image-style-4" alt=""></a>
+            <a class="not-link" href=""><img src="public/assets/images/icons/close.png" id="close-contact-search" class="image-style-4" alt=""></a>
         </div>
     </div>
     <div id="contacts-container">
@@ -27,7 +27,7 @@ $search_url = Config::get("root/path") . "search.php";
             if(empty($friends)) {
                 echo <<<EMPTY
                     <div class="flex-column" style="margin-top: 40px">
-                        <img src="assets/images/icons/white-search.png" alt="" style="height: 40px; width: 40px; margin: 0 auto;">
+                        <img src="public/assets/images/icons/white-search.png" alt="" style="height: 40px; width: 40px; margin: 0 auto;">
                         <p style="text-align: center">Try to add your friends, follow celebrities ..</p>
                         <p style="text-align: center">click <a href="$search_url" class="link" style="color: rgb(66, 219, 66)">here</a> to go to the search page</p>
                     </div>

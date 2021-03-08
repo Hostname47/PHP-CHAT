@@ -5,7 +5,7 @@
 
     $current_user_id = $user->getPropertyValue("id");
 
-    $user_profile = Config::get("root/path") . (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
+    $user_profile = Config::get("root/path") . (empty($user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
     if(empty($user->getPropertyValue("cover"))) {
         $user_cover = "";
     } else {
@@ -40,31 +40,31 @@
                 <p class="regular-text green-text" style="margin: 6px 0 4px 6px">Menu</p>
                 <a href="<?php echo Config::get("root/path") . "index.php" ?>" class="no-underline menu-item-style-2 row-v-flex">
                     <div class="image-style-2 flex-row-column">
-                        <img src="assets/images/icons/home-w.png" class="image-style-5" alt="">
+                        <img src="public/assets/images/icons/home-w.png" class="image-style-5" alt="">
                     </div>
                     <p class="label-style-3">Home</p>
                 </a>
                 <a href="<?php echo Config::get("root/path") . "notifications.php" ?>" class="no-underline menu-item-style-2 row-v-flex">
                     <div class="image-style-2 flex-row-column">
-                        <img src="assets/images/icons/notification.png" class="image-style-5" alt="">
+                        <img src="public/assets/images/icons/notification.png" class="image-style-5" alt="">
                     </div>
                     <p class="label-style-3">Notifications</p>
                 </a>
                 <a href="<?php echo Config::get("root/path") . "chat.php" ?>" class="no-underline menu-item-style-2 row-v-flex">
                     <div class="image-style-2 flex-row-column">
-                        <img src="assets/images/icons/messages.png" class="image-style-5" alt="">
+                        <img src="public/assets/images/icons/messages.png" class="image-style-5" alt="">
                     </div>
                     <p class="label-style-3">Messages</p>
                 </a>
                 <a href="<?php echo Config::get("root/path") . "notifications.php" ?>" class="no-underline menu-item-style-2 row-v-flex">
                     <div class="image-style-2 flex-row-column">
-                        <img src="assets/images/icons/page.png" class="image-style-5" alt="">
+                        <img src="public/assets/images/icons/page.png" class="image-style-5" alt="">
                     </div>
                     <p class="label-style-3">Pages</p>
                 </a>
                 <a href="<?php echo Config::get("root/path") . "notifications.php" ?>" class="no-underline menu-item-style-2 row-v-flex">
                     <div class="image-style-2 flex-row-column">
-                        <img src="assets/images/icons/group-w.png" class="image-style-5" alt="">
+                        <img src="public/assets/images/icons/group-w.png" class="image-style-5" alt="">
                     </div>
                     <p class="label-style-3">Groups</p>
                 </a>

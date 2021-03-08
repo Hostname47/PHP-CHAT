@@ -71,9 +71,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password recovery</title>
-    <link rel='shortcut icon' type='image/x-icon' href='../assets/images/favicons/favicon.ico' />
-    <link rel="stylesheet" href="../styles/global.css">
-    <link rel="stylesheet" href="../styles/log-header.css">
+    <link rel='shortcut icon' type='image/x-icon' href='../public/assets/images/favicons/favicon.ico' />
+    <link rel="stylesheet" href="../public/css/global.css">
+    <link rel="stylesheet" href="../public/css/log-header.css">
     <style>
         #reset-section {
             padding: 20px;

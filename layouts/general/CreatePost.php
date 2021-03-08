@@ -22,7 +22,7 @@ EOS;
                 <img src="" class="video-post-thumbnail" alt="">
                 <input type="hidden" class="pciid" value="">
                 <div class="post-creation-video-image-container">
-                    <img src="assets/images/icons/videos.png" class="post-creations-video-image">
+                    <img src="public/assets/images/icons/videos.png" class="post-creations-video-image">
                 </div>
                 <div class="assets-pending">
                     <div class="pending-container relative">

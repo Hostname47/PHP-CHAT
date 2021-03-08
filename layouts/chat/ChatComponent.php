@@ -9,7 +9,7 @@ use models\{User, Message};
         public static function generate_chat_page_friend_contact($current_user_id, $user) {
             $user_id = $user->getPropertyValue("id");
             $user_name = $user->getPropertyValue("username");
-            $user_picture = Config::get("root/path") . (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
+            $user_picture = Config::get("root/path") . (empty($user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
             if(strlen($user_name) > 25) {
                 $user_name = substr($user_name, 0, 25) . " ..";
             }
@@ -27,7 +27,7 @@ use models\{User, Message};
                     <img src="$user_picture" class="contact-user-picture" alt="">
                 </div>
                 <p class="regular-text" style="margin-left: 8px">$user_name</p>
-                <img src="assets/images/icons/$online_status" class="image-style-4 right-pos-margin" alt="">
+                <img src="public/assets/images/icons/$online_status" class="image-style-4 right-pos-margin" alt="">
                 <input type="hidden" class="sender" value="$current_user_id">
                 <input type="hidden" class="receiver" value="$user_id">
             </div>
@@ -42,7 +42,7 @@ EOS;
 
             $friend_fullname = $rcv->getPropertyValue("firstname") . " " . $rcv->getPropertyValue("lastname");
             $friend_username = $rcv->getPropertyValue("username");
-            $friend_picture = empty($rcv->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $rcv->getPropertyValue("picture");
+            $friend_picture = empty($rcv->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $rcv->getPropertyValue("picture");
             $user_profile_link = Config::get("root/path") . "profile.php?username=" . $rcv->getPropertyValue("username");
 
             echo <<<CHAT_SECTION
@@ -98,7 +98,7 @@ CHAT_SECTION;
         }
 
         public static function generate_current_user_message($user, $message, $message_date) {
-            $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
+            $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
             $user_profile_link = Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");
             $new = str_replace("/", "-", $message_date);
             $message_date = date("F d \a\\t Y H:i A",strtotime($new));
@@ -135,7 +135,7 @@ CUM;
         }
 
         public static function generate_friend_message($user, $message, $message_date) {
-            $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
+            $user_profile = Config::get("root/path") .  (empty($user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.PNG" : $user->getPropertyValue("picture"));
             $user_profile_link = Config::get("root/path") . "profile.php?username=" . $user->getPropertyValue("username");
             $message_date = date("F d \a\\t Y H:i A",strtotime($message_date));
             $message_id = $message->id;
@@ -187,7 +187,7 @@ FM;
             
             $reply_message_text = $reply_message->message;
             $message_date = date("F d \a\\t Y H:i",strtotime($reply_message->create_date));
-            $reply_message_picture = Config::get("root/path") . (empty($reply_message_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $reply_message_owner->getPropertyValue("picture"));
+            $reply_message_picture = Config::get("root/path") . (empty($reply_message_owner->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $reply_message_owner->getPropertyValue("picture"));
 
             return <<<FM
                 <div class="message-global-container relative">
@@ -237,7 +237,7 @@ FM;
             
             $reply_message_text = $reply_message->message;
             $message_date = date("F d \a\\t Y H:i",strtotime($reply_message->create_date));
-            $reply_message_picture = Config::get("root/path") . (empty($reply_message_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $reply_message_owner->getPropertyValue("picture"));
+            $reply_message_picture = Config::get("root/path") . (empty($reply_message_owner->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $reply_message_owner->getPropertyValue("picture"));
 
             return <<<FM
                 <div class="message-global-container romrc relative">
@@ -296,7 +296,7 @@ FM;
             $friend_user->fetchUser("id", $friend_id);
 
             // When w get friend id we fetch the user with that id to place his data to discussion component
-            $friend_picture = Config::get("root/path") . (empty($friend_user->getPropertyValue("picture")) ? 'assets/images/logos/logo512.png' : $friend_user->getPropertyValue("picture"));
+            $friend_picture = Config::get("root/path") . (empty($friend_user->getPropertyValue("picture")) ? 'public/assets/images/logos/logo512.png' : $friend_user->getPropertyValue("picture"));
             $friend_fullname = $friend_user->getPropertyValue("firstname") . " " . $friend_user->getPropertyValue("lastname");
             $friend_username = $friend_user->getPropertyValue("username");
             

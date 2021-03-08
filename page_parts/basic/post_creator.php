@@ -9,7 +9,7 @@
     <div class="flex-space create-post-header">
         <div class="row-v-flex">
             <div class="create-post-profile-owner-picture-container">
-                <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "assets/images/icons/user.png"); ?>" class="create-post-profile-owner-picture" alt="">
+                <img src="<?php echo Config::get("root/path") . ($user->getPropertyValue("picture") != "" ? $user->getPropertyValue("picture") : "public/assets/images/icons/user.png"); ?>" class="create-post-profile-owner-picture" alt="">
             </div>    
             <div class="horizontal-menu-item-wrapper" style="margin-left: 8px">
                 <a href="" class="button-style-4 button-with-suboption more-button">Post to timeline</a>

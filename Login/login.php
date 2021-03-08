@@ -134,10 +134,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V01D47 - Login</title>
-    <link rel='shortcut icon' type='image/x-icon' href='../assets/images/favicons/favicon.ico' />
-    <link rel="stylesheet" href="../styles/global.css">
-    <link rel="stylesheet" href="../styles/login.css">
-    <link rel="stylesheet" href="../styles/log-header.css">
+    <link rel='shortcut icon' type='image/x-icon' href='../public/assets/images/favicons/favicon.ico' />
+    <link rel="stylesheet" href="../public/css/global.css">
+    <link rel="stylesheet" href="../public/css/login.css">
+    <link rel="stylesheet" href="../public/css/log-header.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
@@ -146,7 +146,7 @@
         <div class="login-img-reg-container">
             <div id="left-asset-wrapper">
                 <h2 id="login-left-text">“The government doesn't want any system of transmitting information to remain unbroken, unless it's under its own control.” ― Isaac Asimov, Tales of the Black Widowers</h2>
-                <img src="../assets/images/preview.png" id="login-image-preview" alt="">
+                <img src="../public/assets/images/preview.png" id="login-image-preview" alt="">
             </div>
             <div id="registration-section">
                 <div class="green-message">

@@ -8,7 +8,7 @@
 
 <header>
     <div>
-        <a href="<?php echo Config::get("root/path") . "index.php"; ?>"><img src="<?php echo $pathToLogo ?>assets/images/logos/large.png" alt="logo" class="wide-logo"></a>
+        <a href="<?php echo Config::get("root/path") . "index.php"; ?>"><img src="<?php echo $pathToLogo ?>public/assets/images/logos/large.png" alt="logo" class="wide-logo"></a>
     </div>
     <div class="inline-logo-separator">〡</div>
     <div id="menu-login-credentials-container">
