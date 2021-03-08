@@ -23,8 +23,30 @@
             $post_id= $post->get_property("post_id");
             $post_owner_name = $post_owner_user->getPropertyValue("firstname") . " " . $post_owner_user->getPropertyValue("lastname") . " -@" . $post_owner_user->getPropertyValue("username");
 
+            $post_owner_actions = "";
+
+            if($post->get_property("post_owner") == $user->getPropertyValue('id')) {
+                $post_owner_actions = <<<E
+                    <div class="sub-option-style-2">
+                        <a href="" class="black-link delete-post">Delete post</a>
+                    </div>
+                    <div class="sub-option-style-2">
+                        <a href="" class="black-link edit-post">Edit post</a>
+                    </div>
+E;
+            }
+
             $post_date = $post->get_property("post_date");
             $post_date = date("F d \a\\t Y h:i A",strtotime($post_date)); //January 9 at 1:34 PM
+
+            $post_visibility = "";
+            if($post->get_property('post_visibility') == 1) {
+                $post_visibility = "public/assets/images/icons/public-white.png";
+            } else if($post->get_property('post_visibility') == 2) {
+                $post_visibility = "public/assets/images/icons/group-w.png";
+            }  else if($post->get_property('post_visibility') == 3) {
+                $post_visibility = "public/assets/images/icons/lock-white.png";
+            } 
 
             $post_owner_profile = Config::get("root/path") . "profile.php?username=" . $post_owner_user->getPropertyValue("username");
 
@@ -87,6 +109,15 @@ VIDEO;
 
                 $shared_post_owner_profile = Config::get("root/path") . "profile.php?username=" . $shared_post_owner_user->getPropertyValue("username");
 
+                $shared_post_visibility = "";
+                if($post->get_property('post_visibility') == 1) {
+                    $shared_post_visibility = "public/assets/images/icons/public-white.png";
+                } else if($post->get_property('post_visibility') == 2) {
+                    $shared_post_visibility = "public/assets/images/icons/group-w.png";
+                }  else if($post->get_property('post_visibility') == 3) {
+                    $shared_post_visibility = "public/assets/images/icons/lock-white.png";
+                }
+
                 $shared_image_components = "";
                 $shared_video_components = "";
 
@@ -145,7 +176,7 @@ VIDEO;
                                     <a href="$shared_post_owner_profile" class="post-owner-name">$shared_post_owner_name</a>
                                     <div class="row-v-flex">
                                         <p class="regular-text"><a href="" class="post-date">$shared_post_date</a> <span style="font-size: 8px">.</span></p>
-                                        <img src="public/assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
+                                        <img src="$shared_post_visibility" class="image-style-8" alt="" style="margin-left: 8px">
                                     </div>
                                 </div>
                             </div>
@@ -225,19 +256,14 @@ SM;
                                 <a href="$post_owner_profile" class="post-owner-name">$post_owner_name</a>
                                 <div class="row-v-flex">
                                     <p class="regular-text"><a href="" class="post-date">$post_date</a> <span style="font-size: 8px">.</span></p>
-                                    <img src="public/assets/images/icons/public-white.png" class="image-style-8" alt="" style="margin-left: 8px">
+                                    <img src="$post_visibility" class="image-style-8" alt="" style="margin-left: 8px">
                                 </div>
                             </div>
                         </div>
                         <div class="relative">
                             <a href="" class="button-style-10 dotted-more-back button-with-suboption"></a>
                             <div class="sub-options-container sub-options-container-style-2" style="z-index: 1; width: 129px; top: 30px; left: -100px; padding: 4px">
-                                <div class="sub-option-style-2">
-                                    <a href="" class="black-link delete-post">Delete post</a>
-                                </div>
-                                <div class="sub-option-style-2">
-                                    <a href="" class="black-link edit-post">Edit post</a>
-                                </div>
+                                $post_owner_actions
                                 <div class="sub-option-style-2">
                                     <a href="" class="black-link hide-post">Hide post</a>
                                 </div>

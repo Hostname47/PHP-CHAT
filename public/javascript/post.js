@@ -1,6 +1,4 @@
-$(".post-media-image").click(function() {
-    go_to_post($(this));
-});
+
 
 let posts_images = $(".post-media-image");
 
@@ -553,6 +551,7 @@ $(".share-post").click(function(event) {
                     // Handle delete, edit, and hide post buttons
                     handle_post_actions(post);
                     handle_post_options_subcontainer(post);
+                    handle_go_to_post(post);
                 }
             })
 
@@ -1205,6 +1204,13 @@ function handle_post_options_subcontainer(post) {
     });
 }
 
+function handle_go_to_post(post) {
+    $(post).find(".post-media-image").click(function() {
+        go_to_post($(this));
+    });
+}
+
 $('.post-item').each(function(index, post_item) {
     handle_post_actions(post_item);
+    handle_go_to_post(post_item);
 });

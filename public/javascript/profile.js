@@ -10,10 +10,10 @@ if(urlParams.get('edit') !== null) {
 
 if($("#private-account-state").val() == "1") {
     $("#private-account-state").val("1");
-    $("#private-account-button").css("backgroundImage", "url(assets/images/icons/on.png)");
+    $("#private-account-button").css("backgroundImage", "url(public/assets/images/icons/on.png)");
 } else {
     $("#private-account-state").val("-1");
-    $("#private-account-button").css("backgroundImage", "url(assets/images/icons/off.png)");
+    $("#private-account-button").css("backgroundImage", "url(public/assets/images/icons/off.png)");
 }
 
 $(".picture-back-color").css("color", $("#first-section").css("backgroundColor"));
@@ -174,10 +174,10 @@ $("#change-cover-button, #change-picture-button").click(function(event) {
 $("#private-account-button").click(function() {
     console.log("TET");
     if($("#private-account-state").val() == "1") {
-        $("#private-account-button").css("backgroundImage", "url(assets/images/icons/off.png)");
+        $("#private-account-button").css("backgroundImage", "url(public/assets/images/icons/off.png)");
         $("#private-account-state").val("-1");
     } else {
-        $(this).css("backgroundImage", "url(assets/images/icons/on.png)");
+        $(this).css("backgroundImage", "url(public/assets/images/icons/on.png)");
         $("#private-account-state").val("1");
     }
 });

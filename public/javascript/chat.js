@@ -439,7 +439,7 @@ function track_message_writing() {
 }
 
 function notification_sound_play() {
-    let audio = new Audio(root+'assets/audios/tone.mp3');
+    let audio = new Audio(root+'public/assets/audios/tone.mp3');
     audio.play();
 }
 

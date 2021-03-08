@@ -168,7 +168,7 @@ $(".like").click(function(event) {
                 }
 
                 $(".like-text-state").text("Liked");
-                $(".like-button-image").attr("src", "../assets/images/icons/like-black-filled.png");
+                $(".like-button-image").attr("src", "../public/assets/images/icons/like-black-filled.png");
 
             } else if(response == 2) {
                 if($(".like-counter").text() == "1") {
@@ -178,7 +178,7 @@ $(".like").click(function(event) {
                     $(".like-counter").text(like_counter);
                 }
 
-                $(".like-button-image").attr("src", "../assets/images/icons/like-black.png");
+                $(".like-button-image").attr("src", "../public/assets/images/icons/like-black.png");
                 $(".like-text-state").text("Like");
             }
         }
