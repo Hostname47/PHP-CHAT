@@ -1,7 +1,7 @@
 <?php
 
-require_once "../vendor/autoload.php";
-require_once "../core/init.php";
+require_once "vendor/autoload.php";
+require_once "core/init.php";
 
 use classes\{DB, Validation, Hash, Common, Session, Token, Redirect};
 use models\User;
@@ -27,7 +27,7 @@ $private = $user->getPropertyValue("private");
 
 $email = $user->getPropertyValue("email");
 
-include_once '../functions/sanitize_text.php';
+include_once 'functions/sanitize_text.php';
 
 if(isset($_POST["save-changes"])) {
     if(Token::check(Common::getInput($_POST, "token_save_changes"), "saveEdits")) {
@@ -103,9 +103,9 @@ if(isset($_POST["save-changes"])) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>V01D47</title>
-<link rel='shortcut icon' type='image/x-icon' href='../assets/images/favicons/favicon.ico'/>
-<link rel="stylesheet" href="../styles/global.css">
-<link rel="stylesheet" href="../styles/settings.css">
+<link rel='shortcut icon' type='image/x-icon' href='public/assets/images/favicons/favicon.ico'/>
+<link rel="stylesheet" href="public/css/global.css">
+<link rel="stylesheet" href="public/css/settings.css">
 
 <style>
     .setting-input-text-style, .green-message, .red-message {
@@ -118,12 +118,12 @@ if(isset($_POST["save-changes"])) {
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="../javascript/config.js" defer></script>
-<script src="../javascript/settings.js" defer></script>
+<script src="public/javascript/config.js" defer></script>
+<script src="public/javascript/settings.js" defer></script>
 </head>
 <body>
 <main>
-    <?php require_once "../components/settings/left-panel.php" ?>
+    <?php require_once "page_parts/settings/left-panel.php" ?>
     <div id="global-container">
         <div id="setting-master-container">
             <h1 class="no-margin">Security</h1>

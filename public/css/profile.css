@@ -251,6 +251,7 @@ main {
     background-color: black;
     opacity: 0.2;
     display: none;
+    width: 100%;
 }
 
 #textual-data-edit {

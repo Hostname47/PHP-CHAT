@@ -30,17 +30,17 @@ $current_user_id = $user->getPropertyValue("id");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V01D47</title>
-    <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/chat.css">
-    <link rel="stylesheet" href="styles/master-left-panel.css">
+    <link rel='shortcut icon' type='image/x-icon' href='public/assets/images/favicons/favicon.ico' />
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/header.css">
+    <link rel="stylesheet" href="public/css/chat.css">
+    <link rel="stylesheet" href="public/css/master-left-panel.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="javascript/config.js" defer></script>
-    <script src="javascript/header.js" defer></script>
-    <script src="javascript/global.js" defer></script>
-    <script src="javascript/chat.js" defer></script>
+    <script src="public/javascript/config.js" defer></script>
+    <script src="public/javascript/header.js" defer></script>
+    <script src="public/javascript/global.js" defer></script>
+    <script src="public/javascript/chat.js" defer></script>
 </head>
 <body>
 <?php include_once "page_parts/basic/header.php"; ?>

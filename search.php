@@ -41,20 +41,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V01D47 - search</title>
-    <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
-    <link rel="stylesheet" href="styles/global.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/index.css">
-    <link rel="stylesheet" href="styles/search.css">
-    <link rel="stylesheet" href="styles/master-left-panel.css">
-    <link rel="stylesheet" href="styles/master-right-contacts.css">
+    <link rel='shortcut icon' type='image/x-icon' href='public/assets/images/favicons/favicon.ico' />
+    <link rel="stylesheet" href="public/css/global.css">
+    <link rel="stylesheet" href="public/css/header.css">
+    <link rel="stylesheet" href="public/css/index.css">
+    <link rel="stylesheet" href="public/css/search.css">
+    <link rel="stylesheet" href="public/css/master-left-panel.css">
+    <link rel="stylesheet" href="public/css/master-right-contacts.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="javascript/config.js" defer></script>
-    <script src="javascript/header.js" defer></script>
-    <script src="javascript/search.js" defer></script>
-    <script src="javascript/global.js" defer></script>
-    <script src="javascript/master-right.js" defer></script>
+    <script src="public/javascript/config.js" defer></script>
+    <script src="public/javascript/header.js" defer></script>
+    <script src="public/javascript/search.js" defer></script>
+    <script src="public/javascript/global.js" defer></script>
+    <script src="public/javascript/master-right.js" defer></script>
 </head>
 <body>
     <?php include_once "page_parts/basic/header.php"; ?>

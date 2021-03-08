@@ -1,10 +1,10 @@
 
 $(document).ready(function() {
     if($("#private-account-state").val() == "1") {
-        $("#private-account-button").css("backgroundImage", "url('"+root+"assets/images/icons/on.png')");
+        $("#private-account-button").css("backgroundImage", "url('"+root+"public/assets/images/icons/on.png')");
         $("#private-account-status").text("(ON)");
     } else {
-        $("#private-account-button").css("backgroundImage", "url('" + root+"assets/images/icons/off-white.png')");
+        $("#private-account-button").css("backgroundImage", "url('" + root+"public/assets/images/icons/off-white.png')");
         $("#private-account-status").text("(OFF)");
     }
 });
@@ -16,11 +16,11 @@ $(".button-with-suboption").click(function() {
     if(contains) {
         if($(this).find(".button-subotions-container").css("display") == "none") {
             $(this).find(".button-subotions-container").css("display", "block");
-            let back = root+"assets/images/icons/down-arrow.png";
+            let back = root+"public/assets/images/icons/down-arrow.png";
             $(this).find(".has-suboption").css("backgroundImage","url('"+back+"')");
         }
         else {
-            let back = root+"assets/images/icons/right-arrow.png";
+            let back = root+"public/assets/images/icons/right-arrow.png";
             $(this).find(".has-suboption").css("backgroundImage","url('"+back+"')");
             $(this).find(".button-subotions-container").css("display", "none");
         }
@@ -41,11 +41,11 @@ $("#private-account-button").click(function() {
     let status = $("#private-account-state").val();
 
     if(status == 1) {
-        $("#private-account-button").css("backgroundImage", "url('" + root+"assets/images/icons/off-white.png')");
+        $("#private-account-button").css("backgroundImage", "url('" + root+"public/assets/images/icons/off-white.png')");
         $("#private-account-status").text("(OFF)");
         $("#private-account-state").val('-1');
     } else {
-        $("#private-account-button").css("backgroundImage", "url('"+root+"assets/images/icons/on.png')");
+        $("#private-account-button").css("backgroundImage", "url('"+root+"public/assets/images/icons/on.png')");
         $("#private-account-status").text("(ON)");
         $("#private-account-state").val('1');
     }

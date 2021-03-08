@@ -30,7 +30,7 @@ $post_owner_id = $post->get_property("post_owner");
 
 $post_owner = new User();
 $post_owner->fetchUser("id", $post_owner_id);
-$post_owner_picture = $root . (empty($post_owner->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $post_owner->getPropertyValue("picture"));
+$post_owner_picture = $root . (empty($post_owner->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $post_owner->getPropertyValue("picture"));
 $post_owner_fullname = $post_owner->getPropertyValue("firstname") . " " . $post_owner->getPropertyValue("lastname");
 $post_owner_username = $post_owner->getPropertyValue("username");
 $post_date = $post->get_property("post_date");
@@ -112,7 +112,7 @@ if($shares == 0) {
     $se = "no-display";
 }
 
-$current_user_picture = $root . (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
+$current_user_picture = $root . (empty($user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
 
 function is_dir_empty($dir) {
     return (count(glob("$dir/*")) === 0); // empty
@@ -145,18 +145,18 @@ foreach (scandir($directory) as $file) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>V01D47</title>
-<link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
-<link rel="stylesheet" href="styles/header.css">
-<link rel="stylesheet" href="styles/global.css">
-<link rel="stylesheet" href="styles/post.css">
-<link rel="stylesheet" href="styles/post-viewer.css">
+<link rel='shortcut icon' type='image/x-icon' href='public/assets/images/favicons/favicon.ico' />
+<link rel="stylesheet" href="public/css/header.css">
+<link rel="stylesheet" href="public/css/global.css">
+<link rel="stylesheet" href="public/css/post.css">
+<link rel="stylesheet" href="public/css/post-viewer.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="javascript/config.js" defer></script>
-<script src="javascript/header.js" defer></script>
-<script src="javascript/post.js" defer></script>
-<script src="javascript/post-viewer.js" defer></script>
-<script src="javascript/global.js" defer></script>
+<script src="public/javascript/config.js" defer></script>
+<script src="public/javascript/header.js" defer></script>
+<script src="public/javascript/post.js" defer></script>
+<script src="public/javascript/post-viewer.js" defer></script>
+<script src="public/javascript/global.js" defer></script>
 </head>
 <body>
 <?php include_once "page_parts/basic/header.php"; ?>
@@ -171,7 +171,7 @@ foreach (scandir($directory) as $file) {
         </div>
         <div id="post-assets-container" class="relative">
             <div id="asset-wrapper">
-                <img src="assets/images/read.png" class="asset-image" alt="">
+                <img src="" class="asset-image" alt="">
             </div>
 
             <div class="asset-back asset-move-button">
@@ -194,7 +194,7 @@ foreach (scandir($directory) as $file) {
                         <a href="http://127.0.0.1/CHAT/profile.php?username=<?php echo $post_owner_username; ?>" class="post-owner-name"><?php echo $post_owner_fullname; ?> -@<?php echo $post_owner_username ?></a>
                         <div class="row-v-flex">
                             <p class="regular-text"><a href="" class="post-date"><?php echo $post_date; ?></a> <span style="font-size: 14px; color: rgb(78, 78, 78);">.</span></p>
-                            <img src="assets/images/icons/<?php echo $post_visibility_image_path; ?>.png" class="image-style-8" alt="" style="margin-left: 8px">
+                            <img src="public/assets/images/icons/<?php echo $post_visibility_image_path; ?>.png" class="image-style-8" alt="" style="margin-left: 8px">
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,7 @@ foreach (scandir($directory) as $file) {
             <!-- post reactions number, comments and shares -->
             <div style="margin-top: 14px" class="flex">
                 <div class="pointer list-liked-people row-v-flex">
-                    <img src="assets/images/icons/like-black.png" class="like-friends-btn reaction-button-image" alt="">
+                    <img src="public/assets/images/icons/like-black.png" class="like-friends-btn reaction-button-image" alt="">
                     <p class="regular-text-style-2 bold like-counter"><?php echo $likes_count; ?></p>
                 </div>
                 <div class="right-pos-margin flex">
@@ -236,16 +236,16 @@ foreach (scandir($directory) as $file) {
             </div>
             <div class="reaction-box">
                 <div class="pointer like row-v-flex reaction-button">
-                    <img src="assets/images/icons/<?php echo $like_image; ?>" class="reaction-button-image like-button-image" alt="">
+                    <img src="public/assets/images/icons/<?php echo $like_image; ?>" class="reaction-button-image like-button-image" alt="">
                     <a class="regular-text-style-2 bold like-text-state"><?php echo $like_text_state ?></a>
                 </div>
                 <div class="pointer row-v-flex reaction-button comment" style="flex: 4">
-                    <img src="assets/images/icons/black-comment.png" class="reaction-button-image comment-button-image" alt="">
+                    <img src="public/assets/images/icons/black-comment.png" class="reaction-button-image comment-button-image" alt="">
                     <a class="regular-text-style-2 bold">Comment</a>
                 </div>
                 <div class="relative share-button-container">
                     <div class="pointer row-v-flex reaction-button share">
-                        <img src="assets/images/icons/reply-black.png" class="reaction-button-image share-button-image" alt="">
+                        <img src="public/assets/images/icons/reply-black.png" class="reaction-button-image share-button-image" alt="">
                         <a class="regular-text-style-2 bold">Share</a>
                     </div>
                     <div class="share-animation-container flex-row-column">

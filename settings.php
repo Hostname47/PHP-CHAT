@@ -23,7 +23,7 @@ $profile_selected = 'selected-button';
 $fullname = $user->getPropertyValue("firstname") . " " . $user->getPropertyValue("lastname");
 $username = $user->getPropertyValue("username");
 $bio = $user->getPropertyValue("bio");
-$picture = $root . (empty($user->getPropertyValue("picture")) ? "assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
+$picture = $root . (empty($user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $user->getPropertyValue("picture"));
 $cover = $root . $user->getPropertyValue("cover");
 $profile = $root . "profile.php?username=" . $user->getPropertyValue("username");
 $private = $user->getPropertyValue("private");
@@ -291,13 +291,13 @@ function recurse_copy($src,$dst) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>V01D47</title>
-<link rel='shortcut icon' type='image/x-icon' href='assets/images/favicons/favicon.ico' />
-<link rel="stylesheet" href="styles/global.css">
-<link rel="stylesheet" href="styles/settings.css">
+<link rel='shortcut icon' type='image/x-icon' href='public/assets/images/favicons/favicon.ico' />
+<link rel="stylesheet" href="public/css/global.css">
+<link rel="stylesheet" href="public/css/settings.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="javascript/config.js" defer></script>
-<script src="javascript/settings.js" defer></script>
+<script src="public/javascript/config.js" defer></script>
+<script src="public/javascript/settings.js" defer></script>
 </head>
 <body>
 <main>
