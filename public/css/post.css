@@ -174,7 +174,7 @@
     border-color: rgb(102, 250, 102);
 }
 
-.comment-edit-container {
+.comment-edit-container, .post-edit-container {
     width: 100%;
     margin-top: 8px;
 
@@ -193,7 +193,7 @@
     resize: none;
 }
 
-.close-edit {
+.close-edit, .close-post-edit {
     width: 20px;
     height: 20px;
 
@@ -211,7 +211,11 @@
     background-size: 8px;
 }
 
-.close-edit:hover {
+.close-post-edit {
+    right: 16px
+}
+
+.close-edit:hover, .close-post-edit:hover {
     background-color: rgb(100, 100, 100);
 }
 

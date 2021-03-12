@@ -273,6 +273,10 @@ SM;
                     <p class="post-text">
                         $post_text_content
                     </p>
+                    <div class="post-edit-container relative" style="padding: 0 10px; box-sizing: border-box">
+                        <textarea autocomplete="off" class="editable-input post-editable-text"></textarea>
+                        <div class="close-post-edit"></div>
+                    </div>
                     <div class="shared_post_container">
                         $shared_post_component
                     </div>

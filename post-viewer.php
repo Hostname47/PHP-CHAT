@@ -153,7 +153,6 @@ foreach (scandir($directory) as $file) {
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="public/javascript/config.js" defer></script>
-<script src="public/javascript/header.js" defer></script>
 <script src="public/javascript/post.js" defer></script>
 <script src="public/javascript/post-viewer.js" defer></script>
 <script src="public/javascript/global.js" defer></script>

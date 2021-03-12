@@ -165,7 +165,6 @@ $friends_number = UserRelation::get_friends_number($profile_user_id);
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" defer></script>
     <script src="public/javascript/config.js" defer></script>
-    <script src="public/javascript/header.js" defer></script>
     <script src="public/javascript/profile.js" defer></script>
     <script src="public/javascript/global.js" defer></script>
     <script src="public/javascript/post.js" defer></script>

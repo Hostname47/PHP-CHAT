@@ -1186,8 +1186,56 @@ function handle_delete_post(post) {
     });
 }
 function handle_edit_post(post) {
+    let pid = $(post).find('.pid').last().val();
+
     $(post).find(".edit-post").click(function() {
+        // First we hide the old text of post
+        $(post).find(".post-text").css("display", 'none');
+        // Then we show the edit container which contains the textatrea and exit button
+        $(post).find(".post-edit-container").css("display", 'block');
+        // Then we fill the textarea with the old post text and focus it
+        $(post).find(".post-editable-text").val($(post).find(".post-text").text().trim());
+        $(this).parent().parent().css("display", 'none');
+
+        $(post).find(".post-editable-text").on({
+            keydown: function(event) {
+                if($(this).is(":focus") && (event.keyCode == 13) && $(this).css("display") != "none") {
+                    if(event.keyCode == 13 && !event.shiftKey) {
+                        if($(this).val().trim() != $(post).find(".post-text").text().trim()) {
+                            event.preventDefault();
+
+                            let new_post_text = $(post).find(".post-editable-text").val();
+                            $.ajax({
+                                url: root + "api/post/edit.php",
+                                type: 'post',
+                                data: {
+                                    new_post_text: new_post_text,
+                                    post_id: pid,
+                                },
+                                success: function(response) {
+                                    if(response) {
+                                        $(post).find(".post-edit-container").css("display", "none");
+                                        $(post).find(".post-text").css("display", "block");
+                                        $(post).find(".post-text").text(response);
+                                    }
+                                }
+                            });
+                        } else {
+                            event.preventDefault();
+                        }
+                    }
+                }
+            }
+        })
+
+
         return false;
+    });
+
+    $(post).find(".close-post-edit").click(function() {
+        $(post).find(".post-text").css("display", 'block');
+        // Then we show the edit container which contains the textatrea and exit button
+        $(post).find(".post-edit-container").css("display", 'none');
     });
 }
 
