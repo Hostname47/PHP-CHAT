@@ -35,14 +35,6 @@ CREATE TABLE `channel` (
   `message_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `channel`
---
-
-INSERT INTO `channel` (`id`, `sender`, `receiver`, `group_recipient_id`, `message_id`) VALUES
-(1138, 35, 5, NULL, 131),
-(1139, 35, 5, NULL, 132);
-
 -- --------------------------------------------------------
 
 --
@@ -58,13 +50,6 @@ CREATE TABLE `comment` (
   `comment_text` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `comment`
---
-
-INSERT INTO `comment` (`id`, `comment_owner`, `post_id`, `comment_date`, `comment_edit_date`, `comment_text`) VALUES
-(1, 35, 171, '2021-02-23 20:25:07', NULL, 'add  a comment');
-
 -- --------------------------------------------------------
 
 --
@@ -77,16 +62,6 @@ CREATE TABLE `like` (
   `user_id` int(11) DEFAULT NULL,
   `like_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `like`
---
-
-INSERT INTO `like` (`id`, `post_id`, `user_id`, `like_date`) VALUES
-(138, 154, 5, '2021-02-22 23:01:49'),
-(139, 161, 35, '2021-02-22 23:33:35'),
-(140, 154, 35, '2021-02-22 23:35:19'),
-(141, 171, 35, '2021-02-23 20:24:45');
 
 -- --------------------------------------------------------
 
@@ -103,13 +78,6 @@ CREATE TABLE `message` (
   `reply_to` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `message`
---
-
-INSERT INTO `message` (`id`, `message_creator`, `message`, `create_date`, `is_reply`, `reply_to`) VALUES
-(132, 35, 'message to grotto !', '2021-02-23 00:34:54', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -122,13 +90,6 @@ CREATE TABLE `message_recipient` (
   `message_id` int(11) DEFAULT NULL,
   `is_read` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `message_recipient`
---
-
-INSERT INTO `message_recipient` (`id`, `receiver_id`, `message_id`, `is_read`) VALUES
-(132, 5, 132, 0);
 
 -- --------------------------------------------------------
 
