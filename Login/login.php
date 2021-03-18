@@ -48,6 +48,8 @@
                 // Here instead of printing out errors we can put them in an array and use them in proper html labels
                 $login_failure_message = $validate->errors()[0];
             }
+        } else {
+            $validate->addError('Invalide csrf token');
         }
     }
 

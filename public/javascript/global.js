@@ -368,3 +368,54 @@ $(".decline-user").click(function(event) {
         }
     });
 });
+
+$(".accept-request").click(function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let profile_path = $(this).parent().parent().parent().find('.link-to-profile').attr('href');
+    let uid = $(this).parent().find(".uid").val();
+  
+    url = root + "api/user_relation/accept_request.php";
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            current_user_id: current_user_id,
+            current_profile_id: uid
+        },
+        success: function(response)
+        {
+            if(response["success"]) {
+                window.location.href = profile_path;
+            } else {
+                console.log("Open console to see API request response !");
+            }
+        }
+    });   
+})
+$(".delete-request").click(function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let profile_path = $(this).parent().parent().parent().find('.link-to-profile').attr('href');
+    let uid = $(this).parent().find(".uid").val();
+  
+    url = root + "api/user_relation/decline_request.php";
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            current_user_id: current_user_id,
+            current_profile_id: uid
+        },
+        success: function(response)
+        {
+            if(response["success"]) {
+                window.location.href = profile_path;
+            } else {
+                console.log("Open console to see API request response !");
+            }
+        }
+    });   
+})

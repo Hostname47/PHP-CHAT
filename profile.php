@@ -14,25 +14,6 @@ if(!$user->getPropertyValue("isLoggedIn")) {
     Redirect::to("login/login.php");
 }
 
-$username = isset($_GET["username"]) ? trim(htmlspecialchars($_GET["username"])) : '';
-
-if(!($user->getPropertyValue("username") == $username) && $username != "") {
-    $fetched_user = new User();
-    // If there's now user with the given username in the link it will redirect the user to 404 error page
-    if($fetched_user->fetchUser("username", $username)) {
-        $posts = Post::get("post_owner", $fetched_user->getPropertyValue("id"));
-    } else {
-        Redirect::to("page_parts/errors/404.php");
-    }
-} else {
-    $fetched_user = $user;
-    $posts = Post::get("post_owner", $user->getPropertyValue("id"));
-}
-
-$profile_user_id = $fetched_user->getPropertyValue("id");
-$profile_user_picture = Config::get("root/path") . (empty($fetched_user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $fetched_user->getPropertyValue("picture"));
-$bio = $fetched_user->getPropertyValue('bio');
-
 if(isset($_POST["save-profile-edites"])) {
     if(Token::check(Common::getInput($_POST, "save_token"), "saveEdits")) {
         $validate = new Validation();
@@ -125,6 +106,25 @@ if(isset($_POST["save-profile-edites"])) {
         }
     }
 }
+
+$username = isset($_GET["username"]) ? trim(htmlspecialchars($_GET["username"])) : '';
+
+if(!($user->getPropertyValue("username") == $username) && $username != "") {
+    $fetched_user = new User();
+    // If there's now user with the given username in the link it will redirect the user to 404 error page
+    if($fetched_user->fetchUser("username", $username)) {
+        $posts = Post::get("post_owner", $fetched_user->getPropertyValue("id"));
+    } else {
+        Redirect::to("page_parts/errors/404.php");
+    }
+} else {
+    $fetched_user = $user;
+    $posts = Post::get("post_owner", $user->getPropertyValue("id"));
+}
+
+$profile_user_id = $fetched_user->getPropertyValue("id");
+$profile_user_picture = Config::get("root/path") . (empty($fetched_user->getPropertyValue("picture")) ? "public/assets/images/logos/logo512.png" : $fetched_user->getPropertyValue("picture"));
+$bio = $fetched_user->getPropertyValue('bio');
 
 if(isset($_POST["logout"])) {
     if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {

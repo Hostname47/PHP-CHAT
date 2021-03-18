@@ -605,6 +605,19 @@ input, textarea, a {
     font-weight: 600;
 }
 
+.new-style-button {
+    display: flex;
+    padding: 4px 6px;
+    background-color: rgb(47, 140, 177);
+    border-radius: 5px;
+    border: 1px solid rgb(38, 118, 150);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 2px;
+}
+
 .classic-link-style1:hover {
     text-decoration: underline;
 }
@@ -893,8 +906,8 @@ input, textarea, a {
     color: #ff5656;
 }
 
-.notification-button {
-    background-image: url("../assets/images/icons/notification.png");
+.friend-request-button {
+    background-image: url("../assets/images/icons/is-friend.png");
 }
 
 .eye-background {

@@ -29,7 +29,7 @@ class UserRelation {
         $this->from = $data["from"];
         $this->to = $data["to"];
         $this->status = $data["status"];
-        $this->since = (empty($data["since"]) || !strtotime($data["since"])) ? date("Y/m/d h:i:s") : $data["since"];
+        $this->since = (empty($data["since"]) || !strtotime($data["since"])) ? date("Y/m/d H:i:s") : $data["since"];
     }
 
     public function send_request() {
@@ -167,7 +167,7 @@ class UserRelation {
                     $this->from,
                     $this->to,
                     $this->status,
-                    date("Y/m/d h:i:s")
+                    date("Y/m/d H:i:s")
                 )
             );
         }
@@ -306,5 +306,15 @@ class UserRelation {
         } else {
             return false;
         }
+    }
+
+    public static function get_friendship_requests($user_id) {
+        DB::getInstance()->query("SELECT * FROM user_relation WHERE `to` = ? AND `status` = ?",
+        array(
+            $user_id,
+            'P'
+        ));
+
+        return DB::getInstance()->results();
     }
 }

@@ -1,6 +1,7 @@
 
 <?php
     use classes\{Config, Token, Session, Common, Redirect};
+    use models\{UserRelation, User};
 
     if(isset($_POST["logout"])) {
         if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
@@ -8,6 +9,76 @@
             Redirect::to("login/login.php");
         }
     }
+
+    $fr_senders = UserRelation::get_friendship_requests($user->getPropertyValue('id'));
+    $request_num_component = "";
+    $friend_request_components = "";
+
+    if(count($fr_senders) == 0) {
+        $friend_request_components = <<<EMPTY_FR
+            <h3>You don't have any friendship requests.</h3>
+EMPTY_FR;
+    } else {
+        $rnc = count($fr_senders);
+        $request_num_component = <<<RNC
+            <div class="num-of-requests">$rnc</div>
+RNC;
+        foreach($fr_senders as $sender) {
+
+            $s = new User();
+            $s->fetchUser('id', $sender->from);
+
+            $sender_id = $s->getPropertyValue('id');
+            $sender_username = $s->getPropertyValue('username');
+            $sender_avatar = ($s->getPropertyValue('picture') != "") ? $s->getPropertyValue('picture') : (Config::get("root/path") . "public/assets/images/logos/logo512.png");
+            $request_life = $sender->since;
+
+            $request_life = '';
+
+            // Get message date by substracting current date with the date of message
+            $now = strtotime(date("Y/m/d h:i:s"));
+            $seconds = floor($now - strtotime($sender->since));
+            
+            if($seconds > 29030400) {
+                $request_life = floor($seconds / 29030400) . "y";
+            } else if($seconds > 2419200) {
+                $request_life = floor($seconds / 604800) . "w";
+            } else if($seconds > 86400) {
+                $request_life = floor($seconds / 86400) . "d";
+            } else if($seconds < 86400 && $seconds > 3600) {
+                $request_life = floor($seconds / 3600) . "h";
+            } else if($seconds < 3600 && $seconds > 60) {
+                $request_life = floor($seconds / 60) . "min";
+            } else {
+                $request_life = $seconds . "sec";
+            }
+
+            $sender_profile = $root . "profile.php?username=" .  $s->getPropertyValue('username');
+
+            $friend_request_components .= <<<FR
+    <div class="friend-request-option-item">
+        <a href="$sender_profile" class="link-to-profile not-link block" style="color: black">
+            <div>
+                <img src="$sender_avatar" class="image-style-1" alt="user's profile picture">
+            </div>
+            <div class="friend-request-content-container">
+                <p class="notif-content"><span class="action-doer">$sender_username</span> <span class="notif-action">sends</span> <span> you a friend request</span></p>
+                <p class="notif-date">$request_life</p>
+            </div>
+        </a>
+        <div class="right-pos-margin flex">
+            <div class="right-pos-margin">
+                <a href="" class="new-style-button accept-request">Accept</a>
+                <a href="" class="new-style-button delete-request">Delete</a>
+                <input type="hidden" value="$sender_id" class="uid">
+            </div>
+        </div>
+    </div>
+FR;
+        }
+    }
+
+
 
     $setting_path = Config::get("root/path") . "settings.php";
 ?>
@@ -50,37 +121,17 @@
                         <!-- "Notifications" will appear when user hover over the abov link button -->
                     </div>
                 </div>
-                <div class="horizontal-menu-item-wrapper">
-                    <a href="" class="menu-button-style-2 button-with-suboption notification-button"></a>
+                <div class="horizontal-menu-item-wrapper relative">
+                    <?php echo $request_num_component; ?>
+                    <a href="" class="menu-button-style-2 button-with-suboption friend-request-button"></a>
                     <div class="sub-label">
                         <!-- "Notifications" will appear when user hover over the abov link button -->
                     </div>
                     <div class="sub-options-container sub-options-container-style-1">
-                        <h2 class="title-style-1">Notifications</h2>
+                        <h2 class="title-style-1">Friend Requests</h2>
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
                         <div class="options-container">
-                            <a href="" class="sub-option">
-                                <div class="notif-option-item">
-                                    <div>
-                                        <img src="<?php echo Config::get("root/path") . "public/assets/images/logos/logo512.png"; ?>" class="image-style-1" alt="user's profile picture">
-                                    </div>
-                                    <div class="notification-content-container">
-                                        <p class="notif-content"><span class="action-doer">Mouad Nassri</span> <span class="notif-action">commented</span> <span> in your profile picture</span></p>
-                                        <p class="notif-date">40 minutes ago</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="" class="sub-option">
-                                <div class="notif-option-item">
-                                    <div>
-                                        <img src="<?php echo Config::get("root/path") . "public/assets/images/logos/logo512.png"; ?>" class="image-style-1" alt="user's profile picture">
-                                    </div>
-                                    <div class="notification-content-container">
-                                        <p class="notif-content"><span class="action-doer">Mouad Nassri</span> <span class="notif-action">commented</span> <span> in your profile picture</span></p>
-                                        <p class="notif-date">40 minutes ago</p>
-                                    </div>
-                                </div>
-                            </a>
+                            <?php echo $friend_request_components ?>
                         </div>
                     </div>
                 </div>

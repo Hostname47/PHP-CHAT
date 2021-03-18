@@ -97,13 +97,20 @@ header {
     background-color: rgb(231, 231, 231);
 }
 
-.notif-option-item, .message-option-item {
+.friend-request-option-item, .message-option-item {
     display: flex;
     text-decoration: none;
     font-size: 14px;
+    margin: 4px 0;
+    padding: 4px;
+    border-radius: 4px;
 }
 
-.notification-content-container {
+.friend-request-option-item:hover {
+    background-color: rgb(234, 234, 234);
+}
+
+.friend-request-content-container {
     padding: 0 0 0 6px;
 }
 
@@ -212,4 +219,22 @@ header {
 .header-menu-profile-picture {
     height: 100%;
     display: flex;
+}
+
+.num-of-requests {
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    background-color: rgb(226, 59, 59);
+    top: -4px;
+    right: -4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
