@@ -1,7 +1,7 @@
 
 <?php
     use classes\{Config, Token, Session, Common, Redirect};
-    use models\{UserRelation, User};
+    use models\{UserRelation, User, Message};
 
     if(isset($_POST["logout"])) {
         if(Token::check(Common::getInput($_POST, "token_logout"), "logout")) {
@@ -10,13 +10,16 @@
         }
     }
 
-    $fr_senders = UserRelation::get_friendship_requests($user->getPropertyValue('id'));
+    $cuid = $user->getPropertyValue('id');
+
+    // Fetch friendship reuqests
+    $fr_senders = UserRelation::get_friendship_requests($cuid);
     $request_num_component = "";
     $friend_request_components = "";
 
     if(count($fr_senders) == 0) {
         $friend_request_components = <<<EMPTY_FR
-            <h3>You don't have any friendship requests.</h3>
+            <p style="padding: 10px" class="regular-text">You don't have any friendship requests.</p>
 EMPTY_FR;
     } else {
         $rnc = count($fr_senders);
@@ -79,6 +82,77 @@ FR;
     }
 
 
+    // Fetch friends messages. Notice you need also to show the messages that you send to your friends and try to
+    // use is_read to determine if the receiver see the message by replacing the tick image by a green one !
+    $discussions = Message::get_discussions($cuid);
+    $temp = array();
+    $result = array();
+    
+    foreach($discussions as $discussion) {
+
+        $current_disc = array(
+            "sender"=>$discussion->message_receiver,
+            "receiver"=>$discussion->message_creator
+        );
+
+        if(in_array($current_disc, $temp)) {
+            continue; 
+        }
+
+        $temp[] = array(
+            "sender"=>$discussion->message_creator,
+            "receiver"=>$discussion->message_receiver
+        );
+        $result[] = $discussion;
+    }
+
+    $messages = "";
+    foreach($result as $message) {
+        $friend_id = ($message->message_creator == $cuid) ? $message->message_receiver : $message->message_creator;
+        $friend = new User();
+        $friend->fetchUser('id', $friend_id);
+        $friend_image = ($friend->getPropertyValue('picture') != "") ? $friend->getPropertyValue('picture') : (Config::get("root/path") . "public/assets/images/logos/logo512.png");
+        $friend_name = $friend->getPropertyValue('firstname') . ' ' . $friend->getPropertyValue('lastname');
+        $message_path = $root . 'chat.php?username=' . $friend->getPropertyValue('username');
+        $msg = new Message();
+        $msg->get_message('id', $message->mid);
+        $msg_r = $msg->get_message_recipient_data();
+
+        $message_text = $msg->get_property('message');
+
+        $message_state_icon = "";
+        if($message->message_creator == $cuid) {
+            $message_text = "You: " . $message_text;
+            
+            if($msg_r->is_read) {
+                $icon_path = $friend_image;
+            } else {
+                $icon_path = $root . "public/assets/images/icons/received.png";
+            }
+            $message_state_icon = <<<MSI
+            <div style="margin-left: auto">
+                <img src="$icon_path" class="message-state-sign" alt="message state icon">
+            </div>     
+MSI;
+        }
+        $message_lifetime = $message->message_date;
+
+        $messages .= <<<MSG
+            <a href="$message_path" class="sub-option">
+                <div class="message-option-item">
+                    <div>
+                        <img src="$friend_image" class="image-style-1" alt="user's profile picture">
+                    </div>
+                    <div class="message-content-container">
+                        <p class="message-sender">$friend_name</p>
+                        <p class="message-content"><span class="mesage-text">$message_text</span></p>
+                        <p class="notif-date">$message_lifetime</p>
+                    </div>
+                    $message_state_icon
+                </div>
+            </a>
+MSG;
+    }
 
     $setting_path = Config::get("root/path") . "settings.php";
 ?>
@@ -101,7 +175,7 @@ FR;
                     <a href="<?php echo Config::get("root/path");?>index.php" class="horizontal-menu-link menu-button-style-1" id="home-button">Home</a>
                 </div>
                 <div class="horizontal-menu-item-wrapper">
-                    <a href="" class="horizontal-menu-link menu-button-style-1" id="explore-button">Explore</a>
+                    <a href="<?php echo $root . "search.php" ?>" class="horizontal-menu-link menu-button-style-1" id="explore-button">Explore</a>
                 </div>
                 <div class="horizontal-menu-item-wrapper">
                     <a href="" class="horizontal-menu-link menu-button-style-1 live-button">Live</a>
@@ -141,36 +215,9 @@ FR;
                         <h2 class="title-style-1">Messages</h2>
                         <!-- When this link get pressed you need to redirect the user to the notification post -->
                         <div class="options-container">
-                            <a href="" class="sub-option">
-                                <div class="message-option-item">
-                                    <div>
-                                        <img src="<?php echo Config::get("root/path") . "public/assets/images/logos/logo512.png"; ?>" class="image-style-1" alt="user's profile picture">
-                                    </div>
-                                    <div class="message-content-container">
-                                        <p class="message-sender">Mouad Nassri</p>
-                                        <p class="message-content"><span class="message-sender"></span><span class="mesage-text"> Hello grotto, long time no see !</span></p>
-                                        <p class="notif-date">40 minutes ago</p>
-                                    </div>
-                                    <div>
-                                        <img src="<?php echo Config::get("root/path") . "public/assets/images/icons/sent.png"; ?>" class="message-state-sign" alt="message state icon">
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="" class="sub-option">
-                                <div class="message-option-item">
-                                    <div>
-                                        <img src="<?php echo Config::get("root/path") . "public/assets/images/logos/logo512.png"; ?>" class="image-style-1" alt="user's profile picture">
-                                    </div>
-                                    <div class="message-content-container">
-                                        <p class="message-sender">Loup Garou</p>
-                                        <p class="message-content"><span class="message-sender"></span><span class="mesage-text">Salam, my name is grotto, do you remember me ?</span></p>
-                                        <p class="notif-date">40 minutes ago</p>
-                                    </div>
-                                    <div>
-                                        <img src="<?php echo Config::get("root/path") . "public/assets/images/icons/received.png"; ?>" class="message-state-sign" alt="message state icon">
-                                    </div>
-                                </div>
-                            </a>
+
+                            <?php echo $messages; ?>
+
                         </div>
                     </div>
                 </div>

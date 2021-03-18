@@ -9,7 +9,7 @@ class Redirect {
                 switch($location) {
                     case 404:
                         header("HTTP/1.0 404 Not Found");
-                        header("Location: " . Config::get("root/path") . "components/errors/404.php");
+                        header("Location: " . Config::get("root/path") . "page_parts/errors/404.php");
                         exit();
                     break;
                 }

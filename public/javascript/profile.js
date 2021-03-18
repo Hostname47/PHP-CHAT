@@ -151,6 +151,33 @@ $(".profile-picture-preview, .profile-cover-picture-preview, #edit-profile-conta
     
 });
 
+$('#change-avatar').change(function(event) {
+    if(this.files && this.files[0]) {
+        let avatar = $(".former-picture-dim").get(0);
+        let reader = new FileReader();
+
+        reader.onload = function(){
+            avatar.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    console.log("profile picture changed !");
+});
+
+$("#change-cover").change(function(event) {
+    if(this.files && this.files[0]) {
+        let cover = $("#cover-changer-dim").get(0);
+        let reader = new FileReader();
+
+        reader.onload = function(){
+            cover.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    console.log("cover changed !");
+})
+
 $(".viewer").click(function() {
     $(this).css("display", "none");
 })

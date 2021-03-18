@@ -464,7 +464,7 @@ DELIMITER $$
 -- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_get_discussions` (IN `user_id` INT)  BEGIN
-	SELECT MAX(M.id) AS mid, M.message_creator as message_creator, MR.receiver_id as message_receiver, M.create_date as message_date FROM message AS M
+	SELECT MAX(M.id) AS mid, M.message_creator as message_creator, MR.receiver_id as message_receiver, M.create_date as message_date, MR.is_read as is_read FROM message AS M
 	INNER JOIN message_recipient AS MR
 	ON M.id = MR.message_id
     WHERE M.message_creator = user_id OR MR.receiver_id = user_id

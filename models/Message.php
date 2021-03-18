@@ -186,6 +186,15 @@ class Message {
         return DB::getInstance()->results();
     }
 
+    public function get_message_recipient_data() {
+        DB::getInstance()->query("SELECT * FROM `message_recipient`
+        WHERE message_recipient.message_id = ?", array(
+            $this->id
+        ));
+
+        return DB::getInstance()->results()[0];
+    }
+
     public function add_writing_message_notifier() {
         $this->db->query("INSERT INTO `writing_message_notifier` 
         (`message_writer`, `message_waiter`) 

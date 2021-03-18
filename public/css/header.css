@@ -125,6 +125,7 @@ header {
 
 .notif-date {
     margin: 0;
+    margin-top: 3px;
     font-size: 12px;
     color: rgb(0, 107, 207);
 }

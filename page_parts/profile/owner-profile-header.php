@@ -32,7 +32,7 @@
                         <div href="" id="change-cover-button">
                             <div id="cover-changer-container" class="relative">
                                 <img src="public/assets/images/icons/change-image.png" class="absolute image-size-1 change-image-icon" alt="">
-                                <input type="file" class="absolute change-image-icon" style="opacity: 0;" name="cover" form="save-profile-edits-form">
+                                <input type="file" class="absolute change-image-icon" id="change-cover" style="opacity: 0;" name="cover" form="save-profile-edits-form">
                                 <img src="<?php echo $fetched_user->getPropertyValue("cover"); ?>" id="cover-changer-dim" alt="">
                                 <img src="" id="cover-changer-shadow" style="z-index: 0" class="absolute" alt="">
                             </div>
@@ -42,7 +42,7 @@
                                 <div id="picture-changer-container" class="relative">
                                     <img src="<?php echo $user_profile_picture ?>" class="former-picture-dim" alt="">
                                     <img src="public/assets/images/icons/change-image.png" class="absolute change-image-icon" alt="">
-                                    <input type="file" class="absolute change-image-icon" style="opacity: 0;" name="picture" form="save-profile-edits-form">
+                                    <input type="file" class="absolute change-image-icon" id="change-avatar" style="opacity: 0;" name="picture" form="save-profile-edits-form">
                                     <img src="" class="former-picture-dim former-picture-shadow absolute" style="z-index: 0" alt="">
                                 </div>
                             </div>
