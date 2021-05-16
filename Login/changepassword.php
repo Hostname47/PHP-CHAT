@@ -11,6 +11,8 @@
         Redirect::to("login.php");
     }
 
+    $validate = new Validation();
+    
     // Empty the flash password change
     Session::delete("Password_changed");
 
@@ -18,7 +20,6 @@
 
     if(isset($_POST["save"])) {
         if(Token::check(Common::getInput($_POST, "token_password_save"), "reset-pasword")) {
-            $validate = new Validation();
             $validate->check($_POST, array(
                 "password"=>array(
                     "name"=>"Password",

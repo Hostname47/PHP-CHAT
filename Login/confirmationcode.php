@@ -11,9 +11,10 @@
         Redirect::to("login.php");
     }
 
+    $validate = new Validation();
+
     if(isset($_POST["confirm"])) {
         if(Token::check(Common::getInput($_POST, "token_code_conf"), "reset-pasword")) {
-            $validate = new Validation();
             $validate->check($_POST, array(
                 "code"=>array(
                     "name"=>"Confirmation code",

@@ -7,9 +7,10 @@
     use models\User;
     use Mailgun\Mailgun;
 
+    $validate = new Validation();
+
     if(isset($_POST["send"])) {
         if(Token::check(Common::getInput($_POST, "token_conf_send"), "reset-pasword")) {
-            $validate = new Validation();
             $validate->check($_POST, array(
                 "email"=>array(
                     "name"=>"Email",

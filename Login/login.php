@@ -10,13 +10,13 @@
     if($user->getPropertyValue("isLoggedIn")) {
         Redirect::to("../index.php");
     }
+    $validate = new Validation();
 
     $reg_success_message = '';
     $login_failure_message = '';
 
     if(isset($_POST["login"])) {
         if(Token::check(Common::getInput($_POST, "token_log"), "login")) {
-            $validate = new Validation();
             $validate->check($_POST, array(
                 "email-or-username"=>array(
                     "name"=>"Email or username",
